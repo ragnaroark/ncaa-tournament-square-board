@@ -504,6 +504,30 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     .col-md-8 {
         width: 100%;
     }
+    
+    /* Adjust board container and card to fill width on mobile */
+    .board-container {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        grid-template-columns: 40px repeat(10, 1fr);
+    }
+    
+    .row-header {
+        width: 40px;
+        min-width: 40px;
+        max-width: 40px;
+    }
+    
+    .card-body {
+        padding: 0.5rem;
+    }
+    
+    /* Adjust container padding for mobile */
+    .container-fluid {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -513,12 +537,95 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     }
     .board-cell {
         font-size: 0.5rem;
+        padding: 2px;
     }
     .board-cell:before {
         font-size: 0.4rem;
+        font-weight: bold;
+        color: #333;
+        z-index: 2;
     }
     .mobile-game-card {
         width: 230px;
         padding: 10px;
+    }
+    
+    /* Further reduce padding for very small screens */
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .card {
+        border-radius: 0;
+    }
+    
+    /* Make board scale to fit available width */
+    :root {
+        --cell-size: min(32px, calc((100vw - 40px) / 10));
+    }
+    
+    /* Fix row header width for small screens */
+    .board-container {
+        grid-template-columns: 32px repeat(10, 1fr);
+    }
+    
+    .row-header {
+        width: 32px;
+        min-width: 32px;
+        max-width: 32px;
+    }
+    
+    /* Adjust padding between board and edge */
+    #square-board {
+        padding: 0;
+    }
+}
+
+/* Dynamic scaling of squares for extremely small screens */
+@media (max-width: 400px) {
+    :root {
+        --cell-size: min(28px, calc((100vw - 32px) / 10));
+    }
+    
+    .header-cell, .row-header {
+        font-size: 1rem;
+    }
+    
+    /* Fix row header width for very small screens */
+    .board-container {
+        grid-template-columns: 28px repeat(10, 1fr);
+    }
+    
+    .row-header {
+        width: 28px;
+        min-width: 28px;
+        max-width: 28px;
+    }
+    
+    /* Make cell content smaller */
+    .board-cell {
+        font-size: 0.4rem;
+        padding: 1px;
+        line-height: 0.8;
+    }
+    
+    /* Emphasize cell number */
+    .board-cell:before {
+        font-size: 0.5rem;
+        font-weight: bold;
+        opacity: 0.8;
+        top: 1px;
+        left: 1px;
+    }
+    
+    /* Adjust win indicators for clearer visibility */
+    .round-1-winner:after,
+    .multiple-round-1-wins:after,
+    .round-2-winner:after,
+    .round-3-winner:after,
+    .round-4-winner:after,
+    .round-5-winner:after {
+        z-index: 3;
     }
 } 

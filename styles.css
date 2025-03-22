@@ -1,0 +1,524 @@
+/* Board styles */
+:root {
+    --cell-size: 80px;
+    --border-color: #000;
+    --header-bg: #f8f9fa;
+    --cell-bg: #fff;
+    --text-color: #000;
+    --highlight-color: #ffc107;
+    --highlight-border: #ff9800;
+    --hover-color: #d1ecf1;
+    --games-height: 650px; /* Increased height to show more games */
+    --indicator-size: 10px;
+    --indicator-color: #000;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+/* Equal height row */
+.equal-height-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.equal-height-row > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+.equal-height-row .card {
+    flex: 1;
+}
+
+.board-container {
+    display: grid;
+    grid-template-columns: auto repeat(10, var(--cell-size));
+    grid-template-rows: auto repeat(10, var(--cell-size));
+    gap: 0;
+    border: 2px solid var(--border-color);
+    max-width: fit-content;
+    margin: 0 auto;
+}
+
+.corner-cell {
+    border: 1px solid var(--border-color);
+    background-color: var(--header-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.header-row {
+    display: contents;
+}
+
+.header-cell {
+    border: 1px solid var(--border-color);
+    background-color: var(--header-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    height: 40px;
+}
+
+.board-row {
+    display: contents;
+}
+
+.row-header {
+    border: 1px solid var(--border-color);
+    background-color: var(--header-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    width: 40px;
+}
+
+.board-cell {
+    border: 1px solid var(--border-color);
+    background-color: var(--cell-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+    height: var(--cell-size);
+    overflow: hidden;
+    font-size: 0.8rem;
+    font-weight: bold;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.board-cell:before {
+    content: attr(data-id);
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 0.6rem;
+    color: #777;
+}
+
+/* Round Winner Indicators */
+.round-indicator {
+    position: absolute;
+    width: var(--indicator-size);
+    height: var(--indicator-size);
+    background-color: var(--indicator-color);
+}
+
+/* First Round - Circle in top left */
+.round-1-winner:after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 18px;
+    width: var(--indicator-size);
+    height: var(--indicator-size);
+    background-color: var(--indicator-color);
+    border-radius: 50%;
+}
+
+/* Multiple wins indicator - Filled circle with a different color */
+.multiple-round-1-wins:after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 18px;
+    width: var(--indicator-size);
+    height: var(--indicator-size);
+    background-color: #d9534f; /* Red color for multiple wins */
+    border-radius: 50%;
+    border: 1px solid #fff; /* White border to make it pop */
+}
+
+/* Second Round - Square in top right */
+.round-2-winner:after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: var(--indicator-size);
+    height: var(--indicator-size);
+    background-color: var(--indicator-color);
+}
+
+/* Third Round - Triangle in bottom left */
+.round-3-winner:after {
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    width: 0;
+    height: 0;
+    border-left: calc(var(--indicator-size) / 2) solid transparent;
+    border-right: calc(var(--indicator-size) / 2) solid transparent;
+    border-bottom: var(--indicator-size) solid var(--indicator-color);
+    transform: rotate(-45deg);
+}
+
+/* Fourth Round - Star in bottom right */
+.round-4-winner:after {
+    content: "★";
+    position: absolute;
+    bottom: 1px;
+    right: 3px;
+    font-size: calc(var(--indicator-size) * 1.2);
+    color: var(--indicator-color);
+    line-height: 1;
+}
+
+/* Fifth Round (Final Four) - Different star in center */
+.round-5-winner:after {
+    content: "✦";
+    position: absolute;
+    bottom: 50%;
+    right: 50%;
+    transform: translate(50%, 50%);
+    font-size: calc(var(--indicator-size) * 1.5);
+    color: var(--indicator-color);
+    line-height: 1;
+}
+
+/* Legend for round indicators */
+.rounds-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.legend-indicator {
+    margin-right: 5px;
+    display: inline-block;
+    width: var(--indicator-size);
+    height: var(--indicator-size);
+    position: relative;
+}
+
+.legend-round-1 {
+    border-radius: 50%;
+    background-color: var(--indicator-color);
+}
+
+.legend-round-2 {
+    background-color: var(--indicator-color);
+}
+
+.legend-round-3 {
+    width: 0;
+    height: 0;
+    border-left: calc(var(--indicator-size) / 2) solid transparent;
+    border-right: calc(var(--indicator-size) / 2) solid transparent;
+    border-bottom: var(--indicator-size) solid var(--indicator-color);
+    transform: rotate(-45deg);
+}
+
+.legend-round-4 {
+    font-size: calc(var(--indicator-size) * 1.2);
+    line-height: 1;
+}
+
+/* Legend for Final Four indicator */
+.legend-round-5 {
+    font-size: calc(var(--indicator-size) * 1.5);
+    line-height: 1;
+}
+
+.legend-multiple-wins {
+    position: relative;
+    border-radius: 50%;
+    background-color: #d9534f; /* Red color for multiple wins */
+    border: 1px solid #fff; /* White border to make it pop */
+}
+
+/* Highlighted cell for game matches */
+.highlight {
+    background-color: var(--highlight-color) !important;
+    border: 1px solid var(--highlight-border);
+}
+
+/* Game item styles */
+.games-card {
+    position: sticky;
+    top: 20px;
+    z-index: 100;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Rounds filter styles */
+.rounds-filters {
+    margin-bottom: 5px;
+}
+
+.rounds-title {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+/* Day filter styles */
+.day-filters {
+    display: none; /* Hidden by default */
+    transition: opacity 0.3s ease;
+    margin-top: 12px;
+    border-top: 1px solid #e9ecef;
+    padding-top: 12px;
+}
+
+/* Add a title for the day filters */
+.day-filters::before {
+    content: "Game Day:";
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+/* Style the day filter pills differently */
+.day-filters .form-selectgroup-label {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #495057;
+}
+
+.day-filters .form-selectgroup-input:checked + .form-selectgroup-label {
+    background-color: #e8f3ff;
+    border-color: #b3d7ff;
+    color: #1e6bb8;
+}
+
+/* Show day filters only when Round of 64 is selected */
+input[name="round-filter"][value="1"]:checked ~ .day-filters,
+input[name="round-filter"][value="all"]:checked ~ .day-filters {
+    display: block;
+}
+
+.games-card .card-body {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: var(--games-height);
+}
+
+#games-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
+}
+
+/* Custom scrollbar for WebKit browsers */
+#games-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#games-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#games-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+#games-container::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+.game-item {
+    border: 1px solid #e0e0e0;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.game-item:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.game-item.active {
+    border-color: var(--highlight-border);
+    background-color: #fffbed;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.team-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-logo img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.seed {
+    margin-right: 5px;
+    font-weight: bold;
+    min-width: 25px;
+}
+
+.team-name {
+    flex-grow: 1;
+}
+
+.score {
+    font-weight: bold;
+    min-width: 30px;
+    text-align: right;
+}
+
+.winner {
+    font-weight: bold;
+}
+
+.game-meta {
+    margin-top: 4px !important;
+    font-size: 0.75rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    :root {
+        --cell-size: 70px;
+        --games-height: 600px;
+    }
+}
+
+@media (max-width: 992px) {
+    :root {
+        --cell-size: 60px;
+        --games-height: 550px;
+    }
+    .board-cell {
+        font-size: 0.7rem;
+    }
+}
+
+/* Mobile horizontal games display */
+.mobile-games-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    padding: 10px 0;
+    margin: 0 -15px;
+    padding-left: 15px;
+    scroll-padding-left: 15px;
+}
+
+.mobile-game-card {
+    flex: 0 0 auto;
+    width: 250px;
+    scroll-snap-align: start;
+    border: 1px solid #e0e0e0;
+    padding: 12px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.mobile-game-card.active {
+    border-color: var(--highlight-border);
+    background-color: #fffbed;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.mobile-games-filters .form-selectgroup {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mobile-games-filters .form-selectgroup-item {
+    flex: 0 0 auto;
+}
+
+/* Add a hint for horizontal scrolling */
+.mobile-games-container:after {
+    content: "";
+    flex: 0 0 15px;
+}
+
+@media (max-width: 768px) {
+    :root {
+        --cell-size: 45px;
+        --games-height: 500px;
+    }
+    .board-cell {
+        font-size: 0.6rem;
+    }
+    /* For mobile, we want a fixed height */
+    .games-card {
+        height: auto;
+    }
+    
+    /* Hide the sidebar games container on small screens */
+    .col-md-4 {
+        display: none;
+    }
+    
+    /* Make the board take full width */
+    .col-md-8 {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --cell-size: 32px;
+        --games-height: 450px;
+    }
+    .board-cell {
+        font-size: 0.5rem;
+    }
+    .board-cell:before {
+        font-size: 0.4rem;
+    }
+    .mobile-game-card {
+        width: 230px;
+        padding: 10px;
+    }
+} 

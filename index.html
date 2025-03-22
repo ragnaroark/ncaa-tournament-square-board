@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCAA Tournament Square Board</title>
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid mt-4 mb-4">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="card-title">NCAA Tournament Square Board</h3>
+                        <div class="card-subtitle">Winning score digits (columns) and losing score digits (rows)</div>
+                    </div>
+                    <div class="card-body">
+                        <div id="square-board">
+                            <div class="board-container">
+                                <!-- Column headers (winning scores) -->
+                                <div class="header-row">
+                                    <div class="corner-cell"></div>
+                                    <div class="header-cell">7</div>
+                                    <div class="header-cell">9</div>
+                                    <div class="header-cell">0</div>
+                                    <div class="header-cell">3</div>
+                                    <div class="header-cell">1</div>
+                                    <div class="header-cell">6</div>
+                                    <div class="header-cell">5</div>
+                                    <div class="header-cell">4</div>
+                                    <div class="header-cell">2</div>
+                                    <div class="header-cell">8</div>
+                                </div>
+                                <!-- Board rows -->
+                                <div class="board-row">
+                                    <div class="row-header">9</div>
+                                    <div class="board-cell" data-id="1">DAVE S</div>
+                                    <div class="board-cell" data-id="2">RICK + JENN</div>
+                                    <div class="board-cell" data-id="3">GEOSID</div>
+                                    <div class="board-cell" data-id="4">MIKE SAMBER</div>
+                                    <div class="board-cell" data-id="5">FAB 5</div>
+                                    <div class="board-cell" data-id="6">Gary L</div>
+                                    <div class="board-cell" data-id="7">JFK</div>
+                                    <div class="board-cell" data-id="8">KELLY O'HARE</div>
+                                    <div class="board-cell" data-id="9">Frank Bion</div>
+                                    <div class="board-cell" data-id="10">CMAT</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">1</div>
+                                    <div class="board-cell" data-id="11">BIG O</div>
+                                    <div class="board-cell" data-id="12">MAGA</div>
+                                    <div class="board-cell" data-id="13">DOUBLE L</div>
+                                    <div class="board-cell" data-id="14">DONNY S</div>
+                                    <div class="board-cell" data-id="15">ME PLEASE</div>
+                                    <div class="board-cell" data-id="16">AK</div>
+                                    <div class="board-cell" data-id="17">BRITTAN</div>
+                                    <div class="board-cell" data-id="18">FLETCH</div>
+                                    <div class="board-cell" data-id="19">#19</div>
+                                    <div class="board-cell" data-id="20">BS</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">7</div>
+                                    <div class="board-cell" data-id="21">G+J</div>
+                                    <div class="board-cell" data-id="22">PATTY AUSTIN</div>
+                                    <div class="board-cell" data-id="23">BVBV</div>
+                                    <div class="board-cell" data-id="24">Derpa Do</div>
+                                    <div class="board-cell" data-id="25">CMAT</div>
+                                    <div class="board-cell" data-id="26">MEOW</div>
+                                    <div class="board-cell" data-id="27">Polly</div>
+                                    <div class="board-cell" data-id="28">D+D</div>
+                                    <div class="board-cell" data-id="29">PMCA</div>
+                                    <div class="board-cell" data-id="30">RICK KING</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">6</div>
+                                    <div class="board-cell" data-id="31">KIWI MARGINO</div>
+                                    <div class="board-cell" data-id="32">BF BABES</div>
+                                    <div class="board-cell" data-id="33">DK</div>
+                                    <div class="board-cell" data-id="34">T.RED</div>
+                                    <div class="board-cell" data-id="35">MJ</div>
+                                    <div class="board-cell" data-id="36">DIRTY DEED</div>
+                                    <div class="board-cell" data-id="37">S:D</div>
+                                    <div class="board-cell" data-id="38">LEE</div>
+                                    <div class="board-cell" data-id="39">GEOSID</div>
+                                    <div class="board-cell" data-id="40">JRYZ</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">4</div>
+                                    <div class="board-cell" data-id="41">WEGMAN</div>
+                                    <div class="board-cell" data-id="42">ROBERT S</div>
+                                    <div class="board-cell" data-id="43">St. LOUIS</div>
+                                    <div class="board-cell" data-id="44">3+1</div>
+                                    <div class="board-cell" data-id="45">BVBV</div>
+                                    <div class="board-cell" data-id="46">G+J</div>
+                                    <div class="board-cell" data-id="47">LINDA BROWN</div>
+                                    <div class="board-cell" data-id="48">BRITT</div>
+                                    <div class="board-cell" data-id="49">EMPTY CANS</div>
+                                    <div class="board-cell" data-id="50">PARAMITAK</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">0</div>
+                                    <div class="board-cell" data-id="51">PHIL THE KING</div>
+                                    <div class="board-cell" data-id="52">LEE</div>
+                                    <div class="board-cell" data-id="53">MRAD</div>
+                                    <div class="board-cell" data-id="54">MEL + NICK</div>
+                                    <div class="board-cell" data-id="55">OTIS</div>
+                                    <div class="board-cell" data-id="56">ANNA/TIM</div>
+                                    <div class="board-cell" data-id="57">MB</div>
+                                    <div class="board-cell" data-id="58">MIKE SAMBER</div>
+                                    <div class="board-cell" data-id="59">KIM CHARLY</div>
+                                    <div class="board-cell" data-id="60">KM3</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">2</div>
+                                    <div class="board-cell" data-id="61">D'ORTA</div>
+                                    <div class="board-cell" data-id="62">BRITTAN</div>
+                                    <div class="board-cell" data-id="63">K2</div>
+                                    <div class="board-cell" data-id="64">THERESA BANL</div>
+                                    <div class="board-cell" data-id="65">TMW10</div>
+                                    <div class="board-cell" data-id="66">LEE</div>
+                                    <div class="board-cell" data-id="67">GEEZERS</div>
+                                    <div class="board-cell" data-id="68">MIKE DIANE</div>
+                                    <div class="board-cell" data-id="69">ONZE</div>
+                                    <div class="board-cell" data-id="70">JJB</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">3</div>
+                                    <div class="board-cell" data-id="71">JRYZ</div>
+                                    <div class="board-cell" data-id="72">SKIN SUIT</div>
+                                    <div class="board-cell" data-id="73">CMAT</div>
+                                    <div class="board-cell" data-id="74">TOM SAYCH</div>
+                                    <div class="board-cell" data-id="75">B2R</div>
+                                    <div class="board-cell" data-id="76">DHS</div>
+                                    <div class="board-cell" data-id="77">3+1</div>
+                                    <div class="board-cell" data-id="78">ALLEN</div>
+                                    <div class="board-cell" data-id="79">BILL S</div>
+                                    <div class="board-cell" data-id="80">BEAU</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">5</div>
+                                    <div class="board-cell" data-id="81">FLETCH</div>
+                                    <div class="board-cell" data-id="82">GOLDEN GIRLS</div>
+                                    <div class="board-cell" data-id="83">J/S</div>
+                                    <div class="board-cell" data-id="84">FB SAMERS</div>
+                                    <div class="board-cell" data-id="85">JON VAN</div>
+                                    <div class="board-cell" data-id="86">BS</div>
+                                    <div class="board-cell" data-id="87">SHORTY PJ</div>
+                                    <div class="board-cell" data-id="88">PNL</div>
+                                    <div class="board-cell" data-id="89">PEY</div>
+                                    <div class="board-cell" data-id="90">DON SLYMA</div>
+                                </div>
+                                <div class="board-row">
+                                    <div class="row-header">8</div>
+                                    <div class="board-cell" data-id="91">CMAT</div>
+                                    <div class="board-cell" data-id="92">DPB</div>
+                                    <div class="board-cell" data-id="93">ED</div>
+                                    <div class="board-cell" data-id="94">JT</div>
+                                    <div class="board-cell" data-id="95">RICK KING</div>
+                                    <div class="board-cell" data-id="96">DON O</div>
+                                    <div class="board-cell" data-id="97">K-ROD</div>
+                                    <div class="board-cell" data-id="98">DELANEY</div>
+                                    <div class="board-cell" data-id="99">LILI KING</div>
+                                    <div class="board-cell" data-id="100">JY/TF</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounds-legend">
+                            <div class="legend-item">
+                                <span class="legend-indicator legend-round-1"></span>
+                                <span>Round of 64</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-indicator legend-multiple-wins"></span>
+                                <span>Multiple Round of 64 Wins</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-indicator legend-round-2"></span>
+                                <span>Round of 32</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-indicator legend-round-3"></span>
+                                <span>Sweet 16</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-indicator legend-round-4">★</span>
+                                <span>Elite 8</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Mobile-friendly horizontal games section (shown on smaller screens) -->
+                        <div class="d-md-none mt-4">
+                            <h4 class="mb-2">NCAA Tournament Games</h4>
+                            <div class="mobile-games-filters mb-2">
+                                <div class="form-selectgroup">
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="mobile-round-filter" value="all" class="form-selectgroup-input" checked>
+                                        <span class="form-selectgroup-label">All</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="mobile-round-filter" value="1" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">R64</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="mobile-round-filter" value="2" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">R32</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="mobile-round-filter" value="3" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">S16</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="mobile-round-filter" value="4" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">E8</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="mobile-round-filter" value="5" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">F4</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mobile-games-container">
+                                <!-- Horizontal scrolling games will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card games-card sticky-top" style="top: 20px;">
+                    <div class="card-header">
+                        <h3 class="card-title">NCAA Tournament Games</h3>
+                        <div class="card-subtitle">
+                            <div class="rounds-filters">
+                                <div class="rounds-title">Tournament Round:</div>
+                                <div class="form-selectgroup form-selectgroup-pills">
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="round-filter" value="all" class="form-selectgroup-input" checked>
+                                        <span class="form-selectgroup-label">All</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="round-filter" value="1" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Round of 64</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="round-filter" value="2" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Round of 32</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="round-filter" value="3" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Sweet 16</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="round-filter" value="4" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Elite 8</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="round-filter" value="5" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Final Four</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Day filters - only applicable for Round of 64 -->
+                            <div class="mt-2 day-filters">
+                                <div class="form-selectgroup form-selectgroup-pills">
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="day-filter" value="all" class="form-selectgroup-input" checked>
+                                        <span class="form-selectgroup-label">All Days</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="day-filter" value="thursday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Thursday</span>
+                                    </label>
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="day-filter" value="friday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Friday</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="games-container">
+                            <!-- Games will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

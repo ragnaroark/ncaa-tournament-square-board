@@ -750,6 +750,171 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Function to show popup with square details
+    function showSquarePopup(cellId) {
+        // Get square name/owner
+        const cell = document.querySelector(`.board-cell[data-id="${cellId}"]`);
+        const squareName = cell.textContent.trim();
+        
+        // Get all winning games for this square
+        const allWins = [];
+        const roundDescriptions = {
+            round1: "Round of 64",
+            round2: "Round of 32",
+            round3: "Sweet 16",
+            round4: "Elite 8",
+            round5: "Final Four"
+        };
+        
+        // Collect all wins across all rounds
+        Object.keys(winnerSquares).forEach(roundKey => {
+            if (winnerSquares[roundKey][cellId]) {
+                winnerSquares[roundKey][cellId].forEach(game => {
+                    allWins.push({
+                        round: game.round,
+                        roundName: roundDescriptions[roundKey],
+                        winner: game.winner,
+                        loser: game.loser,
+                        date: game.date,
+                        game: game
+                    });
+                });
+            }
+        });
+        
+        // Create popup element
+        const popup = document.createElement('div');
+        popup.className = 'square-popup';
+        
+        // Create popup content
+        let popupContent = `
+            <div class="square-popup-header">
+                <h3 class="square-popup-title">Square #${cellId}: ${squareName}</h3>
+                <button class="square-popup-close" onclick="closePopup()">&times;</button>
+            </div>
+            <div class="square-popup-content">
+                <h4>Square Details</h4>
+                <p>Winning score ends with: ${getColumnsDigitForCell(cellId)}</p>
+                <p>Losing score ends with: ${getRowsDigitForCell(cellId)}</p>
+            </div>
+        `;
+        
+        // Add wins section
+        if (allWins.length > 0) {
+            popupContent += `
+                <div class="square-popup-content">
+                    <h4>Winning Games (${allWins.length})</h4>
+                    <ul class="square-wins-list">
+            `;
+            
+            // Sort wins by round (higher rounds first)
+            allWins.sort((a, b) => b.round - a.round);
+            
+            // Add each win
+            allWins.forEach(win => {
+                popupContent += `
+                    <li class="square-win-item round-${win.round}" data-game-id="${win.game.id}">
+                        <div class="square-win-teams">
+                            ${win.winner.name} vs ${win.loser.name}
+                            <span class="square-win-score">(${win.winner.score}-${win.loser.score})</span>
+                        </div>
+                        <span class="square-win-date">${win.roundName} · ${win.date}</span>
+                    </li>
+                `;
+            });
+            
+            popupContent += `
+                    </ul>
+                </div>
+            `;
+        } else {
+            popupContent += `
+                <div class="square-popup-content">
+                    <h4>Winning Games</h4>
+                    <div class="no-wins-message">No winning games yet for this square.</div>
+                </div>
+            `;
+        }
+        
+        // Add footer
+        popupContent += `
+            <div class="square-popup-footer">
+                <button class="square-popup-button" onclick="closePopup()">Close</button>
+            </div>
+        `;
+        
+        popup.innerHTML = popupContent;
+        
+        // Create backdrop
+        const backdrop = document.createElement('div');
+        backdrop.className = 'popup-backdrop';
+        backdrop.onclick = closePopup;
+        
+        // Add popup and backdrop to body
+        document.body.appendChild(backdrop);
+        document.body.appendChild(popup);
+        
+        // Add event listeners for win items
+        const winItems = popup.querySelectorAll('.square-win-item');
+        winItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const gameId = parseInt(this.getAttribute('data-game-id'));
+                const game = ncaaGames.find(g => g.id === gameId);
+                if (game) {
+                    closePopup();
+                    
+                    // Highlight the game in the games list
+                    const gameItem = document.querySelector(`.game-item[data-id="${gameId}"]`);
+                    if (gameItem) {
+                        gameItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        highlightGameWinner(game, gameItem);
+                    } else {
+                        // If game is not visible in the current filtered view, change the filter
+                        document.querySelector(`input[name="round-filter"][value="${game.round}"]`).click();
+                        setTimeout(() => {
+                            const newGameItem = document.querySelector(`.game-item[data-id="${gameId}"]`);
+                            if (newGameItem) {
+                                newGameItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                highlightGameWinner(game, newGameItem);
+                            }
+                        }, 100);
+                    }
+                }
+            });
+        });
+    }
+    
+    // Helper function to get the column digit for a cell ID
+    function getColumnsDigitForCell(cellId) {
+        const colIndex = (cellId - 1) % 10;
+        const columnHeaders = document.querySelectorAll('.header-cell');
+        return columnHeaders[colIndex].textContent;
+    }
+    
+    // Helper function to get the row digit for a cell ID
+    function getRowsDigitForCell(cellId) {
+        const rowIndex = Math.floor((cellId - 1) / 10);
+        const rowHeaders = document.querySelectorAll('.row-header');
+        return rowHeaders[rowIndex].textContent;
+    }
+    
+    // Function to close popup
+    function closePopup() {
+        const popup = document.querySelector('.square-popup');
+        const backdrop = document.querySelector('.popup-backdrop');
+        
+        if (popup) {
+            popup.remove();
+        }
+        
+        if (backdrop) {
+            backdrop.remove();
+        }
+    }
+    
+    // Make closePopup function globally available
+    window.closePopup = closePopup;
+    
     // Function to render games with optional round filter
     function renderGames(roundFilter = 'all', dayFilter = 'all') {
         gamesContainer.innerHTML = '';
@@ -970,8 +1135,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Analyze all games to mark winning squares
     analyzeGames();
     
-    // Original hover effect code
+    // Add click event to cells to show popup
     cells.forEach(cell => {
+        cell.addEventListener('click', function() {
+            const cellId = parseInt(this.getAttribute('data-id'));
+            showSquarePopup(cellId);
+        });
+        
+        // Original hover effect code
         cell.addEventListener('mouseenter', function() {
             // Get the cell's data-id value
             const cellId = parseInt(this.getAttribute('data-id'));

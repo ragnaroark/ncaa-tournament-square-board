@@ -790,7 +790,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let popupContent = `
             <div class="square-popup-header">
                 <h3 class="square-popup-title">Square #${cellId}: ${squareName}</h3>
-                <button class="square-popup-close" onclick="closePopup()">&times;</button>
+                <button class="square-popup-close" type="button" aria-label="Close popup">&times;</button>
             </div>
             <div class="square-popup-content">
                 <h4>Square Details</h4>
@@ -845,19 +845,35 @@ document.addEventListener('DOMContentLoaded', function() {
         
         popup.innerHTML = popupContent;
         
-        // Create backdrop
-        const backdrop = document.createElement('div');
-        backdrop.className = 'popup-backdrop';
-        backdrop.onclick = closePopup;
+        // Create backdrop with improved touch support
+        const backdrop = createBackdrop();
         
         // Add popup and backdrop to body
         document.body.appendChild(backdrop);
         document.body.appendChild(popup);
         
-        // Add event listeners for win items
+        // Ensure close button works with touch
+        const closeBtn = popup.querySelector('.square-popup-close');
+        closeBtn.addEventListener('click', closePopup);
+        closeBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            closePopup();
+        });
+        
+        // Same for the close button in footer if it exists
+        const footerCloseBtn = popup.querySelector('.square-popup-button');
+        if (footerCloseBtn) {
+            footerCloseBtn.addEventListener('click', closePopup);
+            footerCloseBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                closePopup();
+            });
+        }
+        
+        // Add event listeners for win items with touch support
         const winItems = popup.querySelectorAll('.square-win-item');
         winItems.forEach(item => {
-            item.addEventListener('click', function() {
+            const handleWinItemClick = function() {
                 const gameId = parseInt(this.getAttribute('data-game-id'));
                 const game = ncaaGames.find(g => g.id === gameId);
                 if (game) {
@@ -880,6 +896,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         }, 100);
                     }
                 }
+            };
+            
+            item.addEventListener('click', handleWinItemClick);
+            item.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                handleWinItemClick.call(this);
             });
         });
     }
@@ -914,6 +936,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Make closePopup function globally available
     window.closePopup = closePopup;
+    
+    // Function to create the popup backdrop with touch support
+    function createBackdrop() {
+        const backdrop = document.createElement('div');
+        backdrop.className = 'popup-backdrop';
+        
+        // Handle both click and touch events
+        backdrop.addEventListener('click', closePopup);
+        backdrop.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            closePopup();
+        });
+        
+        return backdrop;
+    }
     
     // Function to render games with optional round filter
     function renderGames(roundFilter = 'all', dayFilter = 'all') {
@@ -1137,9 +1174,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add click event to cells to show popup
     cells.forEach(cell => {
-        cell.addEventListener('click', function() {
+        // Add click/touch events for showing popup
+        const showPopupHandler = function() {
             const cellId = parseInt(this.getAttribute('data-id'));
             showSquarePopup(cellId);
+        };
+        
+        // Use multiple event types to ensure coverage across devices
+        cell.addEventListener('click', showPopupHandler);
+        cell.addEventListener('touchend', function(e) {
+            e.preventDefault(); // Prevent default touch behavior
+            showPopupHandler.call(this);
         });
         
         // Original hover effect code

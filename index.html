@@ -184,8 +184,16 @@
                                 <span>Sweet 16</span>
                             </div>
                             <div class="legend-item">
-                                <span class="legend-indicator legend-round-4">★</span>
+                                <span class="legend-indicator legend-round-4"></span>
                                 <span>Elite 8</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-indicator legend-round-5"></span>
+                                <span>Final Four</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-indicator legend-multi-round"></span>
+                                <span>Multiple Round Wins</span>
                             </div>
                         </div>
                         
@@ -217,6 +225,33 @@
                                     <label class="form-selectgroup-item">
                                         <input type="radio" name="mobile-round-filter" value="5" class="form-selectgroup-input">
                                         <span class="form-selectgroup-label">F4</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Add mobile day filters -->
+                            <div class="mobile-day-filters mb-2" style="display: none;">
+                                <div class="form-selectgroup">
+                                    <label class="form-selectgroup-item">
+                                        <input type="radio" name="mobile-day-filter" value="all" class="form-selectgroup-input" checked>
+                                        <span class="form-selectgroup-label">All Days</span>
+                                    </label>
+                                    <!-- Round 1 mobile day filters -->
+                                    <label class="form-selectgroup-item mobile-day-filter-r1">
+                                        <input type="radio" name="mobile-day-filter" value="thursday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Thu</span>
+                                    </label>
+                                    <label class="form-selectgroup-item mobile-day-filter-r1">
+                                        <input type="radio" name="mobile-day-filter" value="friday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Fri</span>
+                                    </label>
+                                    <!-- Round 2 mobile day filters -->
+                                    <label class="form-selectgroup-item mobile-day-filter-r2">
+                                        <input type="radio" name="mobile-day-filter" value="saturday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Sat</span>
+                                    </label>
+                                    <label class="form-selectgroup-item mobile-day-filter-r2 future-game">
+                                        <input type="radio" name="mobile-day-filter" value="sunday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Sun</span>
                                     </label>
                                 </div>
                             </div>
@@ -262,20 +297,30 @@
                                 </div>
                             </div>
                             
-                            <!-- Day filters - only applicable for Round of 64 -->
+                            <!-- Day filters - for Round of 64 and Round of 32 -->
                             <div class="mt-2 day-filters">
                                 <div class="form-selectgroup form-selectgroup-pills">
                                     <label class="form-selectgroup-item">
                                         <input type="radio" name="day-filter" value="all" class="form-selectgroup-input" checked>
                                         <span class="form-selectgroup-label">All Days</span>
                                     </label>
-                                    <label class="form-selectgroup-item">
+                                    <!-- Round 1 day filters -->
+                                    <label class="form-selectgroup-item day-filter-r1">
                                         <input type="radio" name="day-filter" value="thursday" class="form-selectgroup-input">
                                         <span class="form-selectgroup-label">Thursday</span>
                                     </label>
-                                    <label class="form-selectgroup-item">
+                                    <label class="form-selectgroup-item day-filter-r1">
                                         <input type="radio" name="day-filter" value="friday" class="form-selectgroup-input">
                                         <span class="form-selectgroup-label">Friday</span>
+                                    </label>
+                                    <!-- Round 2 day filters -->
+                                    <label class="form-selectgroup-item day-filter-r2">
+                                        <input type="radio" name="day-filter" value="saturday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Saturday</span>
+                                    </label>
+                                    <label class="form-selectgroup-item day-filter-r2 future-game">
+                                        <input type="radio" name="day-filter" value="sunday" class="form-selectgroup-input">
+                                        <span class="form-selectgroup-label">Sunday</span>
                                     </label>
                                 </div>
                             </div>

@@ -643,6 +643,169 @@ document.addEventListener('DOMContentLoaded', function() {
                 logo: "https://placehold.co/30x30/red/blue?text=LIB"
             },
             video: "9:42"
+        },
+        
+        // Second round games (Round of 32)
+        {
+            id: 33,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "Arkansas",
+                seed: 10,
+                score: 75,
+                logo: "https://placehold.co/30x30/red/white?text=ARK"
+            },
+            loser: {
+                name: "St John's",
+                seed: 2,
+                score: 66,
+                logo: "https://placehold.co/30x30/red/white?text=STJ"
+            },
+            video: "8:32"
+        },
+        // Second round games (Round of 32) - Saturday March 22
+        {
+            id: 35,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "Purdue",
+                seed: 4,
+                score: 76,
+                logo: "https://placehold.co/30x30/gold/black?text=PUR"
+            },
+            loser: {
+                name: "McNeese State",
+                seed: 12,
+                score: 62,
+                logo: "https://placehold.co/30x30/blue/white?text=MCN"
+            },
+            video: "8:29"
+        },
+        {
+            id: 36,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "Michigan",
+                seed: 5,
+                score: 91,
+                logo: "https://placehold.co/30x30/blue/gold?text=MICH"
+            },
+            loser: {
+                name: "Texas A&M",
+                seed: 4,
+                score: 79,
+                logo: "https://placehold.co/30x30/maroon/white?text=A&M"
+            },
+            video: "9:38"
+        },
+        {
+            id: 37,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "Texas Tech",
+                seed: 3,
+                score: 77,
+                logo: "https://placehold.co/30x30/red/black?text=TTU"
+            },
+            loser: {
+                name: "Drake",
+                seed: 11,
+                score: 64,
+                logo: "https://placehold.co/30x30/blue/white?text=DRA"
+            },
+            video: "9:26"
+        },
+        {
+            id: 38,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "Auburn",
+                seed: 1,
+                score: 82,
+                logo: "https://placehold.co/30x30/blue/white?text=AUB"
+            },
+            loser: {
+                name: "Creighton",
+                seed: 9,
+                score: 70,
+                logo: "https://placehold.co/30x30/blue/white?text=CRE"
+            },
+            video: "9:59"
+        },
+        {
+            id: 39,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "BYU",
+                seed: 6,
+                score: 91,
+                logo: "https://placehold.co/30x30/blue/white?text=BYU"
+            },
+            loser: {
+                name: "Wisconsin",
+                seed: 3,
+                score: 89,
+                logo: "https://placehold.co/30x30/red/white?text=WIS"
+            },
+            video: "11:25"
+        },
+        {
+            id: 40,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "Houston",
+                seed: 1,
+                score: 81,
+                logo: "https://placehold.co/30x30/red/white?text=HOU"
+            },
+            loser: {
+                name: "Gonzaga",
+                seed: 8,
+                score: 76,
+                logo: "https://placehold.co/30x30/blue/white?text=GON"
+            },
+            video: "10:05"
+        },
+        {
+            id: 41,
+            round: 2,
+            name: "Round of 32",
+            date: "Sat, Mar 22",
+            day: "saturday",
+            winner: { 
+                name: "Tennessee",
+                seed: 2,
+                score: 67,
+                logo: "https://placehold.co/30x30/orange/white?text=TEN"
+            },
+            loser: {
+                name: "UCLA",
+                seed: 7,
+                score: 58,
+                logo: "https://placehold.co/30x30/blue/gold?text=UCLA"
+            },
+            video: "8:19"
         }
     ];
 
@@ -715,10 +878,9 @@ document.addEventListener('DOMContentLoaded', function() {
             winnerSquares[key] = {};
         });
         
-        // Remove existing winner classes and attributes
+        // Remove existing winner classes
         cells.forEach(cell => {
             cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'multiple-round-1-wins');
-            // No need to remove data-win-count as we're not using it anymore
         });
         
         // Process all games to identify winning squares for each round
@@ -745,7 +907,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (gamesCount > 1) {
                 const cell = document.querySelector(`.board-cell[data-id="${cellId}"]`);
                 cell.classList.add('multiple-round-1-wins');
-                // We don't need the data-win-count anymore since we're using color to indicate multiple wins
             }
         });
     }
@@ -967,6 +1128,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            // Find winning square for this game
+            const square = findSquare(game.winner.score, game.loser.score);
+            const squareNumber = square ? square.cellId : null;
+            
             // Create game item
             const gameItem = document.createElement('div');
             gameItem.classList.add('game-item');
@@ -1032,17 +1197,44 @@ document.addEventListener('DOMContentLoaded', function() {
             loserTeam.appendChild(loserName);
             loserTeam.appendChild(loserScore);
             
-            // Create game meta
-            const gameMeta = document.createElement('div');
-            gameMeta.classList.add('game-meta', 'text-muted');
-            gameMeta.innerHTML = `${game.name} · ${game.date}`;
-            if (game.video) {
-                gameMeta.innerHTML += ` · <i class="ti ti-player-play"></i> ${game.video}`;
-            }
-            
-            // Add elements to game item
+            // Add teams to game item
             gameItem.appendChild(winnerTeam);
             gameItem.appendChild(loserTeam);
+            
+            // Create game meta with square number
+            const gameMeta = document.createElement('div');
+            gameMeta.classList.add('game-meta');
+            
+            // Create a container div with flexbox for game info and square number
+            const gameMetaContainer = document.createElement('div');
+            gameMetaContainer.classList.add('game-meta-container');
+            
+            // Game info on the left
+            const gameInfo = document.createElement('span');
+            gameInfo.classList.add('text-muted');
+            gameInfo.innerHTML = `${game.name} · ${game.date}`;
+            if (game.video) {
+                gameInfo.innerHTML += ` · <i class="ti ti-player-play"></i> ${game.video}`;
+            }
+            
+            // Square number on the right
+            if (squareNumber !== null) {
+                const squareDisplay = document.createElement('span');
+                squareDisplay.classList.add('square-number');
+                squareDisplay.textContent = `Square #${squareNumber}`;
+                
+                // Add both to the container
+                gameMetaContainer.appendChild(gameInfo);
+                gameMetaContainer.appendChild(squareDisplay);
+            } else {
+                // Just add the game info if no square number
+                gameMetaContainer.appendChild(gameInfo);
+            }
+            
+            // Add the container to the game meta
+            gameMeta.appendChild(gameMetaContainer);
+            
+            // Add meta to game item
             gameItem.appendChild(gameMeta);
             
             // Add click event
@@ -1055,25 +1247,35 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Function to render games in the mobile container
-    function renderMobileGames(roundFilter = 'all') {
+    function renderMobileGames(roundFilter = 'all', dayFilter = 'all') {
         if (!mobileGamesContainer) return;
         
         mobileGamesContainer.innerHTML = '';
         
         ncaaGames.forEach(game => {
-            // Apply filters
+            // Apply round filter
             if (roundFilter !== 'all' && game.round !== parseInt(roundFilter)) {
                 return;
             }
+            
+            // Apply day filter
+            if (dayFilter !== 'all' && game.day !== dayFilter) {
+                return;
+            }
+            
+            // Find winning square for this game
+            const square = findSquare(game.winner.score, game.loser.score);
+            const squareNumber = square ? square.cellId : null;
             
             // Create mobile game card
             const gameCard = document.createElement('div');
             gameCard.classList.add('mobile-game-card');
             gameCard.dataset.id = game.id;
             
-            // Create winner/loser display
+            // Create winner/loser display with winning square
             const matchup = document.createElement('div');
-            matchup.innerHTML = `
+            
+            let matchupHTML = `
                 <div class="d-flex align-items-center mb-2">
                     <span class="badge bg-success me-1" style="color: white;">${game.winner.seed}</span>
                     <strong>${game.winner.name}</strong>
@@ -1084,9 +1286,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>${game.loser.name}</span>
                     <span class="ms-auto">${game.loser.score}</span>
                 </div>
-                <div class="text-muted small">${game.name} · ${game.date}</div>
-            `;
+                <div class="game-meta-container">
+                    <span class="text-muted small">${game.name} · ${game.date}</span>`;
+                    
+            // Add square number if available
+            if (squareNumber !== null) {
+                matchupHTML += `<span class="square-number">Square #${squareNumber}</span>`;
+            }
             
+            matchupHTML += `</div>`;
+            
+            matchup.innerHTML = matchupHTML;
             gameCard.appendChild(matchup);
             
             // Add click event
@@ -1134,10 +1344,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const roundFilter = this.value;
             const dayFilter = document.querySelector('input[name="day-filter"]:checked')?.value || 'all';
             
-            // Toggle day filter visibility
+            // Toggle day filter visibility and adjust available days
             const dayFiltersContainer = document.querySelector('.day-filters');
-            if (roundFilter === '1' || roundFilter === 'all') {
+            
+            // Show day filters for Round 1 (Round of 64) or Round 2 (Round of 32)
+            if (roundFilter === '1' || roundFilter === '2' || roundFilter === 'all') {
                 dayFiltersContainer.style.display = 'block';
+                
+                // Show appropriate day options based on the round
+                document.querySelectorAll('.day-filter-r1, .day-filter-r2').forEach(elem => {
+                    elem.style.display = 'none';
+                });
+                
+                if (roundFilter === '1') {
+                    // Round 1 has Thursday and Friday games
+                    document.querySelectorAll('.day-filter-r1').forEach(elem => {
+                        elem.style.display = 'block';
+                    });
+                    // Select "All Days" by default when switching
+                    document.querySelector('input[name="day-filter"][value="all"]').checked = true;
+                } else if (roundFilter === '2') {
+                    // Round 2 has Saturday and Sunday games
+                    document.querySelectorAll('.day-filter-r2').forEach(elem => {
+                        elem.style.display = 'block';
+                    });
+                    // Select "All Days" by default when switching
+                    document.querySelector('input[name="day-filter"][value="all"]').checked = true;
+                } else {
+                    // "All Rounds" selected - show both sets of day filters
+                    document.querySelectorAll('.day-filter-r1, .day-filter-r2').forEach(elem => {
+                        elem.style.display = 'block';
+                    });
+                }
             } else {
                 dayFiltersContainer.style.display = 'none';
                 // Reset day filter to 'all' when not on Round of 64
@@ -1161,7 +1399,54 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('input[name="mobile-round-filter"]').forEach(input => {
         input.addEventListener('change', function() {
             const roundFilter = this.value;
-            renderMobileGames(roundFilter);
+            const mobileDayFilters = document.querySelector('.mobile-day-filters');
+            
+            // Show day filters only for Round 1 (Round of 64) and Round 2 (Round of 32)
+            if (roundFilter === '1' || roundFilter === '2' || roundFilter === 'all') {
+                mobileDayFilters.style.display = 'block';
+                
+                // Show appropriate day options based on the round
+                document.querySelectorAll('.mobile-day-filter-r1, .mobile-day-filter-r2').forEach(elem => {
+                    elem.style.display = 'none';
+                });
+                
+                if (roundFilter === '1') {
+                    // Round 1 has Thursday and Friday games
+                    document.querySelectorAll('.mobile-day-filter-r1').forEach(elem => {
+                        elem.style.display = 'block';
+                    });
+                    // Select "All Days" by default when switching
+                    document.querySelector('input[name="mobile-day-filter"][value="all"]').checked = true;
+                } else if (roundFilter === '2') {
+                    // Round 2 has Saturday and Sunday games
+                    document.querySelectorAll('.mobile-day-filter-r2').forEach(elem => {
+                        elem.style.display = 'block';
+                    });
+                    // Select "All Days" by default when switching
+                    document.querySelector('input[name="mobile-day-filter"][value="all"]').checked = true;
+                } else {
+                    // "All Rounds" selected - show both sets of day filters
+                    document.querySelectorAll('.mobile-day-filter-r1, .mobile-day-filter-r2').forEach(elem => {
+                        elem.style.display = 'block';
+                    });
+                }
+            } else {
+                mobileDayFilters.style.display = 'none';
+                // Reset day filter to 'all' when not on applicable rounds
+                document.querySelector('input[name="mobile-day-filter"][value="all"]').checked = true;
+            }
+            
+            const dayFilter = document.querySelector('input[name="mobile-day-filter"]:checked')?.value || 'all';
+            renderMobileGames(roundFilter, dayFilter);
+        });
+    });
+    
+    // Add event listeners for mobile day filters
+    document.querySelectorAll('input[name="mobile-day-filter"]').forEach(input => {
+        input.addEventListener('change', function() {
+            const dayFilter = this.value;
+            const roundFilter = document.querySelector('input[name="mobile-round-filter"]:checked')?.value || 'all';
+            renderMobileGames(roundFilter, dayFilter);
         });
     });
     
@@ -1204,10 +1489,7 @@ document.addEventListener('DOMContentLoaded', function() {
             colHeader.style.backgroundColor = '#d1ecf1';
             rowHeader.style.backgroundColor = '#d1ecf1';
             
-            // Add a subtle highlight to the cell if it's not already highlighted
-            if (!this.classList.contains('highlight')) {
-                this.style.backgroundColor = '#e2e3e5';
-            }
+            // Cell hover is now handled by CSS :hover for consistency
         });
         
         cell.addEventListener('mouseleave', function() {
@@ -1226,10 +1508,7 @@ document.addEventListener('DOMContentLoaded', function() {
             colHeader.style.backgroundColor = '';
             rowHeader.style.backgroundColor = '';
             
-            // Reset the cell's background color only if it's not highlighted
-            if (!this.classList.contains('highlight')) {
-                this.style.backgroundColor = '';
-            }
+            // Cell hover reset is now handled by CSS :hover for consistency
         });
     });
 }); 

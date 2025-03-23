@@ -7,10 +7,18 @@
     --text-color: #000;
     --highlight-color: #ffc107;
     --highlight-border: #ff9800;
-    --hover-color: #d1ecf1;
+    --hover-color: rgba(226, 227, 229, 0.8); /* Semi-transparent hover color */
     --games-height: 650px; /* Increased height to show more games */
     --indicator-size: 10px;
     --indicator-color: #000;
+    
+    /* Winner colors - replacing indicators with background colors */
+    --round-1-color: rgba(40, 167, 69, 0.15); /* Light green */
+    --multiple-wins-color: rgba(220, 53, 69, 0.25); /* Light red */
+    --round-2-color: rgba(0, 123, 255, 0.15); /* Light blue */
+    --round-3-color: rgba(255, 193, 7, 0.2); /* Light yellow */
+    --round-4-color: rgba(111, 66, 193, 0.15); /* Light purple */
+    --round-5-color: rgba(23, 162, 184, 0.2); /* Light teal */
 }
 
 body {
@@ -96,7 +104,7 @@ body {
     font-size: 0.8rem;
     font-weight: bold;
     position: relative;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .board-cell:before {
@@ -252,6 +260,9 @@ body {
 .highlight {
     background-color: var(--highlight-color) !important;
     border: 1px solid var(--highlight-border);
+    box-shadow: 0 0 0 1px var(--highlight-border);
+    position: relative;
+    z-index: 2;
 }
 
 /* Game item styles */
@@ -414,6 +425,25 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     font-size: 0.75rem;
 }
 
+/* Game meta container with flexbox for alignment */
+.game-meta-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Style for square number */
+.square-number {
+    color: #28a745;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.mobile-game-card .square-number {
+    font-size: 0.75rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     :root {
@@ -486,6 +516,13 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     :root {
         --cell-size: 45px;
         --games-height: 500px;
+        /* Slightly more saturated colors for better visibility on small screens */
+        --round-1-color: rgba(40, 167, 69, 0.2);
+        --multiple-wins-color: rgba(220, 53, 69, 0.3);
+        --round-2-color: rgba(0, 123, 255, 0.2);
+        --round-3-color: rgba(255, 193, 7, 0.25);
+        --round-4-color: rgba(111, 66, 193, 0.2);
+        --round-5-color: rgba(23, 162, 184, 0.25);
     }
     .board-cell {
         font-size: 0.6rem;
@@ -527,6 +564,29 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     .container-fluid {
         padding-left: 5px;
         padding-right: 5px;
+    }
+    
+    /* Disable hover scaling on mobile to prevent layout issues */
+    .board-cell:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Make legend more compact */
+    .rounds-legend {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    
+    .legend-indicator {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .legend-item {
+        margin-right: 5px;
+        font-size: 0.7rem;
     }
 }
 
@@ -627,6 +687,14 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     .round-4-winner:after,
     .round-5-winner:after {
         z-index: 3;
+    }
+    
+    .rounds-legend {
+        gap: 4px;
+    }
+    
+    .legend-item {
+        font-size: 0.65rem;
     }
 }
 
@@ -769,4 +837,184 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     .square-popup-title {
         font-size: 1.1rem;
     }
+}
+
+/* Winner styles - using background colors instead of indicators */
+.round-1-winner {
+    background-color: var(--round-1-color);
+}
+
+.multiple-round-1-wins {
+    background-color: var(--multiple-wins-color);
+}
+
+.round-2-winner {
+    background-color: var(--round-2-color);
+}
+
+.round-3-winner {
+    background-color: var(--round-3-color);
+}
+
+.round-4-winner {
+    background-color: var(--round-4-color);
+}
+
+.round-5-winner {
+    background-color: var(--round-5-color);
+}
+
+/* Special styles for cells with wins in multiple different rounds */
+.round-1-winner.round-2-winner,
+.round-1-winner.round-3-winner,
+.round-1-winner.round-4-winner,
+.round-1-winner.round-5-winner,
+.round-2-winner.round-3-winner,
+.round-2-winner.round-4-winner,
+.round-2-winner.round-5-winner,
+.round-3-winner.round-4-winner,
+.round-3-winner.round-5-winner,
+.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, 
+        var(--round-1-color) 0%, 
+        var(--round-2-color) 25%,
+        var(--round-3-color) 50%,
+        var(--round-4-color) 75%,
+        var(--round-5-color) 100%);
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Add a special indicator for multi-round winners in the legend */
+.legend-multi-round {
+    background: linear-gradient(135deg, 
+        var(--round-1-color) 0%, 
+        var(--round-2-color) 25%,
+        var(--round-3-color) 50%,
+        var(--round-4-color) 75%,
+        var(--round-5-color) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Remove old indicator styles */
+.round-indicator,
+.round-1-winner:after,
+.multiple-round-1-wins:after,
+.round-2-winner:after,
+.round-3-winner:after,
+.round-4-winner:after,
+.round-5-winner:after {
+    display: none;
+}
+
+/* Update the legend indicators to match new background style */
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-right: 10px;
+}
+
+.legend-indicator {
+    margin-right: 5px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+
+.legend-round-1 {
+    background-color: var(--round-1-color);
+    border: 1px solid rgba(40, 167, 69, 0.5);
+}
+
+.legend-multiple-wins {
+    background-color: var(--multiple-wins-color);
+    border: 1px solid rgba(220, 53, 69, 0.5);
+}
+
+.legend-round-2 {
+    background-color: var(--round-2-color);
+    border: 1px solid rgba(0, 123, 255, 0.5);
+}
+
+.legend-round-3 {
+    background-color: var(--round-3-color);
+    border: 1px solid rgba(255, 193, 7, 0.5);
+    transform: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+}
+
+.legend-round-4 {
+    background-color: var(--round-4-color);
+    border: 1px solid rgba(111, 66, 193, 0.5);
+    font-size: inherit;
+}
+
+.legend-round-5 {
+    background-color: var(--round-5-color);
+    border: 1px solid rgba(23, 162, 184, 0.5);
+    font-size: inherit;
+}
+
+/* Hover effect for board cells */
+.board-cell:hover {
+    transform: scale(1.02);
+    z-index: 5;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Mobile day filter styles */
+.mobile-day-filters {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    border-top: 1px solid #e9ecef;
+    padding-top: 8px;
+    margin-top: 5px;
+}
+
+.mobile-day-filters .form-selectgroup {
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+}
+
+.mobile-day-filters .form-selectgroup-label {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Style for future games */
+.future-game .form-selectgroup-label {
+    background-color: #f8f9fa;
+    border-style: dashed;
+    border-color: #adb5bd;
+    color: #6c757d;
+}
+
+.future-game .form-selectgroup-label::after {
+    content: " (Coming Soon)";
+    font-size: 0.7rem;
+    opacity: 0.8;
+    display: inline-block;
+}
+
+.mobile-day-filters .future-game .form-selectgroup-label::after {
+    content: " (Soon)";
+    font-size: 0.6rem;
+}
+
+/* Style for square number */
+.square-number {
+    color: #28a745;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 2px 0 8px 0;
+}
+
+.mobile-game-card .square-number {
+    font-size: 0.75rem;
+    margin-bottom: 5px;
 } 

@@ -806,6 +806,167 @@ document.addEventListener('DOMContentLoaded', function() {
                 logo: "https://placehold.co/30x30/blue/gold?text=UCLA"
             },
             video: "8:19"
+        },
+        // Second round games (Round of 32) - Sunday March 23
+        {
+            id: 42,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "Duke",
+                seed: 1,
+                score: 89,
+                logo: "https://placehold.co/30x30/blue/white?text=DUKE"
+            },
+            loser: {
+                name: "Baylor",
+                seed: 9,
+                score: 66,
+                logo: "https://placehold.co/30x30/green/gold?text=BAY"
+            },
+            video: "9:11"
+        },
+        {
+            id: 43,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "Florida",
+                seed: 1,
+                score: 77,
+                logo: "https://placehold.co/30x30/blue/orange?text=FLA"
+            },
+            loser: {
+                name: "UConn",
+                seed: 8,
+                score: 75,
+                logo: "https://placehold.co/30x30/blue/white?text=CONN"
+            },
+            video: "7:40"
+        },
+        {
+            id: 44,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "Kentucky",
+                seed: 3,
+                score: 84,
+                logo: "https://placehold.co/30x30/blue/white?text=UK"
+            },
+            loser: {
+                name: "Illinois",
+                seed: 6,
+                score: 75,
+                logo: "https://placehold.co/30x30/orange/blue?text=ILL"
+            },
+            video: "11:51"
+        },
+        {
+            id: 45,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "Alabama",
+                seed: 2,
+                score: 80,
+                logo: "https://placehold.co/30x30/crimson/white?text=ALA"
+            },
+            loser: {
+                name: "St Mary's CA",
+                seed: 7,
+                score: 66,
+                logo: "https://placehold.co/30x30/red/white?text=SMC"
+            },
+            video: "9:41"
+        },
+        {
+            id: 46,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "Maryland",
+                seed: 4,
+                score: 72,
+                logo: "https://placehold.co/30x30/red/white?text=UMD"
+            },
+            loser: {
+                name: "CO State",
+                seed: 12,
+                score: 71,
+                logo: "https://placehold.co/30x30/green/gold?text=CSU"
+            },
+            video: "9:55"
+        },
+        {
+            id: 47,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "Ole Miss",
+                seed: 6,
+                score: 91,
+                logo: "https://placehold.co/30x30/red/blue?text=MISS"
+            },
+            loser: {
+                name: "Iowa State",
+                seed: 3,
+                score: 78,
+                logo: "https://placehold.co/30x30/red/gold?text=ISU"
+            },
+            video: "10:59"
+        },
+        {
+            id: 48,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "MI State",
+                seed: 2,
+                score: 71,
+                logo: "https://placehold.co/30x30/green/white?text=MSU"
+            },
+            loser: {
+                name: "New Mexico",
+                seed: 10,
+                score: 63,
+                logo: "https://placehold.co/30x30/red/white?text=UNM"
+            },
+            video: "9:40"
+        },
+        {
+            id: 49,
+            round: 2,
+            name: "Round of 32",
+            date: "Sun, Mar 23",
+            day: "sunday",
+            winner: { 
+                name: "Arizona",
+                seed: 4,
+                score: 87,
+                logo: "https://placehold.co/30x30/red/blue?text=ARIZ"
+            },
+            loser: {
+                name: "Oregon",
+                seed: 5,
+                score: 83,
+                logo: "https://placehold.co/30x30/green/yellow?text=ORE"
+            },
+            video: "9:53"
         }
     ];
 
@@ -1123,8 +1284,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Apply day filter for Round of 64 (only if it's round 1 and a day filter is active)
-            if (game.round === 1 && dayFilter !== 'all' && game.day !== dayFilter) {
+            // Apply day filter for both Round 1 and Round 2
+            if (dayFilter !== 'all' && game.day !== dayFilter) {
                 return;
             }
             

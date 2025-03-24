@@ -624,6 +624,35 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
         margin-right: 5px;
         font-size: 0.7rem;
     }
+    
+    /* Compact header styles */
+    .card-header {
+        padding: 0.75rem;
+    }
+    
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .card-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .board-tabs {
+        margin-top: 0.5rem;
+    }
+    
+    .board-tabs .form-selectgroup {
+        gap: 3px;
+    }
+    
+    .board-tabs .form-selectgroup-label {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        min-height: 0;
+    }
 }
 
 @media (max-width: 576px) {
@@ -675,6 +704,26 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     /* Adjust padding between board and edge */
     #square-board {
         padding: 0;
+    }
+    
+    /* Even more compact for smaller screens */
+    .card-header {
+        padding: 0.5rem;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .board-tabs .form-selectgroup-label {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.7rem;
+    }
+    
+    /* Make filter buttons wrap better */
+    .board-tabs .form-selectgroup {
+        gap: 2px;
+        justify-content: center;
     }
 }
 
@@ -936,27 +985,119 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
 }
 
 /* Board tabs styles */
+.card-header {
+    padding: 0.75rem 1rem;
+    border-bottom: none;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1f36;
+    padding: 0.25rem 0;
+}
+
 .board-tabs {
-    margin-top: 15px;
+    background-color: #fff;
 }
 
-.board-tabs .form-selectgroup {
+.board-tabs .nav-tabs {
+    display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0 1rem;
+    margin: 0;
+    list-style: none;
 }
 
-.board-tabs .form-selectgroup-label {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-    color: #495057;
+.board-tabs .nav-item {
+    margin: 0;
+    position: relative;
+}
+
+.board-tabs .nav-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.board-tabs .nav-link {
+    display: block;
     padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    color: #495057;
+    text-decoration: none;
+    background: none;
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
-.board-tabs .form-selectgroup-input:checked + .form-selectgroup-label {
-    background-color: #e8f3ff;
-    border-color: #b3d7ff;
+.board-tabs .nav-input:checked + .nav-link {
     color: #1e6bb8;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+    margin-bottom: -1px;
+}
+
+.board-tabs .nav-link:hover:not(.active) {
+    border-color: #e9ecef #e9ecef #dee2e6;
+    isolation: isolate;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .card-header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .board-tabs .nav-tabs {
+        padding: 0 0.75rem;
+    }
+
+    .board-tabs .nav-link {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-header {
+        padding: 0.5rem;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .board-tabs .nav-tabs {
+        padding: 0 0.5rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .board-tabs .nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .board-tabs .nav-link {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
 }
 
 /* Filtered board cell styles */
@@ -966,27 +1107,4 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
 
 .board-cell.filtered-in {
     opacity: 1;
-}
-
-/* Mobile responsive adjustments for board tabs */
-@media (max-width: 768px) {
-    .board-tabs .form-selectgroup {
-        gap: 3px;
-    }
-    
-    .board-tabs .form-selectgroup-label {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .board-tabs .form-selectgroup {
-        gap: 2px;
-    }
-    
-    .board-tabs .form-selectgroup-label {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.75rem;
-    }
 } 

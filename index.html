@@ -15,6 +15,34 @@
                     <div class="card-header">
                         <h3 class="card-title">NCAA Tournament Square Board</h3>
                         <div class="card-subtitle">Winning score digits (columns) and losing score digits (rows)</div>
+                        <div class="board-tabs mt-3">
+                            <div class="form-selectgroup form-selectgroup-pills">
+                                <label class="form-selectgroup-item">
+                                    <input type="radio" name="board-filter" value="all" class="form-selectgroup-input" checked>
+                                    <span class="form-selectgroup-label">All Rounds</span>
+                                </label>
+                                <label class="form-selectgroup-item">
+                                    <input type="radio" name="board-filter" value="1" class="form-selectgroup-input">
+                                    <span class="form-selectgroup-label">Round of 64</span>
+                                </label>
+                                <label class="form-selectgroup-item">
+                                    <input type="radio" name="board-filter" value="2" class="form-selectgroup-input">
+                                    <span class="form-selectgroup-label">Round of 32</span>
+                                </label>
+                                <label class="form-selectgroup-item">
+                                    <input type="radio" name="board-filter" value="3" class="form-selectgroup-input">
+                                    <span class="form-selectgroup-label">Sweet 16</span>
+                                </label>
+                                <label class="form-selectgroup-item">
+                                    <input type="radio" name="board-filter" value="4" class="form-selectgroup-input">
+                                    <span class="form-selectgroup-label">Elite 8</span>
+                                </label>
+                                <label class="form-selectgroup-item">
+                                    <input type="radio" name="board-filter" value="5" class="form-selectgroup-input">
+                                    <span class="form-selectgroup-label">Final Four</span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body p-md-3 p-1">
                         <div id="square-board" class="overflow-auto">
@@ -172,10 +200,6 @@
                                 <span>Round of 64</span>
                             </div>
                             <div class="legend-item">
-                                <span class="legend-indicator legend-multiple-wins"></span>
-                                <span>Multiple Round of 64 Wins</span>
-                            </div>
-                            <div class="legend-item">
                                 <span class="legend-indicator legend-round-2"></span>
                                 <span>Round of 32</span>
                             </div>
@@ -190,10 +214,6 @@
                             <div class="legend-item">
                                 <span class="legend-indicator legend-round-5"></span>
                                 <span>Final Four</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-indicator legend-multi-round"></span>
-                                <span>Multiple Round Wins</span>
                             </div>
                         </div>
                         

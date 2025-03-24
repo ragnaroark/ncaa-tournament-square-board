@@ -12,9 +12,8 @@
     --indicator-size: 10px;
     --indicator-color: #000;
     
-    /* Winner colors - replacing indicators with background colors */
+    /* Winner colors */
     --round-1-color: rgba(40, 167, 69, 0.15); /* Light green */
-    --multiple-wins-color: rgba(220, 53, 69, 0.25); /* Light red */
     --round-2-color: rgba(0, 123, 255, 0.15); /* Light blue */
     --round-3-color: rgba(255, 193, 7, 0.2); /* Light yellow */
     --round-4-color: rgba(111, 66, 193, 0.15); /* Light purple */
@@ -124,77 +123,126 @@ body {
     background-color: var(--indicator-color);
 }
 
-/* First Round - Circle in top left */
-.round-1-winner:after {
-    content: "";
-    position: absolute;
-    top: 3px;
-    left: 18px;
-    width: var(--indicator-size);
-    height: var(--indicator-size);
-    background-color: var(--indicator-color);
-    border-radius: 50%;
+/* Winner styles - using background colors instead of indicators */
+.round-1-winner {
+    background-color: var(--round-1-color);
+}
+.round-1-winner.multiple-wins {
+    background-color: rgba(40, 167, 69, 0.3); /* Darker green */
 }
 
-/* Multiple wins indicator - Filled circle with a different color */
-.multiple-round-1-wins:after {
-    content: "";
-    position: absolute;
-    top: 3px;
-    left: 18px;
-    width: var(--indicator-size);
-    height: var(--indicator-size);
-    background-color: #d9534f; /* Red color for multiple wins */
-    border-radius: 50%;
-    border: 1px solid #fff; /* White border to make it pop */
+.round-2-winner {
+    background-color: var(--round-2-color);
+}
+.round-2-winner.multiple-wins {
+    background-color: rgba(0, 123, 255, 0.3); /* Darker blue */
 }
 
-/* Second Round - Square in top right */
-.round-2-winner:after {
-    content: "";
-    position: absolute;
-    top: 3px;
-    right: 3px;
-    width: var(--indicator-size);
-    height: var(--indicator-size);
-    background-color: var(--indicator-color);
+.round-3-winner {
+    background-color: var(--round-3-color);
+}
+.round-3-winner.multiple-wins {
+    background-color: rgba(255, 193, 7, 0.4); /* Darker yellow */
 }
 
-/* Third Round - Triangle in bottom left */
-.round-3-winner:after {
-    content: "";
-    position: absolute;
-    bottom: 3px;
-    left: 3px;
-    width: 0;
-    height: 0;
-    border-left: calc(var(--indicator-size) / 2) solid transparent;
-    border-right: calc(var(--indicator-size) / 2) solid transparent;
-    border-bottom: var(--indicator-size) solid var(--indicator-color);
-    transform: rotate(-45deg);
+.round-4-winner {
+    background-color: var(--round-4-color);
+}
+.round-4-winner.multiple-wins {
+    background-color: rgba(111, 66, 193, 0.3); /* Darker purple */
 }
 
-/* Fourth Round - Star in bottom right */
-.round-4-winner:after {
-    content: "★";
-    position: absolute;
-    bottom: 1px;
-    right: 3px;
-    font-size: calc(var(--indicator-size) * 1.2);
-    color: var(--indicator-color);
-    line-height: 1;
+.round-5-winner {
+    background-color: var(--round-5-color);
+}
+.round-5-winner.multiple-wins {
+    background-color: rgba(23, 162, 184, 0.4); /* Darker teal */
 }
 
-/* Fifth Round (Final Four) - Different star in center */
-.round-5-winner:after {
-    content: "✦";
-    position: absolute;
-    bottom: 50%;
-    right: 50%;
-    transform: translate(50%, 50%);
-    font-size: calc(var(--indicator-size) * 1.5);
-    color: var(--indicator-color);
-    line-height: 1;
+/* Split color styles for multiple round wins in "All Rounds" view */
+.round-1-winner.round-2-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 50%, var(--round-2-color) 50%, var(--round-2-color) 100%);
+}
+.round-1-winner.round-3-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 50%, var(--round-3-color) 50%, var(--round-3-color) 100%);
+}
+.round-1-winner.round-4-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 50%, var(--round-4-color) 50%, var(--round-4-color) 100%);
+}
+.round-1-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 50%, var(--round-5-color) 50%, var(--round-5-color) 100%);
+}
+.round-2-winner.round-3-winner {
+    background: linear-gradient(135deg, var(--round-2-color) 0%, var(--round-2-color) 50%, var(--round-3-color) 50%, var(--round-3-color) 100%);
+}
+.round-2-winner.round-4-winner {
+    background: linear-gradient(135deg, var(--round-2-color) 0%, var(--round-2-color) 50%, var(--round-4-color) 50%, var(--round-4-color) 100%);
+}
+.round-2-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-2-color) 0%, var(--round-2-color) 50%, var(--round-5-color) 50%, var(--round-5-color) 100%);
+}
+.round-3-winner.round-4-winner {
+    background: linear-gradient(135deg, var(--round-3-color) 0%, var(--round-3-color) 50%, var(--round-4-color) 50%, var(--round-4-color) 100%);
+}
+.round-3-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-3-color) 0%, var(--round-3-color) 50%, var(--round-5-color) 50%, var(--round-5-color) 100%);
+}
+.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-4-color) 0%, var(--round-4-color) 50%, var(--round-5-color) 50%, var(--round-5-color) 100%);
+}
+
+/* Three round wins */
+.round-1-winner.round-2-winner.round-3-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 33%, var(--round-2-color) 33%, var(--round-2-color) 66%, var(--round-3-color) 66%, var(--round-3-color) 100%);
+}
+.round-1-winner.round-2-winner.round-4-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 33%, var(--round-2-color) 33%, var(--round-2-color) 66%, var(--round-4-color) 66%, var(--round-4-color) 100%);
+}
+.round-1-winner.round-2-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 33%, var(--round-2-color) 33%, var(--round-2-color) 66%, var(--round-5-color) 66%, var(--round-5-color) 100%);
+}
+.round-1-winner.round-3-winner.round-4-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 33%, var(--round-3-color) 33%, var(--round-3-color) 66%, var(--round-4-color) 66%, var(--round-4-color) 100%);
+}
+.round-1-winner.round-3-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 33%, var(--round-3-color) 33%, var(--round-3-color) 66%, var(--round-5-color) 66%, var(--round-5-color) 100%);
+}
+.round-1-winner.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 33%, var(--round-4-color) 33%, var(--round-4-color) 66%, var(--round-5-color) 66%, var(--round-5-color) 100%);
+}
+.round-2-winner.round-3-winner.round-4-winner {
+    background: linear-gradient(135deg, var(--round-2-color) 0%, var(--round-2-color) 33%, var(--round-3-color) 33%, var(--round-3-color) 66%, var(--round-4-color) 66%, var(--round-4-color) 100%);
+}
+.round-2-winner.round-3-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-2-color) 0%, var(--round-2-color) 33%, var(--round-3-color) 33%, var(--round-3-color) 66%, var(--round-5-color) 66%, var(--round-5-color) 100%);
+}
+.round-2-winner.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-2-color) 0%, var(--round-2-color) 33%, var(--round-4-color) 33%, var(--round-4-color) 66%, var(--round-5-color) 66%, var(--round-5-color) 100%);
+}
+.round-3-winner.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-3-color) 0%, var(--round-3-color) 33%, var(--round-4-color) 33%, var(--round-4-color) 66%, var(--round-5-color) 66%, var(--round-5-color) 100%);
+}
+
+/* Four round wins */
+.round-1-winner.round-2-winner.round-3-winner.round-4-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 25%, var(--round-2-color) 25%, var(--round-2-color) 50%, var(--round-3-color) 50%, var(--round-3-color) 75%, var(--round-4-color) 75%, var(--round-4-color) 100%);
+}
+.round-1-winner.round-2-winner.round-3-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 25%, var(--round-2-color) 25%, var(--round-2-color) 50%, var(--round-3-color) 50%, var(--round-3-color) 75%, var(--round-5-color) 75%, var(--round-5-color) 100%);
+}
+.round-1-winner.round-2-winner.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 25%, var(--round-2-color) 25%, var(--round-2-color) 50%, var(--round-4-color) 50%, var(--round-4-color) 75%, var(--round-5-color) 75%, var(--round-5-color) 100%);
+}
+.round-1-winner.round-3-winner.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 25%, var(--round-3-color) 25%, var(--round-3-color) 50%, var(--round-4-color) 50%, var(--round-4-color) 75%, var(--round-5-color) 75%, var(--round-5-color) 100%);
+}
+.round-2-winner.round-3-winner.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-2-color) 0%, var(--round-2-color) 25%, var(--round-3-color) 25%, var(--round-3-color) 50%, var(--round-4-color) 50%, var(--round-4-color) 75%, var(--round-5-color) 75%, var(--round-5-color) 100%);
+}
+
+/* All five rounds */
+.round-1-winner.round-2-winner.round-3-winner.round-4-winner.round-5-winner {
+    background: linear-gradient(135deg, var(--round-1-color) 0%, var(--round-1-color) 20%, var(--round-2-color) 20%, var(--round-2-color) 40%, var(--round-3-color) 40%, var(--round-3-color) 60%, var(--round-4-color) 60%, var(--round-4-color) 80%, var(--round-5-color) 80%, var(--round-5-color) 100%);
 }
 
 /* Legend for round indicators */
@@ -215,45 +263,34 @@ body {
 .legend-indicator {
     margin-right: 5px;
     display: inline-block;
-    width: var(--indicator-size);
-    height: var(--indicator-size);
-    position: relative;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
 }
 
 .legend-round-1 {
-    border-radius: 50%;
-    background-color: var(--indicator-color);
+    background-color: var(--round-1-color);
+    border: 1px solid rgba(40, 167, 69, 0.5);
 }
 
 .legend-round-2 {
-    background-color: var(--indicator-color);
+    background-color: var(--round-2-color);
+    border: 1px solid rgba(0, 123, 255, 0.5);
 }
 
 .legend-round-3 {
-    width: 0;
-    height: 0;
-    border-left: calc(var(--indicator-size) / 2) solid transparent;
-    border-right: calc(var(--indicator-size) / 2) solid transparent;
-    border-bottom: var(--indicator-size) solid var(--indicator-color);
-    transform: rotate(-45deg);
+    background-color: var(--round-3-color);
+    border: 1px solid rgba(255, 193, 7, 0.5);
 }
 
 .legend-round-4 {
-    font-size: calc(var(--indicator-size) * 1.2);
-    line-height: 1;
+    background-color: var(--round-4-color);
+    border: 1px solid rgba(111, 66, 193, 0.5);
 }
 
-/* Legend for Final Four indicator */
 .legend-round-5 {
-    font-size: calc(var(--indicator-size) * 1.5);
-    line-height: 1;
-}
-
-.legend-multiple-wins {
-    position: relative;
-    border-radius: 50%;
-    background-color: #d9534f; /* Red color for multiple wins */
-    border: 1px solid #fff; /* White border to make it pop */
+    background-color: var(--round-5-color);
+    border: 1px solid rgba(23, 162, 184, 0.5);
 }
 
 /* Highlighted cell for game matches */
@@ -518,7 +555,6 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
         --games-height: 500px;
         /* Slightly more saturated colors for better visibility on small screens */
         --round-1-color: rgba(40, 167, 69, 0.2);
-        --multiple-wins-color: rgba(220, 53, 69, 0.3);
         --round-2-color: rgba(0, 123, 255, 0.2);
         --round-3-color: rgba(255, 193, 7, 0.25);
         --round-4-color: rgba(111, 66, 193, 0.2);
@@ -839,126 +875,6 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     }
 }
 
-/* Winner styles - using background colors instead of indicators */
-.round-1-winner {
-    background-color: var(--round-1-color);
-}
-
-.multiple-round-1-wins {
-    background-color: var(--multiple-wins-color);
-}
-
-.round-2-winner {
-    background-color: var(--round-2-color);
-}
-
-.round-3-winner {
-    background-color: var(--round-3-color);
-}
-
-.round-4-winner {
-    background-color: var(--round-4-color);
-}
-
-.round-5-winner {
-    background-color: var(--round-5-color);
-}
-
-/* Special styles for cells with wins in multiple different rounds */
-.round-1-winner.round-2-winner,
-.round-1-winner.round-3-winner,
-.round-1-winner.round-4-winner,
-.round-1-winner.round-5-winner,
-.round-2-winner.round-3-winner,
-.round-2-winner.round-4-winner,
-.round-2-winner.round-5-winner,
-.round-3-winner.round-4-winner,
-.round-3-winner.round-5-winner,
-.round-4-winner.round-5-winner {
-    background: linear-gradient(135deg, 
-        var(--round-1-color) 0%, 
-        var(--round-2-color) 25%,
-        var(--round-3-color) 50%,
-        var(--round-4-color) 75%,
-        var(--round-5-color) 100%);
-    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-/* Add a special indicator for multi-round winners in the legend */
-.legend-multi-round {
-    background: linear-gradient(135deg, 
-        var(--round-1-color) 0%, 
-        var(--round-2-color) 25%,
-        var(--round-3-color) 50%,
-        var(--round-4-color) 75%,
-        var(--round-5-color) 100%);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-/* Remove old indicator styles */
-.round-indicator,
-.round-1-winner:after,
-.multiple-round-1-wins:after,
-.round-2-winner:after,
-.round-3-winner:after,
-.round-4-winner:after,
-.round-5-winner:after {
-    display: none;
-}
-
-/* Update the legend indicators to match new background style */
-.legend-item {
-    display: flex;
-    align-items: center;
-    font-size: 0.8rem;
-    margin-right: 10px;
-}
-
-.legend-indicator {
-    margin-right: 5px;
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-}
-
-.legend-round-1 {
-    background-color: var(--round-1-color);
-    border: 1px solid rgba(40, 167, 69, 0.5);
-}
-
-.legend-multiple-wins {
-    background-color: var(--multiple-wins-color);
-    border: 1px solid rgba(220, 53, 69, 0.5);
-}
-
-.legend-round-2 {
-    background-color: var(--round-2-color);
-    border: 1px solid rgba(0, 123, 255, 0.5);
-}
-
-.legend-round-3 {
-    background-color: var(--round-3-color);
-    border: 1px solid rgba(255, 193, 7, 0.5);
-    transform: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-}
-
-.legend-round-4 {
-    background-color: var(--round-4-color);
-    border: 1px solid rgba(111, 66, 193, 0.5);
-    font-size: inherit;
-}
-
-.legend-round-5 {
-    background-color: var(--round-5-color);
-    border: 1px solid rgba(23, 162, 184, 0.5);
-    font-size: inherit;
-}
-
 /* Hover effect for board cells */
 .board-cell:hover {
     transform: scale(1.02);
@@ -1017,4 +933,60 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
 .mobile-game-card .square-number {
     font-size: 0.75rem;
     margin-bottom: 5px;
+}
+
+/* Board tabs styles */
+.board-tabs {
+    margin-top: 15px;
+}
+
+.board-tabs .form-selectgroup {
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.board-tabs .form-selectgroup-label {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #495057;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+.board-tabs .form-selectgroup-input:checked + .form-selectgroup-label {
+    background-color: #e8f3ff;
+    border-color: #b3d7ff;
+    color: #1e6bb8;
+}
+
+/* Filtered board cell styles */
+.board-cell.filtered-out {
+    background-color: var(--cell-bg) !important;
+}
+
+.board-cell.filtered-in {
+    opacity: 1;
+}
+
+/* Mobile responsive adjustments for board tabs */
+@media (max-width: 768px) {
+    .board-tabs .form-selectgroup {
+        gap: 3px;
+    }
+    
+    .board-tabs .form-selectgroup-label {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .board-tabs .form-selectgroup {
+        gap: 2px;
+    }
+    
+    .board-tabs .form-selectgroup-label {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
 } 

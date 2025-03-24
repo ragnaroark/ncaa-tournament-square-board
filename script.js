@@ -975,6 +975,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileGamesContainer = document.querySelector('.mobile-games-container');
     const cells = document.querySelectorAll('.board-cell');
     const roundFilters = document.querySelectorAll('input[name="round-filter"]');
+    const boardFilters = document.querySelectorAll('input[name="board-filter"]');
     
     // Track which squares are winners for each round
     const winnerSquares = {
@@ -984,6 +985,59 @@ document.addEventListener('DOMContentLoaded', function() {
         round4: {},
         round5: {}
     };
+    
+    // Function to filter board cells based on selected round
+    function filterBoardCells(selectedRound) {
+        cells.forEach(cell => {
+            // Remove all filtered classes
+            cell.classList.remove('filtered-out', 'filtered-in', 'multiple-wins');
+            
+            // If "All Rounds" is selected, show all cells with their original colors
+            if (selectedRound === 'all') {
+                // Restore all original winner classes for this cell
+                const cellId = parseInt(cell.getAttribute('data-id'));
+                Object.keys(winnerSquares).forEach(roundKey => {
+                    if (winnerSquares[roundKey][cellId] && winnerSquares[roundKey][cellId].length > 0) {
+                        const round = roundKey.replace('round', '');
+                        cell.classList.add(`round-${round}-winner`);
+                        if (winnerSquares[roundKey][cellId].length > 1) {
+                            cell.classList.add('multiple-wins');
+                        }
+                    }
+                });
+                return;
+            }
+            
+            // Check if the cell has a win for the selected round
+            const cellId = parseInt(cell.getAttribute('data-id'));
+            const roundKey = `round${selectedRound}`;
+            const winsForRound = winnerSquares[roundKey][cellId];
+            
+            // Apply filtered classes
+            if (winsForRound && winsForRound.length > 0) {
+                cell.classList.add('filtered-in');
+                // Keep only the background color for the selected round
+                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner');
+                cell.classList.add(`round-${selectedRound}-winner`);
+                
+                // Add multiple-wins class if there are multiple wins in this round
+                if (winsForRound.length > 1) {
+                    cell.classList.add('multiple-wins');
+                }
+            } else {
+                cell.classList.add('filtered-out');
+                // Remove all winner classes for filtered out cells
+                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner');
+            }
+        });
+    }
+    
+    // Add event listeners for board filters
+    boardFilters.forEach(input => {
+        input.addEventListener('change', function() {
+            filterBoardCells(this.value);
+        });
+    });
     
     // Function to get the last digit of a number
     function getLastDigit(number) {
@@ -1041,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Remove existing winner classes
         cells.forEach(cell => {
-            cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'multiple-round-1-wins');
+            cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner');
         });
         
         // Process all games to identify winning squares for each round
@@ -1059,15 +1113,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Add the appropriate round winner class
                 square.element.classList.add(`round-${game.round}-winner`);
-            }
-        });
-        
-        // Add multiple win indicators for Round 1 games
-        Object.keys(winnerSquares.round1).forEach(cellId => {
-            const gamesCount = winnerSquares.round1[cellId].length;
-            if (gamesCount > 1) {
-                const cell = document.querySelector(`.board-cell[data-id="${cellId}"]`);
-                cell.classList.add('multiple-round-1-wins');
             }
         });
     }

@@ -967,6 +967,87 @@ document.addEventListener('DOMContentLoaded', function() {
                 logo: "https://placehold.co/30x30/green/yellow?text=ORE"
             },
             video: "9:53"
+        },
+        // Sweet 16 games - Thursday March 28
+        {
+            id: 101,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Texas Tech",
+                seed: 3,
+                score: 85,
+                logo: "https://placehold.co/30x30/red/black?text=TTU"
+            },
+            loser: {
+                name: "Arkansas",
+                seed: 10,
+                score: 83,
+                logo: "https://placehold.co/30x30/red/white?text=ARK"
+            },
+            video: "13:04"
+        },
+        {
+            id: 102,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Duke",
+                seed: 1,
+                score: 100,
+                logo: "https://placehold.co/30x30/blue/white?text=DUKE"
+            },
+            loser: {
+                name: "Arizona",
+                seed: 4,
+                score: 93,
+                logo: "https://placehold.co/30x30/red/blue?text=ARIZ"
+            },
+            video: "12:28"
+        },
+        {
+            id: 103,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Florida",
+                seed: 1,
+                score: 87,
+                logo: "https://placehold.co/30x30/blue/orange?text=FLA"
+            },
+            loser: {
+                name: "Maryland",
+                seed: 4,
+                score: 71,
+                logo: "https://placehold.co/30x30/red/white?text=UMD"
+            },
+            video: "10:05"
+        },
+        {
+            id: 104,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Alabama",
+                seed: 2,
+                score: 113,
+                logo: "https://placehold.co/30x30/crimson/white?text=ALA"
+            },
+            loser: {
+                name: "BYU",
+                seed: 6,
+                score: 88,
+                logo: "https://placehold.co/30x30/blue/white?text=BYU"
+            },
+            video: "12:54"
         }
     ];
 

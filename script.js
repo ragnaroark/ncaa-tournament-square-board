@@ -1048,6 +1048,86 @@ document.addEventListener('DOMContentLoaded', function() {
                 logo: "https://placehold.co/30x30/blue/white?text=BYU"
             },
             video: "12:54"
+        },
+        {
+            id: 105,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Michigan State",
+                seed: 2,
+                score: 73,
+                logo: "https://placehold.co/30x30/green/white?text=MSU"
+            },
+            loser: {
+                name: "Ole Miss",
+                seed: 6,
+                score: 70,
+                logo: "https://placehold.co/30x30/red/blue?text=MISS"
+            },
+            video: "9:41"
+        },
+        {
+            id: 106,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Tennessee",
+                seed: 2,
+                score: 78,
+                logo: "https://placehold.co/30x30/orange/white?text=TEN"
+            },
+            loser: {
+                name: "Kentucky",
+                seed: 3,
+                score: 65,
+                logo: "https://placehold.co/30x30/blue/white?text=UK"
+            },
+            video: "8:29"
+        },
+        {
+            id: 107,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Auburn",
+                seed: 1,
+                score: 78,
+                logo: "https://placehold.co/30x30/blue/orange?text=AUB"
+            },
+            loser: {
+                name: "Michigan",
+                seed: 5,
+                score: 65,
+                logo: "https://placehold.co/30x30/blue/gold?text=MICH"
+            },
+            video: "11:04"
+        },
+        {
+            id: 108,
+            round: 3,
+            name: "Sweet 16",
+            date: "Thu, Mar 28",
+            day: "thursday",
+            winner: { 
+                name: "Houston",
+                seed: 1,
+                score: 62,
+                logo: "https://placehold.co/30x30/red/white?text=HOU"
+            },
+            loser: {
+                name: "Purdue",
+                seed: 4,
+                score: 60,
+                logo: "https://placehold.co/30x30/gold/black?text=PUR"
+            },
+            video: "10:37"
         }
     ];
 

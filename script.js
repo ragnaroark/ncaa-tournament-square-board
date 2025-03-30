@@ -1128,6 +1128,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 logo: "https://placehold.co/30x30/gold/black?text=PUR"
             },
             video: "10:37"
+        },
+        // Elite Eight games - March 30
+        {
+            id: 201,
+            round: 4,
+            name: "Elite Eight",
+            date: "Sat, Mar 30",
+            day: "saturday",
+            winner: { 
+                name: "Florida",
+                seed: 1,
+                score: 84,
+                logo: "https://placehold.co/30x30/blue/orange?text=FLA"
+            },
+            loser: {
+                name: "Texas Tech",
+                seed: 3,
+                score: 79,
+                logo: "https://placehold.co/30x30/red/black?text=TTU"
+            },
+            video: "11:06"
+        },
+        {
+            id: 202,
+            round: 4,
+            name: "Elite Eight",
+            date: "Sat, Mar 30",
+            day: "saturday",
+            winner: { 
+                name: "Duke",
+                seed: 1,
+                score: 85,
+                logo: "https://placehold.co/30x30/blue/white?text=DUKE"
+            },
+            loser: {
+                name: "Alabama",
+                seed: 2,
+                score: 65,
+                logo: "https://placehold.co/30x30/crimson/white?text=ALA"
+            },
+            video: "10:23"
         }
     ];
 

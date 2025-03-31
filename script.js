@@ -1134,7 +1134,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 201,
             round: 4,
             name: "Elite Eight",
-            date: "Sat, Mar 30",
+            date: "Sat, Mar 29",
             day: "saturday",
             winner: { 
                 name: "Florida",
@@ -1154,7 +1154,7 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 202,
             round: 4,
             name: "Elite Eight",
-            date: "Sat, Mar 30",
+            date: "Sat, Mar 29",
             day: "saturday",
             winner: { 
                 name: "Duke",
@@ -1169,6 +1169,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 logo: "https://placehold.co/30x30/crimson/white?text=ALA"
             },
             video: "10:23"
+        },
+        {
+            id: 31,
+            round: 4,
+            name: "Elite Eight",
+            date: "Sun, Mar 30",
+            day: "sunday",
+            winner: { 
+                name: "Houston",
+                seed: 1,
+                score: 69,
+                logo: "https://placehold.co/30x30/red/white?text=HOU"
+            },
+            loser: {
+                name: "Tennessee",
+                seed: 2,
+                score: 50,
+                logo: "https://placehold.co/30x30/orange/white?text=TEN"
+            },
+            video: "7:17"
+        },
+        {
+            id: 32,
+            round: 4,
+            name: "Elite Eight",
+            date: "Sun, Mar 30",
+            day: "sunday",
+            winner: { 
+                name: "Auburn",
+                seed: 1,
+                score: 70,
+                logo: "https://placehold.co/30x30/blue/white?text=AUB"
+            },
+            loser: {
+                name: "Michigan State",
+                seed: 2,
+                score: 64,
+                logo: "https://placehold.co/30x30/green/white?text=MSU"
+            },
+            video: "8:17"
         }
     ];
 

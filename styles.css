@@ -313,57 +313,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Rounds filter styles */
-.rounds-filters {
-    margin-bottom: 5px;
-}
-
-.rounds-title {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 8px;
-}
-
-/* Day filter styles */
-.day-filters {
-    display: none; /* Hidden by default */
-    transition: opacity 0.3s ease;
-    margin-top: 12px;
-    border-top: 1px solid #e9ecef;
-    padding-top: 12px;
-}
-
-/* Add a title for the day filters */
-.day-filters::before {
-    content: "Game Day:";
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 8px;
-}
-
-/* Style the day filter pills differently */
-.day-filters .form-selectgroup-label {
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
-    color: #495057;
-}
-
-.day-filters .form-selectgroup-input:checked + .form-selectgroup-label {
-    background-color: #e8f3ff;
-    border-color: #b3d7ff;
-    color: #1e6bb8;
-}
-
-/* Show day filters only when Round of 64 is selected */
-input[name="round-filter"][value="1"]:checked ~ .day-filters,
-input[name="round-filter"][value="all"]:checked ~ .day-filters {
-    display: block;
-}
-
 .games-card .card-body {
     flex: 1;
     overflow: hidden;
@@ -481,22 +430,76 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     font-size: 0.75rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-    :root {
-        --cell-size: 70px;
-        --games-height: 600px;
-    }
+/* Board tabs styles */
+.card-header {
+    padding: 0.75rem 1rem;
+    border-bottom: none;
 }
 
-@media (max-width: 992px) {
-    :root {
-        --cell-size: 60px;
-        --games-height: 550px;
-    }
-    .board-cell {
-        font-size: 0.7rem;
-    }
+.card-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1f36;
+    padding: 0.25rem 0;
+}
+
+.board-tabs {
+    background-color: #fff;
+}
+
+.board-tabs .nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0 1rem;
+    margin: 0;
+    list-style: none;
+}
+
+.board-tabs .nav-item {
+    margin: 0;
+    position: relative;
+}
+
+.board-tabs .nav-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.board-tabs .nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #495057;
+    text-decoration: none;
+    background: none;
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.board-tabs .nav-input:checked + .nav-link {
+    color: #1e6bb8;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+    margin-bottom: -1px;
+}
+
+.board-tabs .nav-link:hover:not(.active) {
+    border-color: #e9ecef #e9ecef #dee2e6;
+    isolation: isolate;
+}
+
+/* Filtered board cell styles */
+.board-cell.filtered-out {
+    background-color: var(--cell-bg) !important;
+}
+
+.board-cell.filtered-in {
+    opacity: 1;
 }
 
 /* Mobile horizontal games display */
@@ -531,24 +534,7 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     transform: translateY(-2px);
 }
 
-.mobile-games-filters .form-selectgroup {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    -webkit-overflow-scrolling: touch;
-}
-
-.mobile-games-filters .form-selectgroup-item {
-    flex: 0 0 auto;
-}
-
-/* Add a hint for horizontal scrolling */
-.mobile-games-container:after {
-    content: "";
-    flex: 0 0 15px;
-}
-
+/* Mobile responsive adjustments */
 @media (max-width: 768px) {
     :root {
         --cell-size: 45px;
@@ -627,31 +613,28 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     
     /* Compact header styles */
     .card-header {
-        padding: 0.75rem;
+        padding: 0.5rem 0.75rem;
     }
-    
+
     .card-title {
-        font-size: 1.2rem;
-        margin-bottom: 0.2rem;
+        font-size: 1.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .card-subtitle {
         font-size: 0.8rem;
         margin-bottom: 0.5rem;
     }
-    
-    .board-tabs {
-        margin-top: 0.5rem;
+
+    .board-tabs .nav-tabs {
+        padding: 0 0.75rem;
     }
-    
-    .board-tabs .form-selectgroup {
-        gap: 3px;
-    }
-    
-    .board-tabs .form-selectgroup-label {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        min-height: 0;
+
+    .board-tabs .nav-link {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -706,24 +689,32 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
         padding: 0;
     }
     
-    /* Even more compact for smaller screens */
     .card-header {
         padding: 0.5rem;
     }
-    
+
     .card-title {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        padding: 0.25rem 0.5rem;
     }
-    
-    .board-tabs .form-selectgroup-label {
-        padding: 0.2rem 0.4rem;
-        font-size: 0.7rem;
+
+    .board-tabs .nav-tabs {
+        padding: 0 0.5rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
-    
-    /* Make filter buttons wrap better */
-    .board-tabs .form-selectgroup {
-        gap: 2px;
-        justify-content: center;
+
+    .board-tabs .nav-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .board-tabs .nav-link {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
     }
 }
 
@@ -929,182 +920,4 @@ input[name="round-filter"][value="all"]:checked ~ .day-filters {
     transform: scale(1.02);
     z-index: 5;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-/* Mobile day filter styles */
-.mobile-day-filters {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 8px;
-    border-top: 1px solid #e9ecef;
-    padding-top: 8px;
-    margin-top: 5px;
-}
-
-.mobile-day-filters .form-selectgroup {
-    flex-wrap: nowrap;
-    margin-bottom: 0;
-}
-
-.mobile-day-filters .form-selectgroup-label {
-    font-size: 0.8rem;
-    padding: 0.25rem 0.5rem;
-}
-
-/* Style for future games */
-.future-game .form-selectgroup-label {
-    background-color: #f8f9fa;
-    border-style: dashed;
-    border-color: #adb5bd;
-    color: #6c757d;
-}
-
-.future-game .form-selectgroup-label::after {
-    content: " (Coming Soon)";
-    font-size: 0.7rem;
-    opacity: 0.8;
-    display: inline-block;
-}
-
-.mobile-day-filters .future-game .form-selectgroup-label::after {
-    content: " (Soon)";
-    font-size: 0.6rem;
-}
-
-/* Style for square number */
-.square-number {
-    color: #28a745;
-    font-size: 0.8rem;
-    font-weight: 600;
-    margin: 2px 0 8px 0;
-}
-
-.mobile-game-card .square-number {
-    font-size: 0.75rem;
-    margin-bottom: 5px;
-}
-
-/* Board tabs styles */
-.card-header {
-    padding: 0.75rem 1rem;
-    border-bottom: none;
-}
-
-.card-title {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1a1f36;
-    padding: 0.25rem 0;
-}
-
-.board-tabs {
-    background-color: #fff;
-}
-
-.board-tabs .nav-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    border-bottom: 1px solid #dee2e6;
-    padding: 0 1rem;
-    margin: 0;
-    list-style: none;
-}
-
-.board-tabs .nav-item {
-    margin: 0;
-    position: relative;
-}
-
-.board-tabs .nav-input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.board-tabs .nav-link {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: #495057;
-    text-decoration: none;
-    background: none;
-    border: 1px solid transparent;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    cursor: pointer;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-}
-
-.board-tabs .nav-input:checked + .nav-link {
-    color: #1e6bb8;
-    background-color: #fff;
-    border-color: #dee2e6 #dee2e6 #fff;
-    margin-bottom: -1px;
-}
-
-.board-tabs .nav-link:hover:not(.active) {
-    border-color: #e9ecef #e9ecef #dee2e6;
-    isolation: isolate;
-}
-
-/* Mobile responsive adjustments */
-@media (max-width: 768px) {
-    .card-header {
-        padding: 0.5rem 0.75rem;
-    }
-
-    .card-title {
-        font-size: 1.25rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .board-tabs .nav-tabs {
-        padding: 0 0.75rem;
-    }
-
-    .board-tabs .nav-link {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .card-header {
-        padding: 0.5rem;
-    }
-
-    .card-title {
-        font-size: 1.2rem;
-        padding: 0.25rem 0.5rem;
-    }
-
-    .board-tabs .nav-tabs {
-        padding: 0 0.5rem;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    .board-tabs .nav-tabs::-webkit-scrollbar {
-        display: none;
-    }
-
-    .board-tabs .nav-link {
-        padding: 0.3rem 0.5rem;
-        font-size: 0.75rem;
-        white-space: nowrap;
-    }
-}
-
-/* Filtered board cell styles */
-.board-cell.filtered-out {
-    background-color: var(--cell-bg) !important;
-}
-
-.board-cell.filtered-in {
-    opacity: 1;
 } 

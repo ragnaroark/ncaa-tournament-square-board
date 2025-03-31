@@ -1277,7 +1277,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listeners for board filters
     boardFilters.forEach(input => {
         input.addEventListener('change', function() {
-            filterBoardCells(this.value);
+            // Get the selected round
+            const selectedRound = this.value;
+            
+            // Filter board cells
+            filterBoardCells(selectedRound);
+            
+            // Render games with the selected round filter
+            renderGames(selectedRound);
+            
+            // Update mobile games
+            renderMobileGames(selectedRound);
         });
     });
     
@@ -1562,17 +1572,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Function to render games with optional round filter
-    function renderGames(roundFilter = 'all', dayFilter = 'all') {
+    function renderGames(roundFilter = 'all') {
         gamesContainer.innerHTML = '';
         
         ncaaGames.forEach(game => {
             // Apply filters
             if (roundFilter !== 'all' && game.round !== parseInt(roundFilter)) {
-                return;
-            }
-            
-            // Apply day filter for both Round 1 and Round 2
-            if (dayFilter !== 'all' && game.day !== dayFilter) {
                 return;
             }
             
@@ -1695,7 +1700,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Function to render games in the mobile container
-    function renderMobileGames(roundFilter = 'all', dayFilter = 'all') {
+    function renderMobileGames(roundFilter = 'all') {
         if (!mobileGamesContainer) return;
         
         mobileGamesContainer.innerHTML = '';
@@ -1703,11 +1708,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ncaaGames.forEach(game => {
             // Apply round filter
             if (roundFilter !== 'all' && game.round !== parseInt(roundFilter)) {
-                return;
-            }
-            
-            // Apply day filter
-            if (dayFilter !== 'all' && game.day !== dayFilter) {
                 return;
             }
             
@@ -1786,121 +1786,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Setup event listeners for filters
-    document.querySelectorAll('input[name="round-filter"]').forEach(input => {
-        input.addEventListener('change', function() {
-            const roundFilter = this.value;
-            const dayFilter = document.querySelector('input[name="day-filter"]:checked')?.value || 'all';
-            
-            // Toggle day filter visibility and adjust available days
-            const dayFiltersContainer = document.querySelector('.day-filters');
-            
-            // Show day filters for Round 1 (Round of 64) or Round 2 (Round of 32)
-            if (roundFilter === '1' || roundFilter === '2' || roundFilter === 'all') {
-                dayFiltersContainer.style.display = 'block';
-                
-                // Show appropriate day options based on the round
-                document.querySelectorAll('.day-filter-r1, .day-filter-r2').forEach(elem => {
-                    elem.style.display = 'none';
-                });
-                
-                if (roundFilter === '1') {
-                    // Round 1 has Thursday and Friday games
-                    document.querySelectorAll('.day-filter-r1').forEach(elem => {
-                        elem.style.display = 'block';
-                    });
-                    // Select "All Days" by default when switching
-                    document.querySelector('input[name="day-filter"][value="all"]').checked = true;
-                } else if (roundFilter === '2') {
-                    // Round 2 has Saturday and Sunday games
-                    document.querySelectorAll('.day-filter-r2').forEach(elem => {
-                        elem.style.display = 'block';
-                    });
-                    // Select "All Days" by default when switching
-                    document.querySelector('input[name="day-filter"][value="all"]').checked = true;
-                } else {
-                    // "All Rounds" selected - show both sets of day filters
-                    document.querySelectorAll('.day-filter-r1, .day-filter-r2').forEach(elem => {
-                        elem.style.display = 'block';
-                    });
-                }
-            } else {
-                dayFiltersContainer.style.display = 'none';
-                // Reset day filter to 'all' when not on Round of 64
-                document.querySelector('input[name="day-filter"][value="all"]').checked = true;
-            }
-            
-            renderGames(roundFilter, dayFilter);
-        });
-    });
-    
-    // Add event listeners for day filters
-    document.querySelectorAll('input[name="day-filter"]').forEach(input => {
-        input.addEventListener('change', function() {
-            const dayFilter = this.value;
-            const roundFilter = document.querySelector('input[name="round-filter"]:checked')?.value || 'all';
-            renderGames(roundFilter, dayFilter);
-        });
-    });
-    
-    // Add event listeners for mobile round filters
-    document.querySelectorAll('input[name="mobile-round-filter"]').forEach(input => {
-        input.addEventListener('change', function() {
-            const roundFilter = this.value;
-            const mobileDayFilters = document.querySelector('.mobile-day-filters');
-            
-            // Show day filters only for Round 1 (Round of 64) and Round 2 (Round of 32)
-            if (roundFilter === '1' || roundFilter === '2' || roundFilter === 'all') {
-                mobileDayFilters.style.display = 'block';
-                
-                // Show appropriate day options based on the round
-                document.querySelectorAll('.mobile-day-filter-r1, .mobile-day-filter-r2').forEach(elem => {
-                    elem.style.display = 'none';
-                });
-                
-                if (roundFilter === '1') {
-                    // Round 1 has Thursday and Friday games
-                    document.querySelectorAll('.mobile-day-filter-r1').forEach(elem => {
-                        elem.style.display = 'block';
-                    });
-                    // Select "All Days" by default when switching
-                    document.querySelector('input[name="mobile-day-filter"][value="all"]').checked = true;
-                } else if (roundFilter === '2') {
-                    // Round 2 has Saturday and Sunday games
-                    document.querySelectorAll('.mobile-day-filter-r2').forEach(elem => {
-                        elem.style.display = 'block';
-                    });
-                    // Select "All Days" by default when switching
-                    document.querySelector('input[name="mobile-day-filter"][value="all"]').checked = true;
-                } else {
-                    // "All Rounds" selected - show both sets of day filters
-                    document.querySelectorAll('.mobile-day-filter-r1, .mobile-day-filter-r2').forEach(elem => {
-                        elem.style.display = 'block';
-                    });
-                }
-            } else {
-                mobileDayFilters.style.display = 'none';
-                // Reset day filter to 'all' when not on applicable rounds
-                document.querySelector('input[name="mobile-day-filter"][value="all"]').checked = true;
-            }
-            
-            const dayFilter = document.querySelector('input[name="mobile-day-filter"]:checked')?.value || 'all';
-            renderMobileGames(roundFilter, dayFilter);
-        });
-    });
-    
-    // Add event listeners for mobile day filters
-    document.querySelectorAll('input[name="mobile-day-filter"]').forEach(input => {
-        input.addEventListener('change', function() {
-            const dayFilter = this.value;
-            const roundFilter = document.querySelector('input[name="mobile-round-filter"]:checked')?.value || 'all';
-            renderMobileGames(roundFilter, dayFilter);
-        });
-    });
-    
     // Initial render for desktop and mobile
-    renderGames();
-    renderMobileGames();
+    const initialRoundFilter = document.querySelector('input[name="board-filter"]:checked')?.value || 'all';
+    filterBoardCells(initialRoundFilter);
+    renderGames(initialRoundFilter);
+    renderMobileGames(initialRoundFilter);
     
     // Analyze all games to mark winning squares
     analyzeGames();

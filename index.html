@@ -219,61 +219,6 @@
                         <!-- Mobile-friendly horizontal games section (shown on smaller screens) -->
                         <div class="d-md-none mt-4">
                             <h4 class="mb-2">NCAA Tournament Games</h4>
-                            <div class="mobile-games-filters mb-2">
-                                <div class="form-selectgroup">
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="mobile-round-filter" value="all" class="form-selectgroup-input" checked>
-                                        <span class="form-selectgroup-label">All</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="mobile-round-filter" value="1" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">R64</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="mobile-round-filter" value="2" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">R32</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="mobile-round-filter" value="3" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">S16</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="mobile-round-filter" value="4" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">E8</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="mobile-round-filter" value="5" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">F4</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- Add mobile day filters -->
-                            <div class="mobile-day-filters mb-2" style="display: none;">
-                                <div class="form-selectgroup">
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="mobile-day-filter" value="all" class="form-selectgroup-input" checked>
-                                        <span class="form-selectgroup-label">All Days</span>
-                                    </label>
-                                    <!-- Round 1 mobile day filters -->
-                                    <label class="form-selectgroup-item mobile-day-filter-r1">
-                                        <input type="radio" name="mobile-day-filter" value="thursday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Thu</span>
-                                    </label>
-                                    <label class="form-selectgroup-item mobile-day-filter-r1">
-                                        <input type="radio" name="mobile-day-filter" value="friday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Fri</span>
-                                    </label>
-                                    <!-- Round 2 mobile day filters -->
-                                    <label class="form-selectgroup-item mobile-day-filter-r2">
-                                        <input type="radio" name="mobile-day-filter" value="saturday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Sat</span>
-                                    </label>
-                                    <label class="form-selectgroup-item mobile-day-filter-r2">
-                                        <input type="radio" name="mobile-day-filter" value="sunday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Sun</span>
-                                    </label>
-                                </div>
-                            </div>
                             <div class="mobile-games-container">
                                 <!-- Horizontal scrolling games will be populated by JavaScript -->
                             </div>
@@ -285,65 +230,6 @@
                 <div class="card games-card sticky-top" style="top: 20px;">
                     <div class="card-header">
                         <h3 class="card-title">NCAA Tournament Games</h3>
-                        <div class="card-subtitle">
-                            <div class="rounds-filters">
-                                <div class="rounds-title">Tournament Round:</div>
-                                <div class="form-selectgroup form-selectgroup-pills">
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="round-filter" value="all" class="form-selectgroup-input" checked>
-                                        <span class="form-selectgroup-label">All</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="round-filter" value="1" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Round of 64</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="round-filter" value="2" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Round of 32</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="round-filter" value="3" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Sweet 16</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="round-filter" value="4" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Elite 8</span>
-                                    </label>
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="round-filter" value="5" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Final Four</span>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- Day filters - for Round of 64 and Round of 32 -->
-                            <div class="mt-2 day-filters">
-                                <div class="form-selectgroup form-selectgroup-pills">
-                                    <label class="form-selectgroup-item">
-                                        <input type="radio" name="day-filter" value="all" class="form-selectgroup-input" checked>
-                                        <span class="form-selectgroup-label">All Days</span>
-                                    </label>
-                                    <!-- Round 1 day filters -->
-                                    <label class="form-selectgroup-item day-filter-r1">
-                                        <input type="radio" name="day-filter" value="thursday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Thursday</span>
-                                    </label>
-                                    <label class="form-selectgroup-item day-filter-r1">
-                                        <input type="radio" name="day-filter" value="friday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Friday</span>
-                                    </label>
-                                    <!-- Round 2 day filters -->
-                                    <label class="form-selectgroup-item day-filter-r2">
-                                        <input type="radio" name="day-filter" value="saturday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Saturday</span>
-                                    </label>
-                                    <label class="form-selectgroup-item day-filter-r2">
-                                        <input type="radio" name="day-filter" value="sunday" class="form-selectgroup-input">
-                                        <span class="form-selectgroup-label">Sunday</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="card-body">
                         <div id="games-container">

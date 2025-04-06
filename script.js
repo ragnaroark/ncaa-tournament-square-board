@@ -1209,6 +1209,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 logo: "https://placehold.co/30x30/green/white?text=MSU"
             },
             video: "8:17"
+        },
+        // Final Four (Round 5)
+        {
+            id: 49,
+            round: 5,
+            name: "Final Four",
+            date: "April 6, 2024",
+            day: "saturday",
+            winner: {
+                seed: 1,
+                name: "Florida",
+                score: 79
+            },
+            loser: {
+                seed: 1,
+                name: "Auburn",
+                score: 73
+            },
+            videoTimestamp: "10:46"
+        },
+        {
+            id: 50,
+            round: 5,
+            name: "Final Four",
+            date: "April 6, 2024",
+            day: "saturday",
+            winner: {
+                seed: 1,
+                name: "Houston",
+                score: 70
+            },
+            loser: {
+                seed: 1,
+                name: "Duke",
+                score: 67
+            },
+            videoTimestamp: "9:46"
         }
     ];
 
@@ -1227,6 +1264,25 @@ document.addEventListener('DOMContentLoaded', function() {
         round4: {},
         round5: {}
     };
+    
+    // Add payout structure
+    const payoutStructure = {
+        1: 100,  // First Round - $100 per win
+        2: 200,  // Second Round - $200 per win
+        3: 400,  // Third Round - $400 per win
+        4: 800,  // Fourth Round - $800 per win
+        5: 1600, // Fifth Round - $1,600 per win
+        6: 4000  // Final Round - $4,000 per win (not used yet)
+    };
+    
+    // Function to calculate total winnings for a square
+    function calculateSquareWinnings(allWins) {
+        let total = 0;
+        allWins.forEach(win => {
+            total += payoutStructure[win.round] || 0;
+        });
+        return total;
+    }
     
     // Function to filter board cells based on selected round
     function filterBoardCells(selectedRound) {
@@ -1395,11 +1451,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         winner: game.winner,
                         loser: game.loser,
                         date: game.date,
-                        game: game
+                        game: game,
+                        payout: payoutStructure[game.round]
                     });
                 });
             }
         });
+        
+        // Calculate total winnings
+        const totalWinnings = calculateSquareWinnings(allWins);
         
         // Create popup element
         const popup = document.createElement('div');
@@ -1415,6 +1475,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h4>Square Details</h4>
                 <p>Winning score ends with: ${getColumnsDigitForCell(cellId)}</p>
                 <p>Losing score ends with: ${getRowsDigitForCell(cellId)}</p>
+                <p class="total-winnings">Total Winnings: $${totalWinnings.toLocaleString()}</p>
             </div>
         `;
         
@@ -1429,7 +1490,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Sort wins by round (higher rounds first)
             allWins.sort((a, b) => b.round - a.round);
             
-            // Add each win
+            // Add each win with payout
             allWins.forEach(win => {
                 popupContent += `
                     <li class="square-win-item round-${win.round}" data-game-id="${win.game.id}">
@@ -1437,7 +1498,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${win.winner.name} vs ${win.loser.name}
                             <span class="square-win-score">(${win.winner.score}-${win.loser.score})</span>
                         </div>
-                        <span class="square-win-date">${win.roundName} · ${win.date}</span>
+                        <div class="square-win-details">
+                            <span class="square-win-date">${win.roundName} · ${win.date}</span>
+                            <span class="square-win-payout">+$${win.payout.toLocaleString()}</span>
+                        </div>
                     </li>
                 `;
             });
@@ -1849,4 +1913,113 @@ document.addEventListener('DOMContentLoaded', function() {
             // Cell hover reset is now handled by CSS :hover for consistency
         });
     });
+
+    // Function to generate winnings list
+    function generateWinningsList() {
+        const squareWinnings = {};
+        const squareNames = {};
+        
+        // Get all square names first
+        document.querySelectorAll('.board-cell').forEach(cell => {
+            const cellId = parseInt(cell.getAttribute('data-id'));
+            squareNames[cellId] = cell.textContent.trim();
+            squareWinnings[cellId] = 0;
+        });
+        
+        // Calculate winnings for each square
+        Object.keys(winnerSquares).forEach(roundKey => {
+            const round = parseInt(roundKey.replace('round', ''));
+            Object.keys(winnerSquares[roundKey]).forEach(cellId => {
+                const wins = winnerSquares[roundKey][cellId];
+                if (wins) {
+                    squareWinnings[cellId] += (wins.length * payoutStructure[round]);
+                }
+            });
+        });
+        
+        // Create popup for the list
+        const popup = document.createElement('div');
+        popup.className = 'square-popup winnings-list-popup';
+        
+        // Sort squares by winnings (highest to lowest)
+        const sortedSquares = Object.keys(squareWinnings)
+            .map(cellId => ({
+                id: cellId,
+                name: squareNames[cellId],
+                winnings: squareWinnings[cellId]
+            }))
+            .sort((a, b) => b.winnings - a.winnings);
+        
+        // Calculate total winnings
+        const totalWinnings = sortedSquares.reduce((sum, square) => sum + square.winnings, 0);
+        
+        // Create popup content
+        let popupContent = `
+            <div class="square-popup-header">
+                <h3 class="square-popup-title">Square Winnings Summary</h3>
+                <button class="square-popup-close" type="button" aria-label="Close popup">&times;</button>
+            </div>
+            <div class="square-popup-content">
+                <div class="winnings-list">
+                    <table class="winnings-table">
+                        <thead>
+                            <tr>
+                                <th>Square #</th>
+                                <th>Name</th>
+                                <th>Total Winnings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `;
+        
+        sortedSquares.forEach(square => {
+            if (square.winnings > 0) {
+                popupContent += `
+                    <tr>
+                        <td>${square.id}</td>
+                        <td>${square.name}</td>
+                        <td>$${square.winnings.toLocaleString()}</td>
+                    </tr>
+                `;
+            }
+        });
+        
+        // Add total row
+        popupContent += `
+                <tr class="total-row">
+                    <td colspan="2"><strong>TOTAL WINNINGS</strong></td>
+                    <td><strong>$${totalWinnings.toLocaleString()}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div class="square-popup-footer">
+        <button class="square-popup-button" onclick="closePopup()">Close</button>
+    </div>
+    `;
+        
+        popup.innerHTML = popupContent;
+        
+        // Create and add backdrop
+        const backdrop = createBackdrop();
+        document.body.appendChild(backdrop);
+        document.body.appendChild(popup);
+        
+        // Add event listeners for close button
+        const closeBtn = popup.querySelector('.square-popup-close');
+        closeBtn.addEventListener('click', closePopup);
+        closeBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            closePopup();
+        });
+    }
+
+    // Add button to card header
+    const cardHeader = document.querySelector('.card-header');
+    const winningsButton = document.createElement('button');
+    winningsButton.className = 'btn btn-sm btn-primary float-end';
+    winningsButton.textContent = 'View All Winnings';
+    winningsButton.addEventListener('click', generateWinningsList);
+    cardHeader.appendChild(winningsButton);
 }); 

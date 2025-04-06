@@ -17,7 +17,7 @@
     --round-2-color: rgba(0, 123, 255, 0.15); /* Light blue */
     --round-3-color: rgba(255, 193, 7, 0.2); /* Light yellow */
     --round-4-color: rgba(111, 66, 193, 0.15); /* Light purple */
-    --round-5-color: rgba(23, 162, 184, 0.2); /* Light teal */
+    --round-5-color: rgba(220, 53, 69, 0.2); /* Light red/maroon - changed from teal */
 }
 
 body {
@@ -156,7 +156,7 @@ body {
     background-color: var(--round-5-color);
 }
 .round-5-winner.multiple-wins {
-    background-color: rgba(23, 162, 184, 0.4); /* Darker teal */
+    background-color: rgba(220, 53, 69, 0.4); /* Darker red/maroon - changed from teal */
 }
 
 /* Split color styles for multiple round wins in "All Rounds" view */
@@ -290,7 +290,7 @@ body {
 
 .legend-round-5 {
     background-color: var(--round-5-color);
-    border: 1px solid rgba(23, 162, 184, 0.5);
+    border: 1px solid rgba(220, 53, 69, 0.5); /* Updated border color to match */
 }
 
 /* Highlighted cell for game matches */
@@ -544,7 +544,7 @@ body {
         --round-2-color: rgba(0, 123, 255, 0.2);
         --round-3-color: rgba(255, 193, 7, 0.25);
         --round-4-color: rgba(111, 66, 193, 0.2);
-        --round-5-color: rgba(23, 162, 184, 0.25);
+        --round-5-color: rgba(220, 53, 69, 0.25); /* Updated to red/maroon from teal */
     }
     .board-cell {
         font-size: 0.6rem;
@@ -920,4 +920,91 @@ body {
     transform: scale(1.02);
     z-index: 5;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Total winnings style */
+.total-winnings {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #28a745;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Square win details layout */
+.square-win-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3px;
+}
+
+/* Payout amount style */
+.square-win-payout {
+    font-weight: 600;
+    color: #28a745;
+    font-size: 0.85rem;
+}
+
+/* Winnings List Table Styles */
+.winnings-list-popup {
+    max-width: 500px !important;
+}
+
+.winnings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.winnings-table th,
+.winnings-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.winnings-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+.winnings-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.winnings-table td:last-child {
+    text-align: right;
+    color: #28a745;
+    font-weight: 600;
+}
+
+.winnings-table .total-row {
+    border-top: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.winnings-table .total-row td {
+    padding: 12px 8px;
+    font-size: 1.1rem;
+}
+
+.winnings-table .total-row td:last-child {
+    color: #28a745;
+}
+
+@media (max-width: 576px) {
+    .winnings-list-popup {
+        max-width: 95% !important;
+    }
+    
+    .winnings-table th,
+    .winnings-table td {
+        padding: 10px 6px;
+        font-size: 1rem;
+    }
 } 

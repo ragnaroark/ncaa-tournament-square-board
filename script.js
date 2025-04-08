@@ -1220,12 +1220,14 @@ document.addEventListener('DOMContentLoaded', function() {
             winner: {
                 seed: 1,
                 name: "Florida",
-                score: 79
+                score: 79,
+                logo: "https://placehold.co/30x30/blue/orange?text=FLA"
             },
             loser: {
                 seed: 1,
                 name: "Auburn",
-                score: 73
+                score: 73,
+                logo: "https://placehold.co/30x30/blue/white?text=AUB"
             },
             videoTimestamp: "10:46"
         },
@@ -1238,14 +1240,37 @@ document.addEventListener('DOMContentLoaded', function() {
             winner: {
                 seed: 1,
                 name: "Houston",
-                score: 70
+                score: 70,
+                logo: "https://placehold.co/30x30/red/white?text=HOU"
             },
             loser: {
                 seed: 1,
                 name: "Duke",
-                score: 67
+                score: 67,
+                logo: "https://placehold.co/30x30/blue/white?text=DUKE"
             },
             videoTimestamp: "9:46"
+        },
+        // Championship Game
+        {
+            id: 51,
+            round: 6,
+            name: "Championship",
+            date: "April 8, 2024",
+            day: "monday",
+            winner: {
+                seed: 1,
+                name: "Florida",
+                score: 65,
+                logo: "https://placehold.co/30x30/blue/orange?text=FLA"
+            },
+            loser: {
+                seed: 1,
+                name: "Houston",
+                score: 63,
+                logo: "https://placehold.co/30x30/red/white?text=HOU"
+            },
+            videoTimestamp: "12:32"
         }
     ];
 
@@ -1262,7 +1287,8 @@ document.addEventListener('DOMContentLoaded', function() {
         round2: {},
         round3: {},
         round4: {},
-        round5: {}
+        round5: {},
+        round6: {}
     };
     
     // Add payout structure
@@ -1272,7 +1298,7 @@ document.addEventListener('DOMContentLoaded', function() {
         3: 400,  // Third Round - $400 per win
         4: 800,  // Fourth Round - $800 per win
         5: 1600, // Fifth Round - $1,600 per win
-        6: 4000  // Final Round - $4,000 per win (not used yet)
+        6: 4000  // Championship - $4,000 per win
     };
     
     // Function to calculate total winnings for a square
@@ -1315,7 +1341,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (winsForRound && winsForRound.length > 0) {
                 cell.classList.add('filtered-in');
                 // Keep only the background color for the selected round
-                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner');
+                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'round-6-winner');
                 cell.classList.add(`round-${selectedRound}-winner`);
                 
                 // Add multiple-wins class if there are multiple wins in this round
@@ -1325,7 +1351,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 cell.classList.add('filtered-out');
                 // Remove all winner classes for filtered out cells
-                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner');
+                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'round-6-winner');
             }
         });
     }
@@ -1403,7 +1429,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Remove existing winner classes
         cells.forEach(cell => {
-            cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner');
+            cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'round-6-winner');
         });
         
         // Process all games to identify winning squares for each round
@@ -1438,7 +1464,8 @@ document.addEventListener('DOMContentLoaded', function() {
             round2: "Round of 32",
             round3: "Sweet 16",
             round4: "Elite 8",
-            round5: "Final Four"
+            round5: "Final Four",
+            round6: "Championship"
         };
         
         // Collect all wins across all rounds

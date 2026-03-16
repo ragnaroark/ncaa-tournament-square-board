@@ -529,36 +529,79 @@ body {
     opacity: 1;
 }
 
-/* Mobile horizontal games display */
+/* Mobile games display — vertical list */
 .mobile-games-container {
     display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 8px 8px;
+    max-height: 50vh;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    gap: 10px;
-    padding: 10px 0;
-    margin: 0 -15px;
-    padding-left: 15px;
-    scroll-padding-left: 15px;
+}
+
+.mobile-games-header {
+    padding: 0 8px;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .mobile-game-card {
-    flex: 0 0 auto;
-    width: 250px;
-    scroll-snap-align: start;
     border: 1px solid #e0e0e0;
-    padding: 12px;
-    border-radius: 5px;
+    padding: 10px 12px;
+    border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.15s ease;
 }
 
 .mobile-game-card.active {
     border-color: var(--highlight-border);
     background-color: #fffbed;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
+}
+
+/* Compact mobile game row layout */
+.mobile-game-matchup {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mobile-game-teams {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.mobile-game-teams strong {
+    white-space: nowrap;
+}
+
+.mobile-seed {
+    font-size: 0.7rem;
+    color: #888;
+    min-width: 14px;
+    text-align: center;
+}
+
+.mobile-score {
+    font-weight: 700;
+    min-width: 22px;
+    text-align: center;
+}
+
+.mobile-vs {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.mobile-game-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
 }
 
 /* Mobile responsive adjustments */
@@ -566,102 +609,101 @@ body {
     :root {
         --cell-size: 45px;
         --games-height: 500px;
-        /* Slightly more saturated colors for better visibility on small screens */
         --round-1-color: rgba(40, 167, 69, 0.2);
         --round-2-color: rgba(0, 123, 255, 0.2);
         --round-3-color: rgba(255, 193, 7, 0.25);
         --round-4-color: rgba(111, 66, 193, 0.2);
-        --round-5-color: rgba(220, 53, 69, 0.25); /* Updated to red/maroon from teal */
+        --round-5-color: rgba(220, 53, 69, 0.25);
     }
     .board-cell {
         font-size: 0.6rem;
     }
-    /* For mobile, we want a fixed height */
     .games-card {
         height: auto;
     }
-    
-    /* Hide the sidebar games container on small screens */
-    .col-md-4 {
-        display: none;
-    }
-    
-    /* Make the board take full width */
-    .col-md-8 {
-        width: 100%;
-    }
-    
-    /* Adjust board container and card to fill width on mobile */
+
+    /* Hide sidebar games; mobile list shown instead */
+    .col-md-4 { display: none; }
+    .col-md-8 { width: 100%; }
+
+    /* Board fits screen width */
     .board-container {
         max-width: 100%;
         width: 100%;
         box-sizing: border-box;
         grid-template-columns: 40px repeat(10, 1fr);
     }
-    
+
     .row-header {
         width: 40px;
         min-width: 40px;
         max-width: 40px;
     }
-    
+
     .card-body {
         padding: 0.5rem;
     }
-    
-    /* Adjust container padding for mobile */
+
     .container-fluid {
         padding-left: 5px;
         padding-right: 5px;
     }
-    
-    /* Disable hover scaling on mobile to prevent layout issues */
+
+    /* Disable hover scaling on mobile */
     .board-cell:hover {
         transform: none;
         box-shadow: none;
     }
-    
-    /* Make legend more compact */
+
+    /* Compact legend */
     .rounds-legend {
         flex-wrap: wrap;
         gap: 8px;
         margin-top: 10px;
     }
-    
-    .legend-indicator {
-        width: 12px;
-        height: 12px;
-    }
-    
-    .legend-item {
-        margin-right: 5px;
-        font-size: 0.7rem;
-    }
-    
-    /* Compact header styles */
-    .card-header {
-        padding: 0.5rem 0.75rem;
-    }
+    .legend-indicator { width: 12px; height: 12px; }
+    .legend-item { margin-right: 5px; font-size: 0.7rem; }
 
+    /* Compact header */
+    .card-header { padding: 0.5rem 0.75rem; }
     .card-title {
         font-size: 1.25rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    
-    .card-subtitle {
-        font-size: 0.8rem;
-        margin-bottom: 0.5rem;
-    }
+    .card-subtitle { font-size: 0.8rem; margin-bottom: 0.5rem; }
+
+    /* ---- Pill-style round filters ---- */
+    .board-tabs { background: #f8f9fa; }
 
     .board-tabs .nav-tabs {
-        padding: 0 0.75rem;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 6px;
+        padding: 8px 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        border-bottom: none;
     }
+    .board-tabs .nav-tabs::-webkit-scrollbar { display: none; }
 
     .board-tabs .nav-link {
-        padding: 0.4rem 0.6rem;
+        padding: 6px 12px;
         font-size: 0.8rem;
+        white-space: nowrap;
+        border-radius: 20px;
+        border: 1px solid #dee2e6;
+        background: #fff;
+        color: #495057;
+    }
+
+    .board-tabs .nav-input:checked + .nav-link {
+        background: #1e6bb8;
+        color: #fff;
+        border-color: #1e6bb8;
+        margin-bottom: 0;
     }
 }
 
@@ -680,100 +722,53 @@ body {
         color: #333;
         z-index: 2;
     }
-    .mobile-game-card {
-        width: 230px;
-        padding: 10px;
-    }
-    
-    /* Further reduce padding for very small screens */
+
     .container-fluid {
         padding-left: 0;
         padding-right: 0;
     }
-    
-    .card {
-        border-radius: 0;
-    }
-    
-    /* Make board scale to fit available width */
+    .card { border-radius: 0; }
+
     :root {
         --cell-size: min(32px, calc((100vw - 40px) / 10));
     }
-    
-    /* Fix row header width for small screens */
+
     .board-container {
         grid-template-columns: 32px repeat(10, 1fr);
     }
-    
     .row-header {
         width: 32px;
         min-width: 32px;
         max-width: 32px;
     }
-    
-    /* Adjust padding between board and edge */
-    #square-board {
-        padding: 0;
-    }
-    
-    .card-header {
-        padding: 0.5rem;
-    }
 
-    .card-title {
-        font-size: 1.2rem;
-        padding: 0.25rem 0.5rem;
-    }
-
-    .board-tabs .nav-tabs {
-        padding: 0 0.5rem;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    .board-tabs .nav-tabs::-webkit-scrollbar {
-        display: none;
-    }
-
-    .board-tabs .nav-link {
-        padding: 0.3rem 0.5rem;
-        font-size: 0.75rem;
-        white-space: nowrap;
-    }
+    #square-board { padding: 0; }
+    .card-header { padding: 0.5rem; }
+    .card-title { font-size: 1.2rem; padding: 0.25rem 0.5rem; }
 }
 
-/* Dynamic scaling of squares for extremely small screens */
+/* Dynamic scaling for very small screens */
 @media (max-width: 400px) {
     :root {
         --cell-size: min(28px, calc((100vw - 32px) / 10));
     }
-    
-    .header-cell, .row-header {
-        font-size: 1rem;
-    }
-    
-    /* Fix row header width for very small screens */
+
+    .header-cell, .row-header { font-size: 1rem; }
+
     .board-container {
         grid-template-columns: 28px repeat(10, 1fr);
     }
-    
     .row-header {
         width: 28px;
         min-width: 28px;
         max-width: 28px;
     }
-    
-    /* Make cell content smaller */
+
     .board-cell {
         font-size: 0.4rem;
         padding: 1px;
         line-height: 0.8;
     }
-    
-    /* Emphasize cell number */
     .board-cell:before {
         font-size: 0.5rem;
         font-weight: bold;
@@ -781,24 +776,9 @@ body {
         top: 1px;
         left: 1px;
     }
-    
-    /* Adjust win indicators for clearer visibility */
-    .round-1-winner:after,
-    .multiple-round-1-wins:after,
-    .round-2-winner:after,
-    .round-3-winner:after,
-    .round-4-winner:after,
-    .round-5-winner:after {
-        z-index: 3;
-    }
-    
-    .rounds-legend {
-        gap: 4px;
-    }
-    
-    .legend-item {
-        font-size: 0.65rem;
-    }
+
+    .rounds-legend { gap: 4px; }
+    .legend-item { font-size: 0.65rem; }
 }
 
 /* Square popup styles */
@@ -931,14 +911,26 @@ body {
 }
 
 /* Square popup responsive styles */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .square-popup {
-        width: 95%;
-        max-height: 70vh;
+        width: 94%;
+        max-width: none;
+        max-height: 80vh;
+        padding: 12px;
     }
-    
+
     .square-popup-title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
+    }
+
+    .square-win-item {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    .square-popup-button {
+        padding: 10px 20px;
+        font-size: 1rem;
     }
 }
 
@@ -1024,14 +1016,14 @@ body {
     color: #28a745;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     .winnings-list-popup {
-        max-width: 95% !important;
+        max-width: 94% !important;
     }
-    
+
     .winnings-table th,
     .winnings-table td {
         padding: 10px 6px;
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 } 

@@ -49,10 +49,17 @@
                     </div>
                     <div class="card-body p-md-3 p-1">
                         <div id="square-board" class="overflow-auto">
+                            <div class="board-wrapper">
+                            <div class="board-axis-label board-axis-col">WINNING TEAM SCORE (last digit)</div>
+                            <div class="board-axis-label board-axis-row">LOSING TEAM SCORE (last digit)</div>
                             <div class="board-container">
                                 <!-- Column headers (winning scores) -->
                                 <div class="header-row">
-                                    <div class="corner-cell"></div>
+                                    <div class="corner-cell">
+                                        <span class="corner-win">W<br>&rarr;</span>
+                                        <span class="corner-lose">L &darr;</span>
+                                        <div class="corner-diagonal"></div>
+                                    </div>
                                     <div class="header-cell">4</div>
                                     <div class="header-cell">0</div>
                                     <div class="header-cell">3</div>
@@ -195,6 +202,7 @@
                                     <div class="board-cell" data-id="99">ONZ</div>
                                     <div class="board-cell" data-id="100">KRAL + KRATKY</div>
                                 </div>
+                            </div>
                             </div>
                         </div>
                         <div class="rounds-legend">

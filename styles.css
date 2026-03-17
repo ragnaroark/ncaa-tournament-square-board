@@ -54,11 +54,69 @@ body {
 .corner-cell {
     border: 1px solid var(--border-color);
     background-color: var(--header-bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 1.2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.corner-diagonal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 141%;
+    height: 1px;
+    background: var(--border-color);
+    transform-origin: top left;
+    transform: rotate(45deg);
+    opacity: 0.4;
+}
+
+.corner-win {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #666;
+    line-height: 1;
+}
+
+.corner-lose {
+    position: absolute;
+    bottom: 2px;
+    left: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #666;
+    line-height: 1;
+}
+
+/* Board axis labels */
+.board-wrapper {
+    position: relative;
+}
+
+.board-axis-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.board-axis-col {
+    text-align: center;
+    padding: 2px 0 4px;
+    /* offset to align with the columns (skip the row-header width) */
+    margin-left: 40px;
+}
+
+.board-axis-row {
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: rotate(-90deg) translateX(-50%);
+    transform-origin: 0 0;
+    white-space: nowrap;
 }
 
 .header-row {
@@ -654,6 +712,10 @@ body {
         transform: none;
         box-shadow: none;
     }
+
+    /* Axis labels on mobile */
+    .board-axis-col { margin-left: 40px; font-size: 0.55rem; }
+    .board-axis-row { display: none; }
 
     /* Compact legend */
     .rounds-legend {

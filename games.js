@@ -38,5 +38,64 @@ const ncaaGames = [
             score: 47,
             logo: "https://placehold.co/30x30/maroon/white?text=TROY"
         }
+    },
+    {
+        id: 3,
+        round: 1,
+        name: "Round of 64",
+        date: "Thu, Mar 19",
+        day: "thursday",
+        winner: {
+            name: "Louisville",
+            seed: 6,
+            score: 83,
+            logo: "https://placehold.co/30x30/red/white?text=LOU"
+        },
+        loser: {
+            name: "South Florida",
+            seed: 11,
+            score: 79,
+            logo: "https://placehold.co/30x30/green/gold?text=USF"
+        },
+        video: "11:44"
+    },
+    {
+        id: 4,
+        round: 1,
+        name: "Round of 64",
+        date: "Thu, Mar 19",
+        day: "thursday",
+        winner: {
+            name: "High Point",
+            seed: 12,
+            score: 83,
+            logo: "https://placehold.co/30x30/purple/white?text=HPU"
+        },
+        loser: {
+            name: "Wisconsin",
+            seed: 5,
+            score: 82,
+            logo: "https://placehold.co/30x30/red/white?text=WIS"
+        },
+        video: "8:25"
+    },
+    {
+        id: 5,
+        round: 1,
+        name: "Round of 64",
+        date: "Thu, Mar 19",
+        day: "thursday",
+        winner: {
+            name: "Duke",
+            seed: 1,
+            score: 71,
+            logo: "https://placehold.co/30x30/blue/white?text=DUKE"
+        },
+        loser: {
+            name: "Siena",
+            seed: 16,
+            score: 65,
+            logo: "https://placehold.co/30x30/green/gold?text=SIEN"
+        }
     }
 ];

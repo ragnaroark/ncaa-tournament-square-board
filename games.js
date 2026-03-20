@@ -97,5 +97,65 @@ const ncaaGames = [
             score: 65,
             logo: "https://placehold.co/30x30/green/gold?text=SIEN"
         }
+    },
+    {
+        id: 6,
+        round: 1,
+        name: "Round of 64",
+        date: "Thu, Mar 19",
+        day: "thursday",
+        winner: {
+            name: "Vanderbilt",
+            seed: 5,
+            score: 78,
+            logo: "https://placehold.co/30x30/gold/black?text=VAN"
+        },
+        loser: {
+            name: "McNeese State",
+            seed: 12,
+            score: 68,
+            logo: "https://placehold.co/30x30/blue/gold?text=MCN"
+        },
+        video: "9:52"
+    },
+    {
+        id: 7,
+        round: 1,
+        name: "Round of 64",
+        date: "Thu, Mar 19",
+        day: "thursday",
+        winner: {
+            name: "MI State",
+            seed: 3,
+            score: 92,
+            logo: "https://placehold.co/30x30/green/white?text=MSU"
+        },
+        loser: {
+            name: "ND State",
+            seed: 14,
+            score: 67,
+            logo: "https://placehold.co/30x30/green/gold?text=NDSU"
+        },
+        video: "8:30"
+    },
+    {
+        id: 8,
+        round: 1,
+        name: "Round of 64",
+        date: "Thu, Mar 19",
+        day: "thursday",
+        winner: {
+            name: "Arkansas",
+            seed: 4,
+            score: 97,
+            logo: "https://placehold.co/30x30/red/white?text=ARK"
+        },
+        loser: {
+            name: "Hawaii",
+            seed: 13,
+            score: 78,
+            logo: "https://placehold.co/30x30/green/white?text=HAW"
+        },
+        video: "11:15"
     }
 ];

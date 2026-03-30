@@ -1153,5 +1153,45 @@ const ncaaGames = [
             logo: "https://placehold.co/30x30/gold/black?text=PUR"
         },
         video: "8:29"
+    },
+    {
+        id: 59,
+        round: 4,
+        name: "Elite Eight",
+        date: "Sun, Mar 29",
+        day: "sunday",
+        winner: {
+            name: "Michigan",
+            seed: 1,
+            score: 95,
+            logo: "https://placehold.co/30x30/blue/gold?text=MICH"
+        },
+        loser: {
+            name: "Tennessee",
+            seed: 6,
+            score: 62,
+            logo: "https://placehold.co/30x30/orange/white?text=TEN"
+        },
+        video: "10:53"
+    },
+    {
+        id: 60,
+        round: 4,
+        name: "Elite Eight",
+        date: "Sun, Mar 29",
+        day: "sunday",
+        winner: {
+            name: "UConn",
+            seed: 2,
+            score: 73,
+            logo: "https://placehold.co/30x30/blue/white?text=CONN"
+        },
+        loser: {
+            name: "Duke",
+            seed: 1,
+            score: 72,
+            logo: "https://placehold.co/30x30/blue/white?text=DUKE"
+        },
+        video: "8:25"
     }
 ];

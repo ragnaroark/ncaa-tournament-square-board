@@ -1233,5 +1233,25 @@ const ncaaGames = [
             logo: "https://placehold.co/30x30/red/blue?text=ARIZ"
         },
         video: "8:00"
+    },
+    {
+        id: 63,
+        round: 6,
+        name: "National Championship",
+        date: "Mon, Apr 6",
+        day: "monday",
+        winner: {
+            name: "Michigan",
+            seed: 1,
+            score: 69,
+            logo: "https://placehold.co/30x30/blue/gold?text=MICH"
+        },
+        loser: {
+            name: "UConn",
+            seed: 2,
+            score: 63,
+            logo: "https://placehold.co/30x30/blue/white?text=CONN"
+        },
+        video: "7:50"
     }
 ];

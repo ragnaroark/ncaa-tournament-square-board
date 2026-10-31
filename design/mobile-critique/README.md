@@ -7,3 +7,5 @@ Findings from a mobile-focused design review of the square board, with a working
 - `screenshots/` — captures of the current page (`current-*.png`) and the mockup (`mock-*.png`) at phone widths.
 
 Published copies: report https://claude.ai/artifact/9qug4ESPagJQzD92okEUHe · mockup https://claude.ai/artifact/4wwXUHiUGMpHe4KFWMQkjd
+
+Status: implemented in the app (index.html, styles.css, script.js) on this branch.

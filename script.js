@@ -1,789 +1,328 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // ncaaGames is loaded from games.js
 
-    // Get HTML elements
-    const gamesContainer = document.getElementById('games-container');
-    const mobileGamesContainer = document.querySelector('.mobile-games-container');
-    const mobileGamesHeader = document.querySelector('.mobile-games-header');
-    const desktopGamesTitle = document.querySelector('.col-md-4 .card-title');
-    const cells = document.querySelectorAll('.board-cell');
-    const roundFilters = document.querySelectorAll('input[name="round-filter"]');
-    const boardFilters = document.querySelectorAll('input[name="board-filter"]');
-
-    const roundNames = {
-        'all': 'All Games',
-        '1': 'Round of 64 Games',
-        '2': 'Round of 32 Games',
-        '3': 'Sweet 16 Games',
-        '4': 'Elite 8 Games',
-        '5': 'Final Four Games',
-        '6': 'Championship Game'
-    };
-    
-    // Track which squares are winners for each round
-    const winnerSquares = {
-        round1: {},
-        round2: {},
-        round3: {},
-        round4: {},
-        round5: {},
-        round6: {}
-    };
-    
-    // Add payout structure
+    // ---- Configuration ------------------------------------------------
     const payoutStructure = {
-        1: 100,  // First Round - $100 per win
-        2: 200,  // Second Round - $200 per win
-        3: 400,  // Third Round - $400 per win
-        4: 800,  // Fourth Round - $800 per win
-        5: 1600, // Fifth Round - $1,600 per win
-        6: 4000  // Championship - $4,000 per win
+        1: 100,  // Round of 64
+        2: 200,  // Round of 32
+        3: 400,  // Sweet 16
+        4: 800,  // Elite 8
+        5: 1600, // Final Four
+        6: 4000  // Championship
     };
-    
-    // Function to calculate total winnings for a square
-    function calculateSquareWinnings(allWins) {
-        let total = 0;
-        allWins.forEach(win => {
-            total += payoutStructure[win.round] || 0;
-        });
-        return total;
-    }
-    
-    // Function to filter board cells based on selected round
-    function filterBoardCells(selectedRound) {
-        cells.forEach(cell => {
-            // Remove all filtered classes
-            cell.classList.remove('filtered-out', 'filtered-in', 'multiple-wins');
-            
-            // If "All Rounds" is selected, show all cells with their original colors
-            if (selectedRound === 'all') {
-                // Restore all original winner classes for this cell
-                const cellId = parseInt(cell.getAttribute('data-id'));
-                Object.keys(winnerSquares).forEach(roundKey => {
-                    if (winnerSquares[roundKey][cellId] && winnerSquares[roundKey][cellId].length > 0) {
-                        const round = roundKey.replace('round', '');
-                        cell.classList.add(`round-${round}-winner`);
-                        if (winnerSquares[roundKey][cellId].length > 1) {
-                            cell.classList.add('multiple-wins');
-                        }
-                    }
-                });
-                return;
-            }
-            
-            // Check if the cell has a win for the selected round
-            const cellId = parseInt(cell.getAttribute('data-id'));
-            const roundKey = `round${selectedRound}`;
-            const winsForRound = winnerSquares[roundKey][cellId];
-            
-            // Apply filtered classes
-            if (winsForRound && winsForRound.length > 0) {
-                cell.classList.add('filtered-in');
-                // Keep only the background color for the selected round
-                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'round-6-winner');
-                cell.classList.add(`round-${selectedRound}-winner`);
-                
-                // Add multiple-wins class if there are multiple wins in this round
-                if (winsForRound.length > 1) {
-                    cell.classList.add('multiple-wins');
-                }
-            } else {
-                cell.classList.add('filtered-out');
-                // Remove all winner classes for filtered out cells
-                cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'round-6-winner');
-            }
-        });
-    }
-    
-    // Add event listeners for board filters
-    boardFilters.forEach(input => {
-        input.addEventListener('change', function() {
-            const selectedRound = this.value;
+    const roundInfo = {
+        1: { short: 'R64', name: 'Round of 64' },
+        2: { short: 'R32', name: 'Round of 32' },
+        3: { short: 'S16', name: 'Sweet 16' },
+        4: { short: 'E8', name: 'Elite 8' },
+        5: { short: 'F4', name: 'Final Four' },
+        6: { short: 'Champ', name: 'Championship' }
+    };
+    const STORAGE_MINE = 'squareboard.mine';
+    const STORAGE_VIEW = 'squareboard.view';
 
-            filterBoardCells(selectedRound);
-            renderGames(selectedRound);
-            renderMobileGames(selectedRound);
+    // ---- DOM ----------------------------------------------------------
+    const $ = (sel) => document.querySelector(sel);
+    const cells = Array.from(document.querySelectorAll('.board-cell'));
+    const columnHeaders = Array.from(document.querySelectorAll('.header-cell'));
+    const rowHeaders = Array.from(document.querySelectorAll('.row-header'));
+    const board = $('#board');
+    const gamesContainer = $('#games-container');
+    const leadersContainer = $('#leaders-container');
 
-            // Update games titles to reflect active filter
-            const title = roundNames[selectedRound] || 'All Games';
-            if (mobileGamesHeader) mobileGamesHeader.textContent = title;
-            if (desktopGamesTitle) desktopGamesTitle.textContent = title;
-        });
-    });
-    
-    // Function to get the last digit of a number
-    function getLastDigit(number) {
-        return number % 10;
-    }
-    
-    // Function to find the square based on winning and losing scores
+    const money = (n) => '$' + n.toLocaleString();
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const squareName = (id) => cells[id - 1].dataset.name;
+
+    // ---- State --------------------------------------------------------
+    let filter = 'all';          // 'all' or '1'..'6'
+    let query = '';              // lower-cased search text
+    let mine = [];               // cell ids the viewer marked as theirs
+    let zoom = 'fit';            // 'fit' | 'large'
+    const winnerSquares = {};    // cellId -> [game, ...]
+    const roundsPlayed = new Set();
+
+    try { mine = JSON.parse(localStorage.getItem(STORAGE_MINE) || '[]').filter((n) => Number.isInteger(n) && n >= 1 && n <= 100); } catch (e) { mine = []; }
+    const saveMine = () => { try { localStorage.setItem(STORAGE_MINE, JSON.stringify(mine)); } catch (e) { /* storage unavailable */ } };
+
+    // ---- Square mapping -----------------------------------------------
+    // Column headers and row headers hold shuffled digits; find the cell whose
+    // column digit matches the winner's last digit and row digit the loser's.
     function findSquare(winningScore, losingScore) {
-        const winLastDigit = getLastDigit(winningScore);
-        const loseLastDigit = getLastDigit(losingScore);
-        
-        // Find the column index (0-based) for the winning score
-        const columnHeaders = document.querySelectorAll('.header-cell');
-        let columnIndex = -1;
-        
-        for (let i = 0; i < columnHeaders.length; i++) {
-            if (parseInt(columnHeaders[i].textContent) === winLastDigit) {
-                columnIndex = i;
-                break;
-            }
-        }
-        
-        // Find the row index (0-based) for the losing score
-        const rowHeaders = document.querySelectorAll('.row-header');
-        let rowIndex = -1;
-        
-        for (let i = 0; i < rowHeaders.length; i++) {
-            if (parseInt(rowHeaders[i].textContent) === loseLastDigit) {
-                rowIndex = i;
-                break;
-            }
-        }
-        
-        if (columnIndex !== -1 && rowIndex !== -1) {
-            // Calculate the cell ID based on row and column
-            // Formula: (row * number of columns) + column + 1
-            const cellId = (rowIndex * 10) + columnIndex + 1;
-            return {
-                element: document.querySelector(`.board-cell[data-id="${cellId}"]`),
-                cellId: cellId,
-                winDigit: winLastDigit,
-                loseDigit: loseLastDigit
-            };
-        }
-        
-        return null;
+        const winDigit = winningScore % 10;
+        const loseDigit = losingScore % 10;
+        const col = columnHeaders.findIndex((h) => parseInt(h.textContent, 10) === winDigit);
+        const row = rowHeaders.findIndex((h) => parseInt(h.textContent, 10) === loseDigit);
+        if (col === -1 || row === -1) return null;
+        const cellId = row * 10 + col + 1;
+        return { element: cells[cellId - 1], cellId, winDigit, loseDigit };
     }
-    
-    // Function to analyze all games and mark winning squares
+    const colDigitFor = (cellId) => columnHeaders[(cellId - 1) % 10].textContent;
+    const rowDigitFor = (cellId) => rowHeaders[Math.floor((cellId - 1) / 10)].textContent;
+
     function analyzeGames() {
-        // Clear existing winner tracking
-        Object.keys(winnerSquares).forEach(key => {
-            winnerSquares[key] = {};
-        });
-        
-        // Remove existing winner classes
-        cells.forEach(cell => {
-            cell.classList.remove('round-1-winner', 'round-2-winner', 'round-3-winner', 'round-4-winner', 'round-5-winner', 'round-6-winner');
-        });
-        
-        // Process all games to identify winning squares for each round
-        ncaaGames.forEach(game => {
+        Object.keys(winnerSquares).forEach((k) => delete winnerSquares[k]);
+        roundsPlayed.clear();
+        ncaaGames.forEach((game) => {
             const square = findSquare(game.winner.score, game.loser.score);
-            if (square) {
-                const roundKey = `round${game.round}`;
-                
-                // Store this square as a winner for this round
-                if (!winnerSquares[roundKey][square.cellId]) {
-                    winnerSquares[roundKey][square.cellId] = [];
-                }
-                
-                winnerSquares[roundKey][square.cellId].push(game);
-                
-                // Add the appropriate round winner class
-                square.element.classList.add(`round-${game.round}-winner`);
-            }
+            if (!square) return;
+            game.cellId = square.cellId;
+            (winnerSquares[square.cellId] = winnerSquares[square.cellId] || []).push(game);
+            roundsPlayed.add(game.round);
         });
     }
-    
-    // Function to show popup with square details
-    function showSquarePopup(cellId) {
-        // Get square name/owner
-        const cell = document.querySelector(`.board-cell[data-id="${cellId}"]`);
-        const squareName = cell.textContent.trim();
-        
-        // Get all winning games for this square
-        const allWins = [];
-        const roundDescriptions = {
-            round1: "Round of 64",
-            round2: "Round of 32",
-            round3: "Sweet 16",
-            round4: "Elite 8",
-            round5: "Final Four",
-            round6: "Championship"
-        };
-        
-        // Collect all wins across all rounds
-        Object.keys(winnerSquares).forEach(roundKey => {
-            if (winnerSquares[roundKey][cellId]) {
-                winnerSquares[roundKey][cellId].forEach(game => {
-                    allWins.push({
-                        round: game.round,
-                        roundName: roundDescriptions[roundKey],
-                        winner: game.winner,
-                        loser: game.loser,
-                        date: game.date,
-                        game: game,
-                        payout: payoutStructure[game.round]
-                    });
-                });
-            }
-        });
-        
-        // Calculate total winnings
-        const totalWinnings = calculateSquareWinnings(allWins);
-        
-        // Create popup element
-        const popup = document.createElement('div');
-        popup.className = 'square-popup';
-        
-        // Create popup content
-        let popupContent = `
-            <div class="square-popup-header">
-                <h3 class="square-popup-title">Square #${cellId}: ${squareName}</h3>
-                <button class="square-popup-close" type="button" aria-label="Close popup">&times;</button>
-            </div>
-            <div class="square-popup-content">
-                <h4>Square Details</h4>
-                <p>Winning score ends with: ${getColumnsDigitForCell(cellId)}</p>
-                <p>Losing score ends with: ${getRowsDigitForCell(cellId)}</p>
-                <p class="total-winnings">Total Winnings: $${totalWinnings.toLocaleString()}</p>
-            </div>
-        `;
-        
-        // Add wins section
-        if (allWins.length > 0) {
-            popupContent += `
-                <div class="square-popup-content">
-                    <h4>Winning Games (${allWins.length})</h4>
-                    <ul class="square-wins-list">
-            `;
-            
-            // Sort wins by round (higher rounds first)
-            allWins.sort((a, b) => b.round - a.round);
-            
-            // Add each win with payout
-            allWins.forEach(win => {
-                popupContent += `
-                    <li class="square-win-item round-${win.round}" data-game-id="${win.game.id}">
-                        <div class="square-win-teams">
-                            ${win.winner.name} vs ${win.loser.name}
-                            <span class="square-win-score">(${win.winner.score}-${win.loser.score})</span>
-                        </div>
-                        <div class="square-win-details">
-                            <span class="square-win-date">${win.roundName} · ${win.date}</span>
-                            <span class="square-win-payout">+$${win.payout.toLocaleString()}</span>
-                        </div>
-                    </li>
-                `;
-            });
-            
-            popupContent += `
-                    </ul>
-                </div>
-            `;
-        } else {
-            popupContent += `
-                <div class="square-popup-content">
-                    <h4>Winning Games</h4>
-                    <div class="no-wins-message">No winning games yet for this square.</div>
-                </div>
-            `;
-        }
-        
-        // Add footer
-        popupContent += `
-            <div class="square-popup-footer">
-                <button class="square-popup-button" onclick="closePopup()">Close</button>
-            </div>
-        `;
-        
-        popup.innerHTML = popupContent;
-        
-        // Create backdrop with improved touch support
-        const backdrop = createBackdrop();
-        
-        // Add popup and backdrop to body
-        document.body.appendChild(backdrop);
-        document.body.appendChild(popup);
-        
-        // Ensure close button works with touch
-        const closeBtn = popup.querySelector('.square-popup-close');
-        closeBtn.addEventListener('click', closePopup);
-        closeBtn.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            closePopup();
-        });
-        
-        // Same for the close button in footer if it exists
-        const footerCloseBtn = popup.querySelector('.square-popup-button');
-        if (footerCloseBtn) {
-            footerCloseBtn.addEventListener('click', closePopup);
-            footerCloseBtn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                closePopup();
-            });
-        }
-        
-        // Add event listeners for win items with touch support
-        const winItems = popup.querySelectorAll('.square-win-item');
-        winItems.forEach(item => {
-            const handleWinItemClick = function() {
-                const gameId = parseInt(this.getAttribute('data-game-id'));
-                const game = ncaaGames.find(g => g.id === gameId);
-                if (game) {
-                    closePopup();
-                    
-                    // Highlight the game in the games list
-                    const gameItem = document.querySelector(`.game-item[data-id="${gameId}"]`);
-                    if (gameItem) {
-                        gameItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        highlightGameWinner(game, gameItem);
-                    } else {
-                        // If game is not visible in the current filtered view, change the filter
-                        document.querySelector(`input[name="round-filter"][value="${game.round}"]`).click();
-                        setTimeout(() => {
-                            const newGameItem = document.querySelector(`.game-item[data-id="${gameId}"]`);
-                            if (newGameItem) {
-                                newGameItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                highlightGameWinner(game, newGameItem);
-                            }
-                        }, 100);
-                    }
-                }
-            };
-            
-            item.addEventListener('click', handleWinItemClick);
-            item.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                handleWinItemClick.call(this);
-            });
-        });
-    }
-    
-    // Helper function to get the column digit for a cell ID
-    function getColumnsDigitForCell(cellId) {
-        const colIndex = (cellId - 1) % 10;
-        const columnHeaders = document.querySelectorAll('.header-cell');
-        return columnHeaders[colIndex].textContent;
-    }
-    
-    // Helper function to get the row digit for a cell ID
-    function getRowsDigitForCell(cellId) {
-        const rowIndex = Math.floor((cellId - 1) / 10);
-        const rowHeaders = document.querySelectorAll('.row-header');
-        return rowHeaders[rowIndex].textContent;
-    }
-    
-    // Function to close popup
-    function closePopup() {
-        const popup = document.querySelector('.square-popup');
-        const backdrop = document.querySelector('.popup-backdrop');
-        
-        if (popup) {
-            popup.remove();
-        }
-        
-        if (backdrop) {
-            backdrop.remove();
-        }
-    }
-    
-    // Make closePopup function globally available
-    window.closePopup = closePopup;
-    
-    // Function to create the popup backdrop with touch support
-    function createBackdrop() {
-        const backdrop = document.createElement('div');
-        backdrop.className = 'popup-backdrop';
-        
-        // Handle both click and touch events
-        backdrop.addEventListener('click', closePopup);
-        backdrop.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            closePopup();
-        });
-        
-        return backdrop;
-    }
-    
-    // Function to render games with optional round filter
-    function renderGames(roundFilter = 'all') {
-        gamesContainer.innerHTML = '';
-        
-        ncaaGames.forEach(game => {
-            // Apply filters
-            if (roundFilter !== 'all' && game.round !== parseInt(roundFilter)) {
-                return;
-            }
-            
-            // Find winning square for this game
-            const square = findSquare(game.winner.score, game.loser.score);
-            const squareNumber = square ? square.cellId : null;
-            
-            // Create game item
-            const gameItem = document.createElement('div');
-            gameItem.classList.add('game-item');
-            gameItem.dataset.id = game.id;
-            
-            // Create winner team
-            const winnerTeam = document.createElement('div');
-            winnerTeam.classList.add('team', 'winner');
-            
-            const winnerSeed = document.createElement('span');
-            winnerSeed.classList.add('seed');
-            winnerSeed.textContent = game.winner.seed;
-            
-            const winnerLogo = document.createElement('div');
-            winnerLogo.classList.add('team-logo');
-            if (game.winner.logo) {
-                const logoImg = document.createElement('img');
-                logoImg.src = game.winner.logo;
-                logoImg.alt = game.winner.name;
-                winnerLogo.appendChild(logoImg);
-            }
-            
-            const winnerName = document.createElement('div');
-            winnerName.classList.add('team-name');
-            winnerName.textContent = game.winner.name;
-            
-            const winnerScore = document.createElement('div');
-            winnerScore.classList.add('score');
-            winnerScore.textContent = game.winner.score;
-            
-            winnerTeam.appendChild(winnerSeed);
-            winnerTeam.appendChild(winnerLogo);
-            winnerTeam.appendChild(winnerName);
-            winnerTeam.appendChild(winnerScore);
-            
-            // Create loser team
-            const loserTeam = document.createElement('div');
-            loserTeam.classList.add('team');
-            
-            const loserSeed = document.createElement('span');
-            loserSeed.classList.add('seed');
-            loserSeed.textContent = game.loser.seed;
-            
-            const loserLogo = document.createElement('div');
-            loserLogo.classList.add('team-logo');
-            if (game.loser.logo) {
-                const logoImg = document.createElement('img');
-                logoImg.src = game.loser.logo;
-                logoImg.alt = game.loser.name;
-                loserLogo.appendChild(logoImg);
-            }
-            
-            const loserName = document.createElement('div');
-            loserName.classList.add('team-name');
-            loserName.textContent = game.loser.name;
-            
-            const loserScore = document.createElement('div');
-            loserScore.classList.add('score');
-            loserScore.textContent = game.loser.score;
-            
-            loserTeam.appendChild(loserSeed);
-            loserTeam.appendChild(loserLogo);
-            loserTeam.appendChild(loserName);
-            loserTeam.appendChild(loserScore);
-            
-            // Add teams to game item
-            gameItem.appendChild(winnerTeam);
-            gameItem.appendChild(loserTeam);
-            
-            // Create game meta with square number
-            const gameMeta = document.createElement('div');
-            gameMeta.classList.add('game-meta');
-            
-            // Create a container div with flexbox for game info and square number
-            const gameMetaContainer = document.createElement('div');
-            gameMetaContainer.classList.add('game-meta-container');
-            
-            // Game info on the left
-            const gameInfo = document.createElement('span');
-            gameInfo.classList.add('text-muted');
-            gameInfo.innerHTML = `${game.name} · ${game.date}`;
-            if (game.video) {
-                gameInfo.innerHTML += ` · <i class="ti ti-player-play"></i> ${game.video}`;
-            }
-            
-            // Square number on the right
-            if (squareNumber !== null) {
-                const squareDisplay = document.createElement('span');
-                squareDisplay.classList.add('square-number');
-                squareDisplay.textContent = `Square #${squareNumber}`;
-                
-                // Add both to the container
-                gameMetaContainer.appendChild(gameInfo);
-                gameMetaContainer.appendChild(squareDisplay);
-            } else {
-                // Just add the game info if no square number
-                gameMetaContainer.appendChild(gameInfo);
-            }
-            
-            // Add the container to the game meta
-            gameMeta.appendChild(gameMetaContainer);
-            
-            // Add meta to game item
-            gameItem.appendChild(gameMeta);
-            
-            // Add click event
-            gameItem.addEventListener('click', function() {
-                highlightGameWinner(game, this);
-            });
-            
-            gamesContainer.appendChild(gameItem);
-        });
-    }
-    
-    // Function to render games in the mobile container
-    function renderMobileGames(roundFilter = 'all') {
-        if (!mobileGamesContainer) return;
-        
-        mobileGamesContainer.innerHTML = '';
-        
-        ncaaGames.forEach(game => {
-            // Apply round filter
-            if (roundFilter !== 'all' && game.round !== parseInt(roundFilter)) {
-                return;
-            }
-            
-            // Find winning square for this game
-            const square = findSquare(game.winner.score, game.loser.score);
-            const squareNumber = square ? square.cellId : null;
-            
-            // Create mobile game card
-            const gameCard = document.createElement('div');
-            gameCard.classList.add('mobile-game-card');
-            gameCard.dataset.id = game.id;
-            
-            // Create winner/loser display with winning square
-            const matchup = document.createElement('div');
-            
-            let matchupHTML = `
-                <div class="mobile-game-matchup">
-                    <div class="mobile-game-teams">
-                        <span class="mobile-seed">${game.winner.seed}</span>
-                        <strong>${game.winner.name}</strong>
-                        <span class="mobile-score">${game.winner.score}</span>
-                        <span class="mobile-vs">–</span>
-                        <span class="mobile-score">${game.loser.score}</span>
-                        <span>${game.loser.name}</span>
-                        <span class="mobile-seed">${game.loser.seed}</span>
-                    </div>
-                    <div class="mobile-game-meta">
-                        <span class="text-muted">${game.date}</span>`;
+    const winsFor = (cellId) => winnerSquares[cellId] || [];
+    const calculateSquareWinnings = (cellId) => winsFor(cellId).reduce((sum, g) => sum + (payoutStructure[g.round] || 0), 0);
+    const topRound = (cellId) => Math.max(0, ...winsFor(cellId).map((g) => g.round));
 
-            if (squareNumber !== null) {
-                matchupHTML += `<span class="square-number">#${squareNumber}</span>`;
-            }
+    // ---- Round filter (doubles as the payout schedule) ----------------
+    function renderRoundFilter(container) {
+        let html = `<button type="button" data-round="all" aria-pressed="${filter === 'all'}">All<small>rounds</small></button>`;
+        for (let r = 1; r <= 6; r++) {
+            html += `<button type="button" data-round="${r}" aria-pressed="${filter === String(r)}" style="--c:var(--r${r})" aria-label="${roundInfo[r].name}, ${money(payoutStructure[r])} per win"><span class="dot"></span>${roundInfo[r].short}<small>${money(payoutStructure[r])}</small></button>`;
+        }
+        container.innerHTML = html;
+        container.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { filter = b.dataset.round; render(); }));
+    }
 
-            matchupHTML += `</div></div>`;
-            
-            matchup.innerHTML = matchupHTML;
-            gameCard.appendChild(matchup);
-            
-            // Add click event
-            gameCard.addEventListener('click', function() {
-                highlightGameWinner(game, this);
-            });
-            
-            mobileGamesContainer.appendChild(gameCard);
+    // ---- Board --------------------------------------------------------
+    const cellMatchesQuery = (id) => query !== '' && squareName(id).toLowerCase().includes(query);
+
+    function filterBoardCells() {
+        board.classList.toggle('is-large', zoom === 'large');
+        cells.forEach((cell, i) => {
+            const id = i + 1;
+            const wins = winsFor(id);
+            const shown = filter === 'all' ? wins : wins.filter((g) => g.round === parseInt(filter, 10));
+            cell.className = 'board-cell';
+            if (shown.length) cell.classList.add(`round-${filter === 'all' ? topRound(id) : filter}-winner`);
+            if (mine.includes(id)) cell.classList.add('is-mine');
+            if (query ? !cellMatchesQuery(id) : (filter !== 'all' && !shown.length)) cell.classList.add('filtered-out');
+            if (query && cellMatchesQuery(id)) cell.classList.add('is-hit');
+            cell.querySelector('.dots').innerHTML = shown.slice(0, 4).map((g) => `<i style="--c:var(--r${g.round})"></i>`).join('');
+            const total = calculateSquareWinnings(id);
+            cell.setAttribute('aria-label', `Square ${id}, ${squareName(id)}, ${wins.length} win${wins.length === 1 ? '' : 's'}, ${money(total)}`);
         });
     }
-    
-    // Function to highlight the winning square when a game is clicked
+
+    function renderLegend() {
+        let html = '';
+        for (let r = 1; r <= 6; r++) {
+            html += `<span><i style="--c:var(--r${r})"></i>${roundInfo[r].name}${roundsPlayed.has(r) ? '' : ' (upcoming)'}</span>`;
+        }
+        html += `<span><i style="--c:var(--accent)"></i>Your square</span>`;
+        $('#rounds-legend').innerHTML = html;
+    }
+
+    function renderSearchHits() {
+        const hits = $('#search-hits');
+        $('#search').classList.toggle('has-query', query !== '');
+        if (!query) { hits.innerHTML = ''; return; }
+        const ids = cells.map((_, i) => i + 1).filter(cellMatchesQuery);
+        hits.innerHTML = ids.length
+            ? ids.map((id) => `<button type="button" data-id="${id}"><b>#${id}</b>${esc(squareName(id))} · ${money(calculateSquareWinnings(id))}</button>`).join('')
+            : `<span class="none">No square matches “${esc(query)}”.</span>`;
+        hits.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => showSquarePopup(parseInt(b.dataset.id, 10))));
+    }
+
+    // ---- "Your square" strip ------------------------------------------
+    function renderMineBar() {
+        const bar = $('#minebar');
+        bar.classList.remove('is-link');
+        bar.onclick = null;
+        if (!mine.length) {
+            bar.innerHTML = `<div class="pin unknown">?</div><div class="text"><b>Which square is yours?</b><span>Tap your name on the board, then “This is my square”.</span></div><button type="button" class="find" id="minebar-find">Find</button>`;
+            $('#minebar-find').addEventListener('click', focusSearch);
+            return;
+        }
+        const total = mine.reduce((s, id) => s + calculateSquareWinnings(id), 0);
+        const n = mine.reduce((s, id) => s + winsFor(id).length, 0);
+        const names = mine.map((id) => `#${id} ${esc(squareName(id))}`).join(' · ');
+        bar.innerHTML = `<div class="pin">★</div><div class="text"><b>${names}</b><span>${n} win${n === 1 ? '' : 's'} so far · tap to open</span></div><div class="amount tnum">${money(total)}</div>`;
+        bar.classList.add('is-link');
+        bar.onclick = () => showSquarePopup(mine[0]);
+    }
+
+    // ---- Results (newest first, grouped by date) ----------------------
+    function renderGames() {
+        const list = ncaaGames.filter((g) => filter === 'all' || g.round === parseInt(filter, 10)).slice().reverse();
+        let html = '', day = '';
+        list.forEach((g) => {
+            if (g.date !== day) { day = g.date; html += `<div class="day-header">${esc(g.date)}</div>`; }
+            const owner = g.cellId ? esc(squareName(g.cellId)) : '—';
+            const isMine = g.cellId && mine.includes(g.cellId);
+            html += `<button type="button" class="game-item${isMine ? ' is-mine' : ''}" data-id="${g.id}" data-cell="${g.cellId || ''}">
+                <div class="round-tag"><i style="--c:var(--r${g.round})"></i>${roundInfo[g.round].name}</div>
+                <div class="team winner"><span class="seed">${g.winner.seed}</span><span class="team-name">${esc(g.winner.name)}</span><span class="score tnum">${g.winner.score}</span></div>
+                <div class="team loser"><span class="seed">${g.loser.seed}</span><span class="team-name">${esc(g.loser.name)}</span><span class="score tnum">${g.loser.score}</span></div>
+                <div class="square"><span>Square #${g.cellId || '?'}</span><b>${owner}</b><em>+${money(payoutStructure[g.round])}</em></div>
+            </button>`;
+        });
+        gamesContainer.innerHTML = html || `<div class="empty"><b>No games yet</b>Results will appear here once this round tips off.</div>`;
+        gamesContainer.querySelectorAll('.game-item').forEach((b) => b.addEventListener('click', () => {
+            const game = ncaaGames.find((g) => g.id === parseInt(b.dataset.id, 10));
+            if (game && game.cellId) highlightGameWinner(game, b);
+        }));
+    }
+
     function highlightGameWinner(game, clickedElement) {
-        // Remove active class from all game items
-        document.querySelectorAll('.game-item, .mobile-game-card').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        // Add active class to clicked element
+        document.querySelectorAll('.game-item.active').forEach((el) => el.classList.remove('active'));
+        cells.forEach((c) => c.classList.remove('highlight'));
         clickedElement.classList.add('active');
-        
-        // Find the winning square for this game
-        const square = findSquare(game.winner.score, game.loser.score);
-        
-        // Remove highlight class from all cells
-        document.querySelectorAll('.board-cell').forEach(cell => {
-            cell.classList.remove('highlight');
+        cells[game.cellId - 1].classList.add('highlight');
+        showSquarePopup(game.cellId, game.id);
+    }
+
+    // ---- Leaders -------------------------------------------------------
+    function generateWinningsList() {
+        const rows = cells.map((_, i) => ({ id: i + 1, name: squareName(i + 1), total: calculateSquareWinnings(i + 1), wins: winsFor(i + 1) }))
+            .filter((r) => r.total > 0).sort((a, b) => b.total - a.total);
+        const pot = rows.reduce((s, r) => s + r.total, 0);
+        const max = rows.length ? rows[0].total : 1;
+        $('#stats').innerHTML = `<div><b class="tnum">${money(pot)}</b><span>Paid out</span></div><div><b class="tnum">${rows.length}</b><span>Squares paid</span></div><div><b class="tnum">${ncaaGames.length}</b><span>Games played</span></div>`;
+        leadersContainer.innerHTML = rows.length ? rows.map((r, i) => `<button type="button" class="leader${mine.includes(r.id) ? ' is-mine' : ''}" data-id="${r.id}">
+            <div class="rank">${i + 1}</div>
+            <div class="who"><span>${esc(r.name)}</span><small>#${r.id} · ${r.wins.length} win${r.wins.length === 1 ? '' : 's'}</small></div>
+            <div class="amount tnum">${money(r.total)}</div>
+            <div class="bar" style="width:${Math.max(8, r.total / max * 100)}%">${r.wins.slice().sort((a, b) => b.round - a.round).map((g) => `<i style="--c:var(--r${g.round});flex:${payoutStructure[g.round]}"></i>`).join('')}</div>
+        </button>`).join('') : `<div class="empty"><b>No winners yet</b>The leaderboard fills in as games finish.</div>`;
+        leadersContainer.querySelectorAll('.leader').forEach((b) => b.addEventListener('click', () => showSquarePopup(parseInt(b.dataset.id, 10))));
+    }
+
+    // ---- Square details (bottom sheet) --------------------------------
+    let lastFocus = null;
+    function showSquarePopup(cellId, highlightGameId) {
+        const wins = winsFor(cellId).slice().sort((a, b) => b.round - a.round);
+        const col = colDigitFor(cellId), row = rowDigitFor(cellId);
+        const isMine = mine.includes(cellId);
+        const remaining = 6 - Math.max(0, ...roundsPlayed);
+        $('#sheet-num').textContent = '#' + cellId;
+        $('#sheet-title').textContent = squareName(cellId);
+        $('#sheet-sub').textContent = `Wins when the winner's score ends in ${col} and the loser's ends in ${row}`;
+        $('#sheet-body').innerHTML = `
+            <div class="total-winnings"><span>Total winnings</span><b class="tnum">${money(calculateSquareWinnings(cellId))}</b></div>
+            <button type="button" class="set-mine" id="set-mine" aria-pressed="${isMine}">${isMine ? '★ This is my square' : 'This is my square'}</button>
+            ${wins.length
+                ? wins.map((g) => `<div class="square-win-item${g.id === highlightGameId ? ' active' : ''}"><i style="--c:var(--r${g.round})"></i><div class="m"><b>${esc(g.winner.name)} ${g.winner.score}, ${esc(g.loser.name)} ${g.loser.score}</b><span>${roundInfo[g.round].name} · ${esc(g.date)}</span></div><div class="p tnum">+${money(payoutStructure[g.round])}</div></div>`).join('')
+                : `<div class="empty"><b>No wins yet</b>${remaining > 0 ? `Still ${remaining} round${remaining === 1 ? '' : 's'} left to hit ${col}–${row}.` : 'The tournament is over.'}</div>`}`;
+        $('#set-mine').addEventListener('click', () => {
+            mine = mine.includes(cellId) ? mine.filter((id) => id !== cellId) : mine.concat(cellId);
+            saveMine();
+            render();
+            showSquarePopup(cellId, highlightGameId);
+            toast(mine.includes(cellId) ? `Saved #${cellId} as your square` : `Removed #${cellId}`);
         });
-        
-        // Add highlight class to winning square
-        if (square) {
-            square.element.classList.add('highlight');
-            
-            // Scroll to the winning square if needed
-            square.element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
+        lightHeaders(cellId);
+        if ($('#sheet').getAttribute('aria-hidden') === 'true') {
+            lastFocus = document.activeElement;
+            $('#sheet').setAttribute('aria-hidden', 'false');
+            $('#sheet-scrim').classList.add('is-on');
+            document.body.classList.add('sheet-open');
+            setTimeout(() => $('#sheet-close').focus(), 50);
         }
     }
-    
-    // Initial render for desktop and mobile
-    const initialRoundFilter = document.querySelector('input[name="board-filter"]:checked')?.value || 'all';
-    filterBoardCells(initialRoundFilter);
-    renderGames(initialRoundFilter);
-    renderMobileGames(initialRoundFilter);
-    
-    // Analyze all games to mark winning squares
-    analyzeGames();
-    
-    // Add click event to cells to show popup
-    cells.forEach(cell => {
-        // Add click/touch events for showing popup
-        const showPopupHandler = function() {
-            const cellId = parseInt(this.getAttribute('data-id'));
-            showSquarePopup(cellId);
-        };
-        
-        // Use multiple event types to ensure coverage across devices
-        cell.addEventListener('click', showPopupHandler);
-        cell.addEventListener('touchend', function(e) {
-            e.preventDefault(); // Prevent default touch behavior
-            showPopupHandler.call(this);
-        });
-        
-        // Original hover effect code
-        cell.addEventListener('mouseenter', function() {
-            // Get the cell's data-id value
-            const cellId = parseInt(this.getAttribute('data-id'));
-            
-            // Calculate the row and column (0-based index)
-            const row = Math.floor((cellId - 1) / 10);
-            const col = (cellId - 1) % 10;
-            
-            // Get the column and row headers
-            const colHeader = document.querySelectorAll('.header-cell')[col];
-            const rowHeader = document.querySelectorAll('.row-header')[row];
-            
-            // Highlight the headers
-            colHeader.style.backgroundColor = '#d1ecf1';
-            rowHeader.style.backgroundColor = '#d1ecf1';
-            
-            // Cell hover is now handled by CSS :hover for consistency
-        });
-        
-        cell.addEventListener('mouseleave', function() {
-            // Get the cell's data-id value
-            const cellId = parseInt(this.getAttribute('data-id'));
-            
-            // Calculate the row and column (0-based index)
-            const row = Math.floor((cellId - 1) / 10);
-            const col = (cellId - 1) % 10;
-            
-            // Get the column and row headers
-            const colHeader = document.querySelectorAll('.header-cell')[col];
-            const rowHeader = document.querySelectorAll('.row-header')[row];
-            
-            // Reset the headers' background color
-            colHeader.style.backgroundColor = '';
-            rowHeader.style.backgroundColor = '';
-            
-            // Cell hover reset is now handled by CSS :hover for consistency
-        });
-    });
 
-    // Function to generate winnings list
-    function generateWinningsList() {
-        const squareWinnings = {};
-        const squareNames = {};
-        
-        // Get all square names first
-        document.querySelectorAll('.board-cell').forEach(cell => {
-            const cellId = parseInt(cell.getAttribute('data-id'));
-            squareNames[cellId] = cell.textContent.trim();
-            squareWinnings[cellId] = 0;
-        });
-        
-        // Calculate winnings for each square
-        Object.keys(winnerSquares).forEach(roundKey => {
-            const round = parseInt(roundKey.replace('round', ''));
-            Object.keys(winnerSquares[roundKey]).forEach(cellId => {
-                const wins = winnerSquares[roundKey][cellId];
-                if (wins) {
-                    squareWinnings[cellId] += (wins.length * payoutStructure[round]);
-                }
-            });
-        });
-        
-        // Create popup for the list
-        const popup = document.createElement('div');
-        popup.className = 'square-popup winnings-list-popup';
-        
-        // Sort squares by winnings (highest to lowest)
-        const sortedSquares = Object.keys(squareWinnings)
-            .map(cellId => ({
-                id: cellId,
-                name: squareNames[cellId],
-                winnings: squareWinnings[cellId]
-            }))
-            .sort((a, b) => b.winnings - a.winnings);
-        
-        // Calculate total winnings
-        const totalWinnings = sortedSquares.reduce((sum, square) => sum + square.winnings, 0);
-        
-        // Create popup content
-        let popupContent = `
-            <div class="square-popup-header">
-                <h3 class="square-popup-title">Square Winnings Summary</h3>
-                <button class="square-popup-close" type="button" aria-label="Close popup">&times;</button>
-            </div>
-            <div class="square-popup-content">
-                <div class="winnings-list">
-                    <table class="winnings-table">
-                        <thead>
-                            <tr>
-                                <th>Square #</th>
-                                <th>Name</th>
-                                <th>Total Winnings</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-        `;
-        
-        sortedSquares.forEach(square => {
-            if (square.winnings > 0) {
-                popupContent += `
-                    <tr>
-                        <td>${square.id}</td>
-                        <td>${square.name}</td>
-                        <td>$${square.winnings.toLocaleString()}</td>
-                    </tr>
-                `;
-            }
-        });
-        
-        // Add total row
-        popupContent += `
-                <tr class="total-row">
-                    <td colspan="2"><strong>TOTAL WINNINGS</strong></td>
-                    <td><strong>$${totalWinnings.toLocaleString()}</strong></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    </div>
-    <div class="square-popup-footer">
-        <button class="square-popup-button" onclick="closePopup()">Close</button>
-    </div>
-    `;
-        
-        popup.innerHTML = popupContent;
-        
-        // Create and add backdrop
-        const backdrop = createBackdrop();
-        document.body.appendChild(backdrop);
-        document.body.appendChild(popup);
-        
-        // Add event listeners for close button
-        const closeBtn = popup.querySelector('.square-popup-close');
-        closeBtn.addEventListener('click', closePopup);
-        closeBtn.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            closePopup();
-        });
+    function closePopup() {
+        if ($('#sheet').getAttribute('aria-hidden') === 'true') return;
+        $('#sheet').setAttribute('aria-hidden', 'true');
+        $('#sheet-scrim').classList.remove('is-on');
+        document.body.classList.remove('sheet-open');
+        lightHeaders(null);
+        cells.forEach((c) => c.classList.remove('highlight'));
+        document.querySelectorAll('.game-item.active').forEach((el) => el.classList.remove('active'));
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    window.closePopup = closePopup;
+
+    function lightHeaders(cellId) {
+        columnHeaders.forEach((h) => h.classList.remove('is-lit'));
+        rowHeaders.forEach((h) => h.classList.remove('is-lit'));
+        if (!cellId) return;
+        columnHeaders[(cellId - 1) % 10].classList.add('is-lit');
+        rowHeaders[Math.floor((cellId - 1) / 10)].classList.add('is-lit');
     }
 
-    // Add button to card header
-    const cardHeader = document.querySelector('.card-header');
-    const winningsButton = document.createElement('button');
-    winningsButton.className = 'btn btn-sm btn-primary float-end';
-    winningsButton.textContent = 'View All Winnings';
-    winningsButton.addEventListener('click', generateWinningsList);
-    cardHeader.appendChild(winningsButton);
-}); 
+    $('#sheet-close').addEventListener('click', closePopup);
+    $('#sheet-scrim').addEventListener('click', closePopup);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopup(); });
+    // Swipe down on the sheet (when its body is scrolled to the top) closes it
+    (function () {
+        let startY = null;
+        const sheet = $('#sheet');
+        sheet.addEventListener('touchstart', (e) => { startY = $('#sheet-body').scrollTop === 0 ? e.touches[0].clientY : null; }, { passive: true });
+        sheet.addEventListener('touchmove', (e) => { if (startY !== null && e.touches[0].clientY - startY > 70) { startY = null; closePopup(); } }, { passive: true });
+    })();
+
+    let toastTimer;
+    function toast(message) {
+        const el = $('#toast');
+        el.textContent = message;
+        el.classList.add('is-on');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove('is-on'), 1800);
+    }
+
+    // ---- Tabs ----------------------------------------------------------
+    function showView(view) {
+        document.querySelectorAll('.view').forEach((s) => s.classList.toggle('is-on', s.id === 'view-' + view));
+        document.querySelectorAll('[role=tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === view)));
+        if (window.matchMedia('(min-width: 900px)').matches) {
+            // Desktop: the board is always visible; the side column swaps between results and leaders
+            $('#view-board').classList.add('is-on');
+            if (view === 'board') { $('#view-results').classList.add('is-on'); view = 'results'; }
+            document.querySelectorAll('.side-tabs [role=tab]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.view === view)));
+        } else {
+            window.scrollTo({ top: 0 });
+        }
+        try { localStorage.setItem(STORAGE_VIEW, view); } catch (e) { /* ignore */ }
+    }
+    document.querySelectorAll('.tabbar [role=tab]').forEach((b) => b.addEventListener('click', () => showView(b.dataset.view)));
+
+    // Desktop-only tabs for the side column
+    const sideTabs = document.createElement('div');
+    sideTabs.className = 'side-tabs';
+    sideTabs.setAttribute('role', 'tablist');
+    sideTabs.innerHTML = `<button type="button" role="tab" data-view="results" aria-selected="true">Results</button><button type="button" role="tab" data-view="leaders" aria-selected="false">Leaders</button>`;
+    $('.col-side').prepend(sideTabs);
+    sideTabs.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => showView(b.dataset.view)));
+
+    function focusSearch() {
+        showView('board');
+        const input = $('#search-input');
+        input.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        input.focus({ preventScroll: true });
+    }
+    $('#btn-find').addEventListener('click', focusSearch);
+    $('#search-input').addEventListener('input', (e) => { query = e.target.value.trim().toLowerCase(); filterBoardCells(); renderSearchHits(); });
+    $('#search-clear').addEventListener('click', () => { $('#search-input').value = ''; query = ''; filterBoardCells(); renderSearchHits(); $('#search-input').focus(); });
+    $('#zoom-fit').addEventListener('click', () => { zoom = 'fit'; $('#zoom-fit').setAttribute('aria-pressed', 'true'); $('#zoom-large').setAttribute('aria-pressed', 'false'); filterBoardCells(); });
+    $('#zoom-large').addEventListener('click', () => { zoom = 'large'; $('#zoom-large').setAttribute('aria-pressed', 'true'); $('#zoom-fit').setAttribute('aria-pressed', 'false'); filterBoardCells(); });
+
+    // Cells are buttons: click only, so a scroll gesture over the board never opens the sheet
+    cells.forEach((cell) => cell.addEventListener('click', () => showSquarePopup(parseInt(cell.dataset.id, 10))));
+
+    // ---- Render --------------------------------------------------------
+    function render() {
+        renderRoundFilter($('#round-filter'));
+        renderRoundFilter($('#round-filter-results'));
+        filterBoardCells();
+        renderLegend();
+        renderSearchHits();
+        renderMineBar();
+        renderGames();
+        generateWinningsList();
+    }
+
+    analyzeGames();
+    render();
+
+    const last = ncaaGames[ncaaGames.length - 1];
+    $('#topbar-sub').textContent = last
+        ? `${ncaaGames.length} games · last: ${last.winner.name} ${last.winner.score}–${last.loser.score} ${last.loser.name}`
+        : 'NCAA Tournament · no games yet';
+
+    let startView = 'board';
+    try { startView = localStorage.getItem(STORAGE_VIEW) || 'board'; } catch (e) { /* ignore */ }
+    showView(window.matchMedia('(min-width: 900px)').matches ? (startView === 'leaders' ? 'leaders' : 'results') : startView);
+    window.matchMedia('(min-width: 900px)').addEventListener('change', () => showView('board'));
+});

@@ -1,38 +1,36 @@
 # NCAA Tournament Square Board
 
-A static web application that displays an NCAA Tournament square board with interactive features.
+A static web app that tracks NCAA Tournament results on a 10×10 squares board. Designed for phones first: find your square, see what it has paid, and follow results as they come in.
 
 ## Features
 
-- Interactive board to track winning squares across different tournament rounds
-- Ability to view game results by round and day
-- Color-coded indicators for different rounds (Round of 64, Round of 32, Sweet 16, Elite 8, Final Four)
-- Special indicator for squares that won multiple Round of 64 games
-- Mobile-friendly layout with horizontal scrolling game results
-- Highlighting of winning squares when clicking on game results
+- **Board** with one fill colour per square for its highest round won and a dot for every win
+- **Your square**: mark a square as yours and it stays pinned at the top with its running total (saved on your device)
+- **Name search** that highlights matching squares, even when a name appears more than once
+- **Round filter** that doubles as the payout schedule ($100 for the Round of 64 up to $4,000 for the Championship)
+- **Results** newest first, grouped by day, each with both scores, the winning square's owner and the payout
+- **Leaders** with the pot total, squares paid, and a ranked list with per-round payout bars
+- **Square details** in a bottom sheet: total winnings and every win with its round, score and payout
+- Fit / Large board sizes on phones; two-column layout on desktop
 
 ## How It Works
 
-1. Each square on the board is determined by the last digit of the winning team's score (columns) and the last digit of the losing team's score (rows)
-2. Round indicators are displayed on each square:
-   - Round of 64: Circle in top left (red circle for multiple wins)
-   - Round of 32: Square in top right
-   - Sweet 16: Triangle in bottom left
-   - Elite 8: Star in bottom right
-   - Final Four: Star in center
+1. Column headers hold the last digit of the winning team's score and row headers the last digit of the losing team's score. The digits are shuffled, not 0–9 in order.
+2. When a game ends, the square at that column and row wins the payout for that round.
+3. A square can win several times; its fill shows the highest round and the dots show each win.
 
 ## Technologies Used
 
-- HTML5, CSS3, and Vanilla JavaScript
-- [Tabler](https://tabler.io/) for UI components and styling
+- HTML5, CSS3 and vanilla JavaScript, no build step and no framework
+- Google Fonts (Barlow, Barlow Condensed) with system fallbacks
 
 ## How to Use
 
-1. Open the `index.html` file in a web browser
-2. View the square board with round indicators
-3. Browse and filter the game results
-4. Click on any game to highlight the corresponding winning square
+1. Open `index.html` in a web browser.
+2. Tap a square to see its wins and total, and tap "This is my square" to pin it.
+3. Use the search field to find a name, and the round filter to focus on one round.
+4. Switch to Results for the latest games or Leaders for the standings.
 
-## Mobile View
+## Updating Results
 
-On mobile devices, the game results appear in a horizontal scrolling format below the board for easier browsing. 
+Append new games to `ncaaGames[]` in `games.js`, following the existing object shape. Nothing else needs to change.

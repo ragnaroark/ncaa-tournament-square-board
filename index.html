@@ -2,262 +2,252 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1a2b48">
     <title>NCAA Tournament Square Board</title>
-    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container-fluid mt-4 mb-4 px-md-4 px-1">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h3 class="card-title">NCAA Tournament Square Board</h3>
-                    </div>
-                    <div class="board-tabs">
-                        <div class="nav nav-tabs">
-                            <label class="nav-item">
-                                <input type="radio" name="board-filter" value="all" class="nav-input" checked>
-                                <span class="nav-link active">All</span>
-                            </label>
-                            <label class="nav-item">
-                                <input type="radio" name="board-filter" value="1" class="nav-input">
-                                <span class="nav-link">R64</span>
-                            </label>
-                            <label class="nav-item">
-                                <input type="radio" name="board-filter" value="2" class="nav-input">
-                                <span class="nav-link">R32</span>
-                            </label>
-                            <label class="nav-item">
-                                <input type="radio" name="board-filter" value="3" class="nav-input">
-                                <span class="nav-link">S16</span>
-                            </label>
-                            <label class="nav-item">
-                                <input type="radio" name="board-filter" value="4" class="nav-input">
-                                <span class="nav-link">E8</span>
-                            </label>
-                            <label class="nav-item">
-                                <input type="radio" name="board-filter" value="5" class="nav-input">
-                                <span class="nav-link">F4</span>
-                            </label>
-                            <label class="nav-item">
-                                <input type="radio" name="board-filter" value="6" class="nav-input">
-                                <span class="nav-link">Champ</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="card-body p-md-3 p-1">
-                        <div id="square-board" class="overflow-auto">
-                            <div class="board-wrapper">
-                            <div class="board-axis-label board-axis-col">WINNING TEAM SCORE (last digit)</div>
-                            <div class="board-axis-label board-axis-row">LOSING TEAM SCORE (last digit)</div>
-                            <div class="board-container">
-                                <!-- Column headers (winning scores) -->
-                                <div class="header-row">
-                                    <div class="corner-cell">
-                                        <span class="corner-win">W<br>&rarr;</span>
-                                        <span class="corner-lose">L &darr;</span>
-                                        <div class="corner-diagonal"></div>
-                                    </div>
-                                    <div class="header-cell">4</div>
-                                    <div class="header-cell">0</div>
-                                    <div class="header-cell">3</div>
-                                    <div class="header-cell">7</div>
-                                    <div class="header-cell">9</div>
-                                    <div class="header-cell">8</div>
-                                    <div class="header-cell">5</div>
-                                    <div class="header-cell">1</div>
-                                    <div class="header-cell">6</div>
-                                    <div class="header-cell">2</div>
-                                </div>
-                                <!-- Board rows -->
-                                <div class="board-row">
-                                    <div class="row-header">2</div>
-                                    <div class="board-cell" data-id="1">DAVEY S</div>
-                                    <div class="board-cell" data-id="2">SCOTT N.</div>
-                                    <div class="board-cell" data-id="3">GEORGE SIDONS</div>
-                                    <div class="board-cell" data-id="4">CHARLIE</div>
-                                    <div class="board-cell" data-id="5">STACKS</div>
-                                    <div class="board-cell" data-id="6">DON &amp; SHEESH</div>
-                                    <div class="board-cell" data-id="7">ELBOW + HIP</div>
-                                    <div class="board-cell" data-id="8">EATIT</div>
-                                    <div class="board-cell" data-id="9">ALVIS</div>
-                                    <div class="board-cell" data-id="10">PETE FLETCH</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">3</div>
-                                    <div class="board-cell" data-id="11">BIGO KEIRA</div>
-                                    <div class="board-cell" data-id="12">DK</div>
-                                    <div class="board-cell" data-id="13">TTOP</div>
-                                    <div class="board-cell" data-id="14">MTAC</div>
-                                    <div class="board-cell" data-id="15">41204</div>
-                                    <div class="board-cell" data-id="16">COLD ONES</div>
-                                    <div class="board-cell" data-id="17">PLUGGER</div>
-                                    <div class="board-cell" data-id="18">BABY T</div>
-                                    <div class="board-cell" data-id="19">DG + FINN</div>
-                                    <div class="board-cell" data-id="20">DNB</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">8</div>
-                                    <div class="board-cell" data-id="21">MIKE SAMBER</div>
-                                    <div class="board-cell" data-id="22">OTYZ</div>
-                                    <div class="board-cell" data-id="23">K2</div>
-                                    <div class="board-cell" data-id="24">GARY NOVINC</div>
-                                    <div class="board-cell" data-id="25">KD</div>
-                                    <div class="board-cell" data-id="26">S/G</div>
-                                    <div class="board-cell" data-id="27">CATH</div>
-                                    <div class="board-cell" data-id="28">LPCP</div>
-                                    <div class="board-cell" data-id="29">PEPOY</div>
-                                    <div class="board-cell" data-id="30">CHARLIE</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">9</div>
-                                    <div class="board-cell" data-id="31">DAX</div>
-                                    <div class="board-cell" data-id="32">TROUBADOR</div>
-                                    <div class="board-cell" data-id="33">WILLY McBRIDE</div>
-                                    <div class="board-cell" data-id="34">STANK WHISTLE</div>
-                                    <div class="board-cell" data-id="35">YOLO MOLO</div>
-                                    <div class="board-cell" data-id="36">MTAC</div>
-                                    <div class="board-cell" data-id="37">SAM &amp; DAVE</div>
-                                    <div class="board-cell" data-id="38">CHARLIE</div>
-                                    <div class="board-cell" data-id="39">STEVE + KATHY</div>
-                                    <div class="board-cell" data-id="40">PLUGGER</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">6</div>
-                                    <div class="board-cell" data-id="41">WEGMAN</div>
-                                    <div class="board-cell" data-id="42">POLLY</div>
-                                    <div class="board-cell" data-id="43">PAUL HAYLEY</div>
-                                    <div class="board-cell" data-id="44">PEANUTS 7</div>
-                                    <div class="board-cell" data-id="45">PETE FLETCH</div>
-                                    <div class="board-cell" data-id="46">FAB 5</div>
-                                    <div class="board-cell" data-id="47">RJK</div>
-                                    <div class="board-cell" data-id="48">NHG</div>
-                                    <div class="board-cell" data-id="49">236 7192</div>
-                                    <div class="board-cell" data-id="50">LAW OF THE LAND</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">4</div>
-                                    <div class="board-cell" data-id="51">TIM + MARTY</div>
-                                    <div class="board-cell" data-id="52">THE LINKS</div>
-                                    <div class="board-cell" data-id="53">JT</div>
-                                    <div class="board-cell" data-id="54">JIM KARBO</div>
-                                    <div class="board-cell" data-id="55">MTAC</div>
-                                    <div class="board-cell" data-id="56">T-FED</div>
-                                    <div class="board-cell" data-id="57">SHADROCK &amp; SON</div>
-                                    <div class="board-cell" data-id="58">MIKE SAMBER</div>
-                                    <div class="board-cell" data-id="59">SAL + COL</div>
-                                    <div class="board-cell" data-id="60">MARVINCH</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">7</div>
-                                    <div class="board-cell" data-id="61">TIM + MARTY</div>
-                                    <div class="board-cell" data-id="62">CJP</div>
-                                    <div class="board-cell" data-id="63">JR + PAUL</div>
-                                    <div class="board-cell" data-id="64">DOMINIC</div>
-                                    <div class="board-cell" data-id="65">ME</div>
-                                    <div class="board-cell" data-id="66">KEVIN R</div>
-                                    <div class="board-cell" data-id="67">BUCKEYE GIRL</div>
-                                    <div class="board-cell" data-id="68">CJP</div>
-                                    <div class="board-cell" data-id="69">DON &amp; SHE</div>
-                                    <div class="board-cell" data-id="70">BIG MONEY</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">5</div>
-                                    <div class="board-cell" data-id="71">OTYZ</div>
-                                    <div class="board-cell" data-id="72">KELLY O'HARE</div>
-                                    <div class="board-cell" data-id="73">SASQUATCH</div>
-                                    <div class="board-cell" data-id="74">ED</div>
-                                    <div class="board-cell" data-id="75">B2R</div>
-                                    <div class="board-cell" data-id="76">KURET</div>
-                                    <div class="board-cell" data-id="77">MTAC</div>
-                                    <div class="board-cell" data-id="78">FNL</div>
-                                    <div class="board-cell" data-id="79">TTOP</div>
-                                    <div class="board-cell" data-id="80">GEEZERS</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">1</div>
-                                    <div class="board-cell" data-id="81">FRIDAY + ROO FRIEL</div>
-                                    <div class="board-cell" data-id="82">RICK + LISA</div>
-                                    <div class="board-cell" data-id="83">MIKE SAMBER</div>
-                                    <div class="board-cell" data-id="84">NANCY</div>
-                                    <div class="board-cell" data-id="85">FNL</div>
-                                    <div class="board-cell" data-id="86">SQUIDS</div>
-                                    <div class="board-cell" data-id="87">M M</div>
-                                    <div class="board-cell" data-id="88">TMW 10</div>
-                                    <div class="board-cell" data-id="89">PALKO HOMDADDDY</div>
-                                    <div class="board-cell" data-id="90">MEATBALL</div>
-                                </div>
-                                <div class="board-row">
-                                    <div class="row-header">0</div>
-                                    <div class="board-cell" data-id="91">JIM YOUNG</div>
-                                    <div class="board-cell" data-id="92">TMW 10</div>
-                                    <div class="board-cell" data-id="93">AUSTIN &amp; BEAU</div>
-                                    <div class="board-cell" data-id="94">TANK &amp; KENNY</div>
-                                    <div class="board-cell" data-id="95">RICK</div>
-                                    <div class="board-cell" data-id="96">BIG TUNA</div>
-                                    <div class="board-cell" data-id="97">BF BABES</div>
-                                    <div class="board-cell" data-id="98">LOYOLA</div>
-                                    <div class="board-cell" data-id="99">ONZ</div>
-                                    <div class="board-cell" data-id="100">KRAL + KRATKY</div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="rounds-legend">
-                            <div class="legend-item">
-                                <span class="legend-indicator legend-round-1"></span>
-                                <span>Round of 64</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-indicator legend-round-2"></span>
-                                <span>Round of 32</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-indicator legend-round-3"></span>
-                                <span>Sweet 16</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-indicator legend-round-4"></span>
-                                <span>Elite 8</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-indicator legend-round-5"></span>
-                                <span>Final Four</span>
-                            </div>
-                            <div class="legend-item">
-                                <span class="legend-indicator legend-round-6"></span>
-                                <span>Championship</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Mobile games section (shown on smaller screens) -->
-                        <div class="d-md-none mt-3">
-                            <h4 class="mobile-games-header mb-2">Games</h4>
-                            <div class="mobile-games-container">
-                                <!-- Games will be populated by JavaScript -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card games-card sticky-top" style="top: 20px;">
-                    <div class="card-header">
-                        <h3 class="card-title">NCAA Tournament Games</h3>
-                    </div>
-                    <div class="card-body">
-                        <div id="games-container">
-                            <!-- Games will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="app" id="app">
+    <header class="topbar">
+        <div class="topbar-text">
+            <h1>Square Board</h1>
+            <p class="topbar-sub" id="topbar-sub">NCAA Tournament</p>
         </div>
+        <button class="iconbtn" id="btn-find" type="button" aria-label="Find a name on the board">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+    </header>
+
+    <div class="layout">
+    <div class="col-board">
+        <!-- "Your square" summary; filled by script.js -->
+        <div class="minebar" id="minebar"></div>
+
+        <section class="view is-on" id="view-board" aria-labelledby="tab-board">
+            <!-- Round filter doubles as the payout schedule; buttons are rendered by script.js -->
+            <div class="roundseg" id="round-filter" role="group" aria-label="Filter by round"></div>
+
+            <div class="search" id="search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <input id="search-input" type="search" placeholder="Find a name on the board" autocomplete="off" aria-label="Find a name on the board">
+                <button class="search-clear" id="search-clear" type="button" aria-label="Clear search">&times;</button>
+            </div>
+            <div class="search-hits" id="search-hits"></div>
+
+            <div class="boardwrap">
+                <div class="board-axis">Winner's last digit <b>&rarr;</b> &nbsp;&middot;&nbsp; Loser's last digit <b>&darr;</b></div>
+                <div class="board-scroller" id="square-board">
+                    <div class="board-container" id="board" role="grid" aria-label="Square board">
+                        <!-- Column headers: last digit of the WINNING score (shuffled) -->
+                        <div class="header-row">
+                            <div class="corner-cell" role="presentation"></div>
+                            <div class="header-cell" role="columnheader">4</div>
+                            <div class="header-cell" role="columnheader">0</div>
+                            <div class="header-cell" role="columnheader">3</div>
+                            <div class="header-cell" role="columnheader">7</div>
+                            <div class="header-cell" role="columnheader">9</div>
+                            <div class="header-cell" role="columnheader">8</div>
+                            <div class="header-cell" role="columnheader">5</div>
+                            <div class="header-cell" role="columnheader">1</div>
+                            <div class="header-cell" role="columnheader">6</div>
+                            <div class="header-cell" role="columnheader">2</div>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 2 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">2</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="1" data-name="DAVEY S"><span class="id">1</span><span class="name">DAVEY S</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="2" data-name="SCOTT N."><span class="id">2</span><span class="name">SCOTT N.</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="3" data-name="GEORGE SIDONS"><span class="id">3</span><span class="name">GEORGE SIDONS</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="4" data-name="CHARLIE"><span class="id">4</span><span class="name">CHARLIE</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="5" data-name="STACKS"><span class="id">5</span><span class="name">STACKS</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="6" data-name="DON &amp; SHEESH"><span class="id">6</span><span class="name">DON &amp; SHEESH</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="7" data-name="ELBOW + HIP"><span class="id">7</span><span class="name">ELBOW + HIP</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="8" data-name="EATIT"><span class="id">8</span><span class="name">EATIT</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="9" data-name="ALVIS"><span class="id">9</span><span class="name">ALVIS</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="10" data-name="PETE FLETCH"><span class="id">10</span><span class="name">PETE FLETCH</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 3 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">3</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="11" data-name="BIGO KEIRA"><span class="id">11</span><span class="name">BIGO KEIRA</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="12" data-name="DK"><span class="id">12</span><span class="name">DK</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="13" data-name="TTOP"><span class="id">13</span><span class="name">TTOP</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="14" data-name="MTAC"><span class="id">14</span><span class="name">MTAC</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="15" data-name="41204"><span class="id">15</span><span class="name">41204</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="16" data-name="COLD ONES"><span class="id">16</span><span class="name">COLD ONES</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="17" data-name="PLUGGER"><span class="id">17</span><span class="name">PLUGGER</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="18" data-name="BABY T"><span class="id">18</span><span class="name">BABY T</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="19" data-name="DG + FINN"><span class="id">19</span><span class="name">DG + FINN</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="20" data-name="DNB"><span class="id">20</span><span class="name">DNB</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 8 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">8</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="21" data-name="MIKE SAMBER"><span class="id">21</span><span class="name">MIKE SAMBER</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="22" data-name="OTYZ"><span class="id">22</span><span class="name">OTYZ</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="23" data-name="K2"><span class="id">23</span><span class="name">K2</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="24" data-name="GARY NOVINC"><span class="id">24</span><span class="name">GARY NOVINC</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="25" data-name="KD"><span class="id">25</span><span class="name">KD</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="26" data-name="S/G"><span class="id">26</span><span class="name">S/G</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="27" data-name="CATH"><span class="id">27</span><span class="name">CATH</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="28" data-name="LPCP"><span class="id">28</span><span class="name">LPCP</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="29" data-name="PEPOY"><span class="id">29</span><span class="name">PEPOY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="30" data-name="CHARLIE"><span class="id">30</span><span class="name">CHARLIE</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 9 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">9</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="31" data-name="DAX"><span class="id">31</span><span class="name">DAX</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="32" data-name="TROUBADOR"><span class="id">32</span><span class="name">TROUBADOR</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="33" data-name="WILLY McBRIDE"><span class="id">33</span><span class="name">WILLY McBRIDE</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="34" data-name="STANK WHISTLE"><span class="id">34</span><span class="name">STANK WHISTLE</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="35" data-name="YOLO MOLO"><span class="id">35</span><span class="name">YOLO MOLO</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="36" data-name="MTAC"><span class="id">36</span><span class="name">MTAC</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="37" data-name="SAM &amp; DAVE"><span class="id">37</span><span class="name">SAM &amp; DAVE</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="38" data-name="CHARLIE"><span class="id">38</span><span class="name">CHARLIE</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="39" data-name="STEVE + KATHY"><span class="id">39</span><span class="name">STEVE + KATHY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="40" data-name="PLUGGER"><span class="id">40</span><span class="name">PLUGGER</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 6 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">6</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="41" data-name="WEGMAN"><span class="id">41</span><span class="name">WEGMAN</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="42" data-name="POLLY"><span class="id">42</span><span class="name">POLLY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="43" data-name="PAUL HAYLEY"><span class="id">43</span><span class="name">PAUL HAYLEY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="44" data-name="PEANUTS 7"><span class="id">44</span><span class="name">PEANUTS 7</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="45" data-name="PETE FLETCH"><span class="id">45</span><span class="name">PETE FLETCH</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="46" data-name="FAB 5"><span class="id">46</span><span class="name">FAB 5</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="47" data-name="RJK"><span class="id">47</span><span class="name">RJK</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="48" data-name="NHG"><span class="id">48</span><span class="name">NHG</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="49" data-name="236 7192"><span class="id">49</span><span class="name">236 7192</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="50" data-name="LAW OF THE LAND"><span class="id">50</span><span class="name">LAW OF THE LAND</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 4 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">4</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="51" data-name="TIM + MARTY"><span class="id">51</span><span class="name">TIM + MARTY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="52" data-name="THE LINKS"><span class="id">52</span><span class="name">THE LINKS</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="53" data-name="JT"><span class="id">53</span><span class="name">JT</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="54" data-name="JIM KARBO"><span class="id">54</span><span class="name">JIM KARBO</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="55" data-name="MTAC"><span class="id">55</span><span class="name">MTAC</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="56" data-name="T-FED"><span class="id">56</span><span class="name">T-FED</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="57" data-name="SHADROCK &amp; SON"><span class="id">57</span><span class="name">SHADROCK &amp; SON</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="58" data-name="MIKE SAMBER"><span class="id">58</span><span class="name">MIKE SAMBER</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="59" data-name="SAL + COL"><span class="id">59</span><span class="name">SAL + COL</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="60" data-name="MARVINCH"><span class="id">60</span><span class="name">MARVINCH</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 7 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">7</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="61" data-name="TIM + MARTY"><span class="id">61</span><span class="name">TIM + MARTY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="62" data-name="CJP"><span class="id">62</span><span class="name">CJP</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="63" data-name="JR + PAUL"><span class="id">63</span><span class="name">JR + PAUL</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="64" data-name="DOMINIC"><span class="id">64</span><span class="name">DOMINIC</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="65" data-name="ME"><span class="id">65</span><span class="name">ME</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="66" data-name="KEVIN R"><span class="id">66</span><span class="name">KEVIN R</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="67" data-name="BUCKEYE GIRL"><span class="id">67</span><span class="name">BUCKEYE GIRL</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="68" data-name="CJP"><span class="id">68</span><span class="name">CJP</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="69" data-name="DON &amp; SHE"><span class="id">69</span><span class="name">DON &amp; SHE</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="70" data-name="BIG MONEY"><span class="id">70</span><span class="name">BIG MONEY</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 5 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">5</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="71" data-name="OTYZ"><span class="id">71</span><span class="name">OTYZ</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="72" data-name="KELLY O'HARE"><span class="id">72</span><span class="name">KELLY O'HARE</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="73" data-name="SASQUATCH"><span class="id">73</span><span class="name">SASQUATCH</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="74" data-name="ED"><span class="id">74</span><span class="name">ED</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="75" data-name="B2R"><span class="id">75</span><span class="name">B2R</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="76" data-name="KURET"><span class="id">76</span><span class="name">KURET</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="77" data-name="MTAC"><span class="id">77</span><span class="name">MTAC</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="78" data-name="FNL"><span class="id">78</span><span class="name">FNL</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="79" data-name="TTOP"><span class="id">79</span><span class="name">TTOP</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="80" data-name="GEEZERS"><span class="id">80</span><span class="name">GEEZERS</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 1 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">1</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="81" data-name="FRIDAY + ROO FRIEL"><span class="id">81</span><span class="name">FRIDAY + ROO FRIEL</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="82" data-name="RICK + LISA"><span class="id">82</span><span class="name">RICK + LISA</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="83" data-name="MIKE SAMBER"><span class="id">83</span><span class="name">MIKE SAMBER</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="84" data-name="NANCY"><span class="id">84</span><span class="name">NANCY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="85" data-name="FNL"><span class="id">85</span><span class="name">FNL</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="86" data-name="SQUIDS"><span class="id">86</span><span class="name">SQUIDS</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="87" data-name="M M"><span class="id">87</span><span class="name">M M</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="88" data-name="TMW 10"><span class="id">88</span><span class="name">TMW 10</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="89" data-name="PALKO HOMDADDDY"><span class="id">89</span><span class="name">PALKO HOMDADDDY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="90" data-name="MEATBALL"><span class="id">90</span><span class="name">MEATBALL</span><span class="dots"></span></button>
+                        </div>
+                        <!-- Row: last digit of the LOSING score = 0 -->
+                        <div class="board-row">
+                            <div class="row-header" role="rowheader">0</div>
+                            <button type="button" class="board-cell" role="gridcell" data-id="91" data-name="JIM YOUNG"><span class="id">91</span><span class="name">JIM YOUNG</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="92" data-name="TMW 10"><span class="id">92</span><span class="name">TMW 10</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="93" data-name="AUSTIN &amp; BEAU"><span class="id">93</span><span class="name">AUSTIN &amp; BEAU</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="94" data-name="TANK &amp; KENNY"><span class="id">94</span><span class="name">TANK &amp; KENNY</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="95" data-name="RICK"><span class="id">95</span><span class="name">RICK</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="96" data-name="BIG TUNA"><span class="id">96</span><span class="name">BIG TUNA</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="97" data-name="BF BABES"><span class="id">97</span><span class="name">BF BABES</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="98" data-name="LOYOLA"><span class="id">98</span><span class="name">LOYOLA</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="99" data-name="ONZ"><span class="id">99</span><span class="name">ONZ</span><span class="dots"></span></button>
+                            <button type="button" class="board-cell" role="gridcell" data-id="100" data-name="KRAL + KRATKY"><span class="id">100</span><span class="name">KRAL + KRATKY</span><span class="dots"></span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="boardtools">
+                    <div class="rounds-legend" id="rounds-legend"></div>
+                    <div class="zoom" role="group" aria-label="Board size">
+                        <button type="button" id="zoom-fit" aria-pressed="true">Fit</button><button type="button" id="zoom-large" aria-pressed="false">Large</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
-    <script src="games.js"></script>
-    <script src="script.js"></script>
+
+    <div class="col-side">
+        <section class="view" id="view-results" aria-labelledby="tab-results">
+            <div class="roundseg" id="round-filter-results" role="group" aria-label="Filter results by round"></div>
+            <div id="games-container"></div>
+        </section>
+
+        <section class="view" id="view-leaders" aria-labelledby="tab-leaders">
+            <div class="stats" id="stats"></div>
+            <h2>Leaders <small>tap a name for details</small></h2>
+            <div id="leaders-container"></div>
+        </section>
+    </div>
+    </div>
+
+    <nav class="tabbar" role="tablist" aria-label="Sections">
+        <button type="button" role="tab" id="tab-board" aria-selected="true" data-view="board">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>Board
+        </button>
+        <button type="button" role="tab" id="tab-results" aria-selected="false" data-view="results">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Results
+        </button>
+        <button type="button" role="tab" id="tab-leaders" aria-selected="false" data-view="leaders">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>Leaders
+        </button>
+    </nav>
+
+    <div class="sheet-scrim" id="sheet-scrim"></div>
+    <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sheet-title">
+        <div class="sheet-grab"></div>
+        <div class="sheet-head">
+            <div class="sheet-num" id="sheet-num">#</div>
+            <div class="sheet-text"><h3 id="sheet-title"></h3><p id="sheet-sub"></p></div>
+            <button class="sheet-close" id="sheet-close" type="button" aria-label="Close">&times;</button>
+        </div>
+        <div class="sheet-body" id="sheet-body"></div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+
+<script src="games.js"></script>
+<script src="script.js"></script>
 </body>
-</html> 
+</html>

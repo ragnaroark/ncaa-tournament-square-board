@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>Square Board Mobile Critique</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: single reading column (~68ch) with full-width figure strips for phone screenshots. */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --surface-2:#eaedf2; --line:#d6dbe4; --fg:#15202b; --muted:#5b6675;
+  --accent:#e8651b; --court:#1a2b48; --ok:#1f7a4d; --warn:#b7791f; --crit:#c0392b;
+  --ok-bg:#dff3e8; --warn-bg:#fdf1d6; --crit-bg:#fbe0dc;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --body:"Barlow",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f141b; --surface:#1a212b; --surface-2:#222b37; --line:#33404f; --fg:#eef2f7; --muted:#a3adbb; --court:#0b1324;
+  --ok:#4fd08f; --warn:#f0b64a; --crit:#f2766a; --ok-bg:#163826; --warn-bg:#3e2f0d; --crit-bg:#45201b; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#1a212b; --surface-2:#222b37; --line:#33404f; --fg:#eef2f7; --muted:#a3adbb; --court:#0b1324;
+  --ok:#4fd08f; --warn:#f0b64a; --crit:#f2766a; --ok-bg:#163826; --warn-bg:#3e2f0d; --crit-bg:#45201b; color-scheme:dark }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding-block:0 64px;padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+header.hero{background:var(--court);color:#fff;margin:0 -16px;padding:36px max(16px, env(safe-area-inset-left,0px)) 30px}
+header.hero .in{max-width:860px;margin:0 auto}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6vw,52px);line-height:1;margin:8px 0 12px;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+header p{max-width:62ch;margin:0;font-size:17px;opacity:.9}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:18px;font-size:13px;opacity:.8}
+h2{font-family:var(--display);font-weight:700;font-size:28px;text-transform:uppercase;letter-spacing:.02em;margin:44px 0 12px;text-wrap:balance}
+h3{font-size:18px;font-weight:700;margin:26px 0 8px;text-wrap:balance}
+p,li{max-width:68ch}
+a{color:var(--accent);font-weight:600}
+.lede{font-size:18px}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:22px 0 6px}
+.verdict div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.verdict b{display:block;font-family:var(--display);font-weight:800;font-size:28px;line-height:1}
+.verdict span{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.verdict .crit b{color:var(--crit)} .verdict .warn b{color:var(--warn)} .verdict .ok b{color:var(--ok)}
+.tablewrap{overflow-x:auto;margin:12px 0 4px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.sev{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.sev.crit{background:var(--crit-bg);color:var(--crit)} .sev.warn{background:var(--warn-bg);color:var(--warn)} .sev.ok{background:var(--ok-bg);color:var(--ok)}
+.fail{color:var(--crit);font-weight:700} .pass{color:var(--ok);font-weight:700}
+figure{margin:18px 0}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:start}
+.strip figure{margin:0}
+figure img{display:block;width:100%;max-width:100%;border:1px solid var(--line);border-radius:14px;background:#fff}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
+.callout{background:var(--surface);border-left:4px solid var(--accent);border-radius:8px;padding:12px 16px;margin:16px 0}
+.callout.note{border-left-color:var(--warn)}
+ol.prio{counter-reset:p;list-style:none;padding:0;margin:0;display:grid;gap:10px}
+ol.prio li{counter-increment:p;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px 14px 58px;position:relative;max-width:none}
+ol.prio li::before{content:counter(p);position:absolute;left:14px;top:12px;width:32px;height:32px;border-radius:9px;background:var(--court);color:#fff;font-family:var(--display);font-weight:800;font-size:18px;display:grid;place-items:center}
+ol.prio b{display:block;font-size:16px;margin-bottom:2px}
+ul.tight{padding-left:20px}
+ul.tight li{margin:4px 0}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.swatches span{display:inline-flex;align-items:center;gap:6px;font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 6px}
+.swatches i{width:18px;height:18px;border-radius:5px;border:1px solid rgba(0,0,0,.08);display:inline-block}
+.cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:12px;margin-top:8px}
+footer{margin-top:48px;font-size:13px;color:var(--muted)}
+@media (max-width:560px){ table{min-width:560px} }
+</style>
+
+<div class="wrap">
+<header class="hero"><div class="in">
+  <div class="eyebrow">Design critique · mobile</div>
+  <h1>NCAA Square Board on a phone</h1>
+  <p>How the current 10×10 squares board holds up for participants checking their own square and following results on a phone, what to fix first, and a working mockup of the proposed mobile layout.</p>
+  <div class="meta"><span>Reviewed: index.html, styles.css, script.js at commit f308bc5</span><span>Rendered at 375, 390 and 412 px wide, plus landscape</span><span>63 games, 100 squares</span></div>
+</div></header>
+
+<p class="lede" style="margin-top:28px">Overall: the board is a faithful, compact port of the desktop page, and it fits a phone screen without sideways scrolling. The biggest opportunity is that the page is still organised around the grid instead of around the two things a participant on a phone actually wants: <em>find my square and what it has paid</em>, and <em>what just happened</em>. Three mechanics also fight the phone directly: a scroll gesture that starts on the board opens a popup, the newest game is the last of 63 items inside a nested scroll area, and the round colours are too faint to tell apart.</p>
+
+<div class="verdict">
+  <div class="crit"><b>3</b><span>Critical findings</span></div>
+  <div class="warn"><b>7</b><span>Moderate findings</span></div>
+  <div class="ok"><b>5</b><span>Minor findings</span></div>
+  <div><b>6</b><span>Things that work</span></div>
+</div>
+
+<div class="callout note"><strong>How this was tested.</strong> The page was rendered headlessly in Chromium with touch emulation at phone widths. The Tabler CSS CDN is unreachable from the test sandbox, so one set of captures shows the page without Tabler's base styles and a second set uses a small local stand-in for Tabler's card, button and utility classes. Measurements (sizes, fonts, contrast, scroll behaviour) come from the live DOM and are not affected. Confirm the two Tabler-dependent items, the header button wrap and sticky hover, on a real phone.</div>
+
+<figure class="strip">
+  <figure><img src="screenshots/current-375-fold.png" alt="Current page at 375px: title, View All Winnings button, round pills, the board, legend and start of the games list"><figcaption>First screen at 375px wide (without Tabler's base styles). The board fills the fold; the games list starts below it.</figcaption></figure>
+  <figure><img src="screenshots/current-375-champ-filter.png" alt="Current page with the Champ filter selected: All pill is cut off on the left and a stale orange highlight remains on square 59"><figcaption>Champ filter selected. The pill row has scrolled, the first pill is clipped, and square 59 keeps the orange highlight from an earlier tap.</figcaption></figure>
+  <figure><img src="screenshots/current-390-after-gametap.png" alt="After tapping a game card the page has jumped back to the board and the games list is pushed below the fold"><figcaption>After tapping a game card the page jumps to the board. The list the user was reading is now below the fold.</figcaption></figure>
+</figure>
+
+<h2>First impression</h2>
+<p>The eye lands on the grid, which is the right object, but the grid says little on its own: pale tints, tiny names, and no sense of what any square has earned. The second thing the eye finds is the 'View All Winnings' button crowding the title. Nothing on the first screen answers "did my square win?" or "who won the last game?". The purpose is clear to someone who already knows squares pools; it is not clear what to tap.</p>
+
+<h2>Usability</h2>
+<div class="tablewrap"><table>
+<thead><tr><th style="width:38%">Finding</th><th>Severity</th><th>Recommendation</th></tr></thead>
+<tbody>
+<tr><td>A scroll gesture that starts on the board opens a square popup. Cells handle touchend and call preventDefault, so a drag across the board ends with a popup for whichever cell the finger left. Reproduced: a vertical swipe over square 45 scrolled the page and opened "Square #45".</td><td><span class="sev crit">Critical</span></td><td>Drop the touchend handlers and use click only (browsers no longer add a tap delay with a proper viewport meta). If touch handling stays, ignore touchend when the touch moved more than about 10px or lasted longer than 300ms.</td></tr>
+<tr><td>Latest results are buried. Games render oldest first, so the championship is item 63. The list lives in a nested 50vh scroll area below the board, so reaching the newest game means scrolling the page, then scrolling the list to the bottom.</td><td><span class="sev crit">Critical</span></td><td>Sort newest first, group by day, and remove the inner scroll area on phones so the page is the only scroll. Put a one-line "latest result" in the header.</td></tr>
+<tr><td>No way to find your square. There is no search, names are 6.4px, six are clipped (TROUBADOR, SHADROCK &amp; SON, MARVINCH, SASQUATCH, PALKO HOMDADDDY, MEATBALL), and the same owner appears on several squares (MTAC ×4, CHARLIE ×3, MIKE SAMBER ×3, TIM + MARTY ×2, TTOP ×2, OTYZ ×2, CJP ×2, PLUGGER ×2, FNL ×2, TMW 10 ×2, PETE FLETCH ×2).</td><td><span class="sev crit">Critical</span></td><td>Add a name search that highlights matches and lists them with totals. Let a viewer mark "my square" so it is pinned at the top with its running total.</td></tr>
+<tr><td>Tapping a game scrolls the board into view, pushing the games list off screen; the user loses their place and must scroll back. The orange highlight also persists through filter changes.</td><td><span class="sev warn">Moderate</span></td><td>Open the square's details in a bottom sheet instead of scrolling. Clear the highlight when the filter changes or another game is tapped.</td></tr>
+<tr><td>The square popup is not a real modal. The page keeps scrolling behind it, Escape does nothing, focus is not moved or trapped, and there are two Close controls. On a long list the footer Close is below the fold.</td><td><span class="sev warn">Moderate</span></td><td>Use a bottom sheet (or &lt;dialog&gt;) with scroll lock, Escape and swipe-to-dismiss, one close affordance, and the total pinned at the top.</td></tr>
+<tr><td>Round filter row overflows. Seven pills need 394px but only 380px are available at 390px wide. "Champ" is cut off and there is no visual cue that the row scrolls.</td><td><span class="sev warn">Moderate</span></td><td>Make it a seven-cell segmented control with equal widths. Each cell fits "R64" plus the payout underneath at 390px.</td></tr>
+<tr><td>Payout schedule is invisible. The $100 to $4,000 per-round amounts appear only inside a square's popup, so a user cannot tell what a given result was worth from the board or the list.</td><td><span class="sev warn">Moderate</span></td><td>Show the payout under each round filter and the "+$" amount on every game card next to the winning square.</td></tr>
+<tr><td>Winnings summary is a 51-row table in a centred modal taller than the screen, with no pot total at the top and no indication of where the viewer's own square ranks.</td><td><span class="sev warn">Moderate</span></td><td>Give it its own Leaders tab with pot total, squares paid, rank numbers and the viewer's square highlighted.</td></tr>
+<tr><td>Landscape phones break the board. At 844×390 the cell size rule stretches cells to fill the width, the board becomes 844px tall and only three rows are visible.</td><td><span class="sev warn">Moderate</span></td><td>Cap cell size by the smaller viewport dimension, or lock the board to a fixed cell size and scroll it inside its container.</td></tr>
+<tr><td>Hover handlers run on touch. mouseenter/mouseleave colour the row and column headers; on iOS the emulated mouseenter fires on tap and the headers stay tinted until the next tap.</td><td><span class="sev warn">Moderate</span></td><td>Guard header highlighting with a hover media query, or move it to CSS and apply it to the open square only.</td></tr>
+<tr><td>Title is truncated to "NCAA Tournament Squ…" because the winnings button shares the header row.</td><td><span class="sev ok">Minor</span></td><td>Shorten the title on phones and move the winnings action to a tab or a secondary row.</td></tr>
+<tr><td>The championship cell animates a glow forever, and the animation does not respect prefers-reduced-motion.</td><td><span class="sev ok">Minor</span></td><td>Keep the striped gold fill, drop the animation or wrap it in a reduced-motion query.</td></tr>
+</tbody></table></div>
+
+<figure class="strip">
+  <figure><img src="screenshots/current-375-popup.png" alt="Current square popup: title, square details, total winnings, two winning games and a Close button"><figcaption>Square popup. Total winnings is prominent, but the page scrolls behind it and there are two close controls.</figcaption></figure>
+  <figure><img src="screenshots/current-390-winnings.png" alt="Current winnings summary table filling the screen with 14 of 51 rows visible"><figcaption>Winnings summary. The table is taller than the viewport and the pot total is at the very bottom.</figcaption></figure>
+  <figure><img src="screenshots/current-landscape.png" alt="Landscape view: board cells stretched so only three rows fit on screen"><figcaption>Landscape at 844×390. Cells stretch to the full width and most of the board is off screen.</figcaption></figure>
+</figure>
+
+<h2>Visual hierarchy</h2>
+<ul class="tight">
+  <li><b>What draws the eye first:</b> the grid's black borders and the header digits. That is the right object, but the grid carries no money or recency information, so the eye has nowhere to go next.</li>
+  <li><b>Reading flow:</b> title → button → pills → board → legend → games. The two things the user wants, their own square and the latest result, are not on this path. A Fit board with 31px cells is a map, not a reading surface; it needs a summary strip above it and a sheet below it.</li>
+  <li><b>Emphasis:</b> the strongest colour on the page is the orange "active game" highlight, which is almost the same hue as the Sweet 16 tint and the championship gold. Money, the thing everyone cares about, is a small green number on each card.</li>
+  <li><b>Board cells:</b> the ID in the corner, the name, and a diagonal split of two or three tints compete inside 32px. At that size a cell can carry one fill and a row of dots, not a gradient.</li>
+</ul>
+
+<figure><img src="screenshots/current-375-board.png" alt="Close-up of the current board at 375px showing faint tints, diagonal splits and clipped names" style="max-width:520px"><figcaption>Board at 375px. Multi-round squares are split diagonally; the Round of 64 green and Round of 32 blue tints measure 1.04:1 against each other.</figcaption></figure>
+
+<h2>Consistency</h2>
+<div class="tablewrap"><table>
+<thead><tr><th style="width:26%">Element</th><th>Issue</th><th>Recommendation</th></tr></thead>
+<tbody>
+<tr><td>Round colours</td><td>Three different palettes: cell tints, legend swatches, and the popup's left borders (where round 3 is orange and round 4 red, not yellow and purple as on the board). The winnings table uses none of them.</td><td>One set of six round tokens used for cells, legend, filter dots, game cards, sheet and leaderboard bars.</td></tr>
+<tr><td>Colour language</td><td>Green means "Round of 64" on the board and "money" everywhere else.</td><td>Keep green for money only; give Round of 64 a teal or another hue that does not read as currency.</td></tr>
+<tr><td>Type scale</td><td>Eleven distinct font sizes between 6.4px and 24px on the phone layout, most set with rem fractions in media queries.</td><td>Six steps: 11, 12, 13, 15, 18, 22px, with a condensed display face for scores and totals.</td></tr>
+<tr><td>Spacing</td><td>Per-element margins (card-header, legend, games header) with different values at each breakpoint; the 576px block sets --cell-size twice.</td><td>Use gap on flex/grid parents and a 4px spacing scale.</td></tr>
+<tr><td>Interaction</td><td>Board cells, game cards and win items all open or highlight different things with the same visual affordance (none).</td><td>Every tappable surface should look tappable and lead to the same place: the square sheet.</td></tr>
+<tr><td>Copy</td><td>"Square #55: MTAC", "Winning score ends with: 9", "View All Winnings", "NCAA Tournament Games" read as labels from the data model.</td><td>"#55 MTAC · wins when the winner's score ends in 9 and the loser's ends in 4", "Leaders", "Results".</td></tr>
+</tbody></table></div>
+
+<h2>Accessibility</h2>
+<h3>Colour contrast (WCAG 2.1 AA needs 4.5:1 for text, 3:1 for UI)</h3>
+<div class="tablewrap"><table>
+<thead><tr><th>Text</th><th>Colour</th><th>Ratio</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Square number and payout green</td><td class="num">#28a745 on white</td><td class="num">3.13:1</td><td class="fail">Fail</td></tr>
+<tr><td>Score separator dash</td><td class="num">#aaaaaa on white</td><td class="num">2.32:1</td><td class="fail">Fail</td></tr>
+<tr><td>Seeds and axis label</td><td class="num">#888888 on white</td><td class="num">3.54:1</td><td class="fail">Fail</td></tr>
+<tr><td>Cell ID at 768px breakpoint</td><td class="num">#777777 on white, 8px</td><td class="num">4.48:1</td><td class="fail">Fail</td></tr>
+<tr><td>Muted meta text</td><td class="num">#626976 on white</td><td class="num">5.52:1</td><td class="pass">Pass</td></tr>
+<tr><td>Round of 64 vs Round of 32 tint</td><td class="num">#d4edda vs #cce5ff</td><td class="num">1.04:1</td><td class="fail">Indistinguishable</td></tr>
+<tr><td>Any two round tints</td><td class="num">20–25% alpha on white</td><td class="num">≤1.28:1</td><td class="fail">Indistinguishable</td></tr>
+<tr><td>Active-game highlight vs Sweet 16 tint</td><td class="num">#ffc107 vs #fff0c2</td><td class="num">1.43:1</td><td class="fail">Indistinguishable</td></tr>
+</tbody></table></div>
+<div class="swatches"><span><i style="background:#d4edda"></i>R64 tint</span><span><i style="background:#cce5ff"></i>R32 tint</span><span><i style="background:#fff0c2"></i>S16 tint</span><span><i style="background:#e2d9f3"></i>E8 tint</span><span><i style="background:#f6ccd0"></i>F4 tint</span><span><i style="background:#ffc107"></i>Active highlight</span></div>
+<h3>Touch targets (44×44px recommended)</h3>
+<ul class="tight">
+  <li>Board cells: 31–33px square at 375–390px wide. A 10-wide grid cannot reach 44px on a phone, so the board needs a Large mode with horizontal scroll, and the names need a second route (search, sheet).</li>
+  <li>Round pills: 29px tall. Popup close ×: 24×26px. Legend items are not tappable although they look like filters.</li>
+</ul>
+<h3>Text readability</h3>
+<ul class="tight">
+  <li>Cell names render at 6.4px (0.4rem) below 400px and 8px at 576px. Anything under 11px is decoration on a phone.</li>
+  <li>Legend text is 10.4px; axis label 8.8px; the row axis label is hidden entirely on phones, so "losing score" is explained only by "L ↓" in the corner.</li>
+</ul>
+<h3>Semantics</h3>
+<ul class="tight">
+  <li>Cells are divs with click handlers, so they are not reachable by keyboard or announced as buttons. The popup has no role="dialog", no aria-modal, and focus stays on the page behind it.</li>
+  <li>Round filters are radio inputs inside labels, which is good; they only need visible focus styles.</li>
+</ul>
+
+<h2>What works well</h2>
+<ul class="tight">
+  <li>The board fits the screen width at every phone size with no horizontal page scroll, and the shuffled header digits are kept large and legible.</li>
+  <li>Pill-style round filters on mobile are the right pattern; they just need to fit.</li>
+  <li>The square popup leads with Total Winnings in a strong, readable block and lists wins highest round first.</li>
+  <li>Every game card shows the winning square number, which is the key link between results and board.</li>
+  <li>Click and touch handlers exist everywhere, so nothing is mouse-only.</li>
+  <li>Game data is isolated in games.js, so a redesign of the view does not touch the data entry workflow.</li>
+</ul>
+
+<h2>Proposed mobile layout</h2>
+<p>The mockup below is a working page built from the real board names and all 63 results. It keeps the shuffled digit headers and the payout schedule and reorganises the phone experience around three tabs. Open it on a phone, or narrow the window, to use it full-bleed.</p>
+<a class="cta" href="https://claude.ai/artifact/4wwXUHiUGMpHe4KFWMQkjd">Open the interactive mockup</a>
+<ul class="tight" style="margin-top:18px">
+  <li><b>"Your square" strip</b> pinned under the header with the running total; set from any square's sheet and remembered on the device.</li>
+  <li><b>Round segmented control</b> that doubles as the payout schedule: seven equal cells with R64 $100 through Champ $4,000.</li>
+  <li><b>Name search</b> that highlights matching cells and lists them with totals, so four MTAC squares become four tappable chips.</li>
+  <li><b>Board</b> with one solid tint per cell for its highest round, a row of dots for each win, an orange corner for your square, and a Fit / Large toggle. Large mode shows full names at 56px cells with horizontal scroll.</li>
+  <li><b>Bottom sheet</b> for square details: scroll-locked, Escape and swipe to dismiss, total at the top, each win with its round, score and payout.</li>
+  <li><b>Results tab</b> newest first, grouped by day, each card showing both scores, the winning square owner and the payout. Tapping opens the sheet without moving the page.</li>
+  <li><b>Leaders tab</b> with pot total, squares paid, ranked list with a payout bar segmented by round, and your square highlighted.</li>
+</ul>
+
+<figure class="strip">
+  <figure><img src="screenshots/mock-board-mine.png" alt="Mockup board tab with your square strip, payout segmented control, search field and the board with square 55 marked"><figcaption>Board tab with #55 saved as "your square".</figcaption></figure>
+  <figure><img src="screenshots/mock-sheet.png" alt="Mockup bottom sheet for square 55 MTAC showing total winnings, This is my square button and two wins"><figcaption>Square sheet, opened from a cell, a result, a search chip or the leaderboard.</figcaption></figure>
+  <figure><img src="screenshots/mock-results.png" alt="Mockup results tab with games newest first grouped by date, each with the winning square and payout"><figcaption>Results, newest first, with the square owner and payout on every card.</figcaption></figure>
+</figure>
+<figure class="strip">
+  <figure><img src="screenshots/mock-leaders.png" alt="Mockup leaders tab with pot total, squares paid, games played and a ranked list with payout bars"><figcaption>Leaders with pot total and per-round payout bars.</figcaption></figure>
+  <figure><img src="screenshots/mock-search.png" alt="Mockup board with search for mtac showing five matching chips and five highlighted cells"><figcaption>Searching "mtac" finds all four squares.</figcaption></figure>
+  <figure><img src="screenshots/mock-large.png" alt="Mockup board in Large mode with 56px cells and full names, scrolling horizontally"><figcaption>Large mode: full names, horizontal scroll, sticky meaning preserved.</figcaption></figure>
+</figure>
+
+<h2>Priority recommendations</h2>
+<ol class="prio">
+  <li><b>Stop scrolls from opening popups.</b> Remove the touchend handlers on cells, backdrop and buttons and rely on click. This is a one-line change per handler and removes the most disorienting behaviour on the page.</li>
+  <li><b>Put "my square" and "latest result" on the first screen.</b> Add name search with match highlighting, a saved "my square" strip with its total, and sort results newest first with the inner scroll area removed. These three changes serve both user goals without redesigning the grid.</li>
+  <li><b>Replace tints and gradients with one legible round palette.</b> Six distinct hues at full strength for dots and chips, lighter fills for cells, used identically in the legend, filters, cards and sheet. Reserve green for money and orange for "yours".</li>
+  <li><b>Turn the popup into a bottom sheet.</b> Scroll lock, Escape, swipe to close, role="dialog", total at the top, one close control. Open the same sheet from game cards instead of scrolling the page.</li>
+  <li><b>Fit the filters and show the money.</b> Seven equal segments with payout underneath, and a "+$" amount on every game card.</li>
+  <li><b>Fix the small stuff while in there.</b> Contrast on green, grey and the dash; 44px targets for pills and close; reduced-motion guard on the championship glow; cap cell size in landscape; make cells real buttons.</li>
+</ol>
+
+<footer>Measurements come from Chromium with touch emulation at 375×667, 390×844 and 412×915 (device pixel ratios 2 to 3) and 844×390 landscape. Contrast ratios follow the WCAG 2.1 relative-luminance formula with alpha tints composited on white.</footer>
+</div>
+
+</body>
+</html>
